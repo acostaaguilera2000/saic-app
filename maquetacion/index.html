@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+  <meta charset="UTF-8">
+  <title>Dashboard SAIC</title>
+  <!-- Bootstrap primero -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+  <!-- Bootstrap Icons -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css" rel="stylesheet">
+  <!-- Tus estilos personalizados después -->
+  <link rel="stylesheet" href="styles.css">
+</head>
+
+<body class="bg-light">
+
+  <!-- Menú superior -->
+  <nav class="navbar navbar-expand-lg navbar-dark  fixed-top topbar">
+    <div class="container-fluid d-flex justify-content-between">
+
+      <!-- Botón minimalista al inicio -->
+      <div class="d-flex align-items-center">
+        <button class="btn btn-link text-white me-2" id="toggleSidebar">
+          <i class="bi bi-list fs-3"></i>
+        </button>
+        <span class="navbar-brand fw-bold">SAIC - Dashboard</span>
+      </div>
+
+      <!-- Usuario con menú desplegable -->
+      <div class="dropdown"> <a class="d-flex align-items-center text-white text-decoration-none dropdown-toggle"
+          href="#" id="userMenu" data-bs-toggle="dropdown" aria-expanded="false"> <i
+            class="bi bi-person-circle fs-4 me-2"></i> <span>Manuel Acosta</span> </a>
+        <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="userMenu">
+          <li><a class="dropdown-item" href="#"><i class="bi bi-key"></i> Cambiar contraseña</a></li>
+          <li><a class="dropdown-item" href="#"><i class="bi bi-gear"></i> Configuraciones</a></li>
+          <li>
+            <hr class="dropdown-divider">
+          </li>
+          <li><a class="dropdown-item text-danger" href="#"><i class="bi bi-box-arrow-right"></i> Salir</a>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </nav>
+
+  <!-- Barra de navegación secundaria -->
+  <div class="subbar shadow-sm">
+    <div class="container d-flex justify-content-between align-items-center ">
+
+      <!-- Información de vista y usuario -->
+      <div>
+        <span class="fw-bold text-primary">Dashboard</span> | Bienvenido Manuel Acosta
+      </div>
+
+      <!-- Breadcrumb -->
+      <nav aria-label="breadcrumb">
+        <ol class="breadcrumb mb-0">
+          <li class="breadcrumb-item"><a href="#">Inicio</a></li>
+          <li class="breadcrumb-item active" aria-current="page">Dashboard</li>
+        </ol>
+      </nav>
+    </div>
+  </div>
+
+  <!-- Overlay -->
+  <div class="overlay" id="overlay"></div>
+
+  <!-- Barra lateral -->
+  <div class="sidebar" id="sidebarMenu">
+    <div class="text-center p-3 border-bottom">
+      <i class="bi bi-person-circle fs-2"></i>
+      <h6 class="mt-2 mb-0">Manuel Acosta</h6>
+      <small class="text-light">Administrador</small>
+    </div>
+    <h6 class="text-uppercase px-3 mt-3 text-secondary">Navegación</h6>
+    <ul class="nav flex-column">
+      <li class="nav-item"><a href="#" class="nav-link"><i class="bi bi-house-door"></i> Inicio</a></li>
+      <li class="nav-item"><a href="#" class="nav-link"><i class="bi bi-people"></i> Miembros</a></li>
+      <li class="nav-item"><a href="#" class="nav-link"><i class="bi bi-calendar-event"></i> Eventos <span
+            class="badge bg-success ms-2">3</span></a></li>
+      <li class="nav-item"><a href="#" class="nav-link"><i class="bi bi-bank"></i> Ministerios</a></li>
+      <li class="nav-item"><a href="#" class="nav-link"><i class="bi bi-cash-stack"></i> Finanzas</a></li>
+      <li class="nav-item"><a href="#" class="nav-link"><i class="bi bi-megaphone"></i> Comunicados</a></li>
+
+    </ul>
+  </div>
+
+
+  <!-- Contenido principal -->
+  <main class="container-fluid mt-3 main-content">
+
+    <!-- Tarjetas informativas -->
+    <div class="row row-cols-1 row-cols-md-2 row-cols-lg-4 g-3 mb-4">
+      <div class="col">
+        <div class="card text-center shadow h-100">
+          <div class="card-body">
+            <i class="bi bi-person-plus fs-3 text-success"></i>
+            <h6 class="card-title">Usuarios agregados</h6>
+            <p class="card-text small">120</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="col">
+        <div class="card text-center shadow h-100">
+          <div class="card-body">
+            <i class="bi bi-person-check fs-3 text-primary"></i>
+            <h6 class="card-title">Usuarios activos</h6>
+            <p class="card-text small">95</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="col">
+        <div class="card text-center shadow h-100">
+          <div class="card-body">
+            <i class="bi bi-person-x fs-3 text-danger"></i>
+            <h6 class="card-title">Usuarios inactivos</h6>
+            <p class="card-text small">25</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="col">
+        <div class="card text-center shadow h-100">
+          <div class="card-body">
+            <i class="bi bi-graph-up fs-3 text-warning"></i>
+            <h6 class="card-title">Crecimiento</h6>
+            <p class="card-text small">+15%</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+
+    <section class="row g-3 mb-4">
+
+      <!-- Resumen de Eventos -->
+      <div class="col-lg-6">
+        <div class="card shadow h-100">
+          <div class="card-body">
+            <h5 class="card-title text-secondary">Eventos próximos</h5>
+            <ul class="list-group list-group-flush mb-3">
+              <li class="list-group-item"><i class="bi bi-calendar-event"></i> Reunión general - 28 Feb
+              </li>
+              <li class="list-group-item"><i class="bi bi-calendar-event"></i> Conferencia juvenil - 5 Mar
+              </li>
+              <li class="list-group-item"><i class="bi bi-calendar-event"></i> Campaña solidaria - 12 Mar
+              </li>
+              <li class="list-group-item"><i class="bi bi-calendar-event"></i> Reunion de Lideres - 25 Mar
+              </li>
+              <li class="list-group-item"><i class="bi bi-calendar-event"></i> Reunion de pastores - 19
+                Mar
+              </li>
+            </ul>
+            <button class="btn btn-outline-secondary"><i class="bi bi-calendar3"></i> Ver
+              calendario</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Resumen de Finanzas -->
+      <div class="col-lg-6">
+        <div class="card shadow h-100">
+          <div class="card-body">
+            <h5 class="card-title text-primary">Resumen de Finanzas</h5>
+            <canvas id="financeChart" height="120"></canvas>
+
+            <button class="btn btn-outline-primary mt-3"><i class="bi bi-cash-stack"></i> Ver
+              detalle</button>
+          </div>
+        </div>
+      </div>
+
+    </section>
+  </main>
+
+  <!-- Bootstrap JS -->
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+  <!-- Chart.js -->
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <!-- JS funciones principales -->
+  <script src="script.js"></script>
+
+</body>
+
+</html>
