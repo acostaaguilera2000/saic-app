@@ -59,7 +59,7 @@ body {
   border-bottom: 1px solid #dee2e6;
   display: flex;
   align-items: center;
-  margin-top: var(--topbar-height); /* asegura que no quede tapada */
+  margin-top: var(--topbar-height); 
 }
 
 /* Ajuste del contenido principal */
@@ -118,7 +118,7 @@ body {
     width: 100%;
   }
 
-  /* Alinea el texto con el mismo padding que main-content */
+  
   .subbar .container {
     padding-left: 20px;
     padding-right: 20px;
