@@ -1,0 +1,73 @@
+extends layout
+
+block content
+    // Tarjetas informativas
+    .row.row-cols-1.row-cols-md-2.row-cols-lg-4.g-3.mb-4
+        .col
+            .card.text-center.shadow.h-100
+                .card-body
+                    i.bi.bi-person-plus.fs-3.text-success
+                    h6.card-title Usuarios agregados
+                    p.card-text.small 120
+        .col
+            .card.text-center.shadow.h-100
+                .card-body
+                    i.bi.bi-person-check.fs-3.text-primary
+                    h6.card-title Usuarios activos
+                    p.card-text.small 95
+        .col
+            .card.text-center.shadow.h-100
+                .card-body
+                    i.bi.bi-person-x.fs-3.text-danger
+                    h6.card-title Usuarios inactivos
+                    p.card-text.small 25
+        .col
+            .card.text-center.shadow.h-100
+                .card-body
+                    i.bi.bi-graph-up.fs-3.text-warning
+                    h6.card-title Crecimiento
+                    p.card-text.small +15%
+
+    // Sección de eventos y finanzas
+    section.row.g-3.mb-4
+        .col-lg-6
+            .card.shadow.h-100
+                .card-body
+                    h5.card-title.text-success Eventos próximos
+                    ul.list-group.list-group-flush.mb-3
+                        li.list-group-item
+                            i.bi.bi-calendar-event
+                            |  Reunión general - 28 Feb
+                        li.list-group-item
+                            i.bi.bi-calendar-event
+                            |  Conferencia juvenil - 5 Mar
+                        li.list-group-item
+                            i.bi.bi-calendar-event
+                            |  Campaña solidaria - 12 Mar
+                        li.list-group-item
+                            i.bi.bi-calendar-event
+                            |  Reunion de Lideres - 25 Mar
+                        li.list-group-item
+                            i.bi.bi-calendar-event
+                            |  Reunion de pastores - 19 Mar
+                    button.btn.btn-outline-secondary
+                        i.bi.bi-calendar3
+                        |  Ver calendario
+
+        .col-lg-6
+            .card.shadow.h-100
+                .card-body
+                 h5.card-title.text-success Resumen de Finanzas
+                 ul.list-group.list-group-flush.mb-3
+                    li.list-group-item.d-flex.justify-content-between.align-items-center
+                        span Ingresos
+                        span.text-success $12,500
+                    li.list-group-item.d-flex.justify-content-between.align-items-center
+                        span Egresos
+                        span.text-danger $8,200
+                    li.list-group-item.d-flex.justify-content-between.align-items-center
+                        span Balance
+                        span.text-primary $4,300
+                 button.btn.btn-outline-primary.mt-3
+                    i.bi.bi-cash-stack
+                    | Ver detalle

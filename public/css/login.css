@@ -1,0 +1,65 @@
+:root {
+    --color-primary: #006D77;          /* Teal principal */
+    --color-secondary: #FF6F61;        /* Coral */
+    --color-secondary-hover: #e85c55;  /* Coral más intenso para hover */
+    --color-background: #EDF6F9;       /* Gris claro fresco */
+}
+
+body {
+    background: var(--color-background) ;
+    background-size: cover;
+    font-family: Arial, sans-serif;
+}
+
+/* Capa de overlay en teal */
+.overlay {
+    background-color: rgba(0, 109, 119, 0.85); /* Teal con transparencia */
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 0;
+}
+
+/* Menú superior */
+.navbar {
+    z-index: 2;
+    background-color: var(--color-primary) !important;
+}
+
+/* Tarjeta de login */
+.login-card {
+    z-index: 2;
+    background-color: #ffffff; /* Fondo blanco para contraste */
+    position: relative;
+    max-width: 400px;
+    margin: auto;
+    margin-top: 100px;
+    border-radius: 10px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+    padding: 2rem;
+}
+
+.login-card h4 {
+    color: var(--color-primary); /* Teal para títulos */
+}
+
+/* Botón coral */
+.btn-login {
+    background-color: var(--color-secondary);
+    color: #fff;
+    font-weight: bold;
+    border-radius: 8px;
+}
+
+.btn-login:hover {
+    background-color: var(--color-secondary-hover);
+}
+
+/* Responsive: márgenes en móviles */
+@media (max-width: 576px) {
+    .login-card {
+        margin: 2rem;
+    }
+}

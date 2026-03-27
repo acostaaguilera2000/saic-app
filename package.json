@@ -1,0 +1,31 @@
+{
+  "name": "saic-app",
+  "version": "1.0.0",
+  "description": "Este repositorio contiene la actividad de maquetación del login y dashboard.",
+  "main": "app.js",
+  "scripts": {
+    "start": "node server.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/acostaaguilera2000/saic-app.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "module",
+  "bugs": {
+    "url": "https://github.com/acostaaguilera2000/saic-app/issues"
+  },
+  "homepage": "https://github.com/acostaaguilera2000/saic-app#readme",
+  "dependencies": {
+    "bcrypt": "^6.0.0",
+    "cors": "^2.8.6",
+    "express": "^5.2.1",
+    "express-session": "^1.19.0",
+    "helmet": "^8.1.0",
+    "morgan": "^1.10.1",
+    "mysql2": "^3.18.2",
+    "pug": "^3.0.3"
+  }
+}

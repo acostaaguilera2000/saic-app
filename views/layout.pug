@@ -1,0 +1,98 @@
+doctype html
+html(lang="es")
+  head
+    meta(charset="UTF-8")
+    title #{title || "Dashboard SAIC"}
+    // Bootstrap 
+    link(rel="stylesheet", href="/css/bootstrap.min.css")
+    // Bootstrap Icons
+    link(rel="stylesheet", href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css")
+    // estilos personalizados desde carpeta public
+    link(rel="stylesheet", href="/css/styles.css")
+
+  body.bg-light
+    // Menú superior
+    nav.navbar.navbar-expand-lg.navbar-dark.fixed-top.topbar
+      .container-fluid.d-flex.justify-content-between
+        // Botón minimalista
+        .d-flex.align-items-center
+          button.btn.btn-link.text-white.me-2#toggleSidebar
+            i.bi.bi-list.fs-3
+          span.navbar-brand.fw-bold SAIC - Dashboard
+
+        // Menu desplegable usuario
+        .dropdown
+          a.d-flex.align-items-center.text-white.text-decoration-none.dropdown-toggle(
+            href="#", id="userMenu", data-bs-toggle="dropdown", aria-expanded="false")
+            i.bi.bi-person-circle.fs-4.me-2
+            span #{user.username}
+          ul.dropdown-menu.dropdown-menu-end(aria-labelledby="userMenu")
+            li
+              a.dropdown-item(href="#")
+                i.bi.bi-key Cambiar contraseña
+            li
+              a.dropdown-item(href="#")
+                i.bi.bi-gear Configuraciones
+            li
+              hr.dropdown-divider
+            li
+              a.dropdown-item.text-danger(href="/auth/logOut")
+                i.bi.bi-box-arrow-right Salir
+
+    // Barra secundaria
+    .subbar.shadow-sm
+      .container.d-flex.justify-content-between.align-items-center
+        div
+          span.fw-bold.text-success Dashboard
+          |  | Bienvenido #{user.username}
+        nav(aria-label="breadcrumb")
+          ol.breadcrumb.mb-0
+            li.breadcrumb-item
+              a.text-success(href="#") Inicio
+            li.breadcrumb-item.active(aria-current="page") Dashboard
+
+    // Overlay
+    .overlay#overlay
+
+    // Sidebar
+    .sidebar#sidebarMenu
+      .text-center.p-3.border-bottom
+        i.bi.bi-person-circle.fs-2
+        h6.mt-2.mb-0 #{user.username}
+        small.text-light Administrador
+      h6.text-uppercase.px-3.mt-3.text-secondary Navegación
+      ul.nav.flex-column
+        li.nav-item
+          a.nav-link(href="#")
+            i.bi.bi-house-door
+            | Inicio
+        li.nav-item
+          a.nav-link(href="#")
+            i.bi.bi-people 
+            | Miembros
+        li.nav-item
+          a.nav-link(href="#")
+            i.bi.bi-calendar-event 
+            | Eventos 
+            span.badge.bg-success.ms-2 3
+        li.nav-item
+          a.nav-link(href="#")
+            i.bi.bi-bank
+            | Ministerios
+        li.nav-item
+          a.nav-link(href="#")
+            i.bi.bi-cash-stack
+            | Finanzas
+        li.nav-item
+          a.nav-link(href="#")
+            i.bi.bi-megaphone
+            | Comunicados
+
+    // Contenido principal dinámico
+    main.container-fluid.mt-3.main-content
+      block content
+
+    // JS
+    script(src="/js/bootstrap.bundle.js")
+    script(src="/js/main.js")
+    

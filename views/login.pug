@@ -1,0 +1,46 @@
+doctype html
+html(lang="es")
+  head
+    meta(charset="UTF-8")
+    meta(name="viewport" content="width=device-width, initial-scale=1")
+    title Login - SAIC
+    // Bootstrap CSS
+    link(rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css")
+    // Bootstrap Icons
+    link(rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css")
+    // estilos del login personalizados desde carpeta public/css
+    link(rel="stylesheet" href="/css/login.css")
+
+  body
+    // Capa azul
+    .overlay
+
+  
+
+    // Tarjeta de login
+    .login-card.opacity-75
+      h4.text-center.mb-4.fw-bold.text-dark Iniciar Sesión
+      if error
+        .alert.alert-danger.text-center #{error}
+        
+      form(action="/auth/login" method="post")
+        .mb-3
+          label.form-label.text-dark(for="username")
+            i.bi.bi-envelope
+            |  Usuario
+          input.form-control(type="text" id="username" name="username", required)
+        .mb-3
+          label.form-label.text-dark(for="password")
+            i.bi.bi-lock
+            | Contraseña
+          input.form-control(type="password" id="password" name="password" required)
+        button.btn.btn-login.w-100(type="submit")
+          i.bi.bi-box-arrow-in-right
+          |  Entrar
+      .text-center.mt-3
+        a.text-decoration-none(href="#")
+          i.bi.bi-key
+          | ¿Olvidaste tu contraseña?
+
+    // Bootstrap JS
+    script(src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js")

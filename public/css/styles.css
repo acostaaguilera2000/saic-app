@@ -1,0 +1,174 @@
+:root {
+  --color-primary: #006D77;          /* Teal principal */
+  --color-secondary: #FF6F61;        /* Coral suave */
+  --color-secondary-hover: #e85c55;  /* Coral más intenso para hover */
+  --color-text-light: #ffffff;
+  --sidebar-width: 220px;
+  --topbar-height: 70px;
+  --subbar-height: 60px;
+  --shadow-sidebar: 2px 0 5px rgba(0, 0, 0, 0.3);
+  --overlay-color: rgba(0, 0, 0, 0.5);
+  --color-background: #EDF6F9;
+  
+  /* Nuevo color para el sidebar */
+  --color-sidebar: #006D77; /* Teal más oscuro */
+}
+
+
+/* General */
+body {
+
+  margin: 0;
+  overflow-x: hidden;
+  background-color: var(--color-background);
+}
+
+/* Topbar */
+.topbar {
+  background-color: var(--color-primary) !important;
+  color: var(--color-text-light) !important;
+  height: var(--topbar-height);
+}
+
+/* Botón salir */
+.btn-logout {
+  background-color: var(--color-secondary) !important;
+  color: var(--color-text-light) !important;
+  font-weight: bold;
+}
+.btn-logout:hover {
+  background-color: var(--color-secondary-hover) !important;
+}
+
+/* Sidebar */
+.sidebar {
+  position: fixed;
+  top: var(--topbar-height);
+  left: calc(-1 * var(--sidebar-width));
+  width: var(--sidebar-width);
+  height: calc(100vh - var(--topbar-height));
+  background-color: var(--color-sidebar); /* Usamos el gris oscuro */
+  color: var(--color-text-light);
+  box-shadow: var(--shadow-sidebar);
+  transition: left 0.3s ease;
+  z-index: 1100;
+  overflow-y: auto;
+}
+.sidebar.show {
+  left: 0;
+}
+
+/* Links dentro del sidebar */
+.sidebar a {
+  color: var(--color-text-light);
+  text-decoration: none;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 10px;
+  border-radius: 5px;
+}
+.sidebar a:hover {
+  background-color: var(--color-secondary); /* Coral para resaltar */
+}
+
+/* Barra secundaria debajo del topbar */
+.subbar {
+  height: var(--subbar-height);
+  background-color: #ffffff;
+  border-bottom: 1px solid #dee2e6;
+  display: flex;
+  align-items: center;
+  margin-top: var(--topbar-height); 
+}
+
+/* Ajuste del contenido principal */
+.main-content {
+  padding: 20px;
+}
+
+/* Overlay */
+.overlay {
+  position: fixed;
+  top: var(--topbar-height);
+  left: 0;
+  width: 100%;
+  height: calc(100vh - var(--topbar-height));
+  background-color: var(--overlay-color);
+  display: none;
+  z-index: 1000;
+}
+.overlay.show {
+  display: block;
+}
+
+/* Links dentro del sidebar */
+.sidebar a {
+  display: flex;
+  align-items: center;
+  gap: 10px;            /* espacio entre ícono y texto */
+  color: var(--color-text-light);
+  text-decoration: none;
+  padding: 10px;
+  border-radius: 5px;
+}
+
+.sidebar a:hover {
+  background-color: var(--color-secondary);
+}
+.sidebar i {
+  font-size: 1.2rem; /* un poco más grande para alinearse mejor */
+}
+
+/* Botón menú minimalista */
+#toggleSidebar {
+  border: none;
+  background: transparent;
+  padding: 0;
+}
+#toggleSidebar:hover {
+  opacity: 0.7;
+}
+
+/*** Parte responsive ***/
+@media (max-width: 991px) {
+  .main-content {
+    margin-left: 0;
+    max-width: 100%;
+  }
+
+  .subbar {
+    margin-left: 0;
+    width: 100%;
+  }
+
+  .subbar .container {
+    padding-left: 20px;
+    padding-right: 20px;
+  }
+}
+
+@media (min-width: 992px) {
+  .sidebar {
+    left: 0 !important;
+  }
+
+  .overlay {
+    display: none !important;
+  }
+
+  .main-content {
+    margin-left: var(--sidebar-width);
+    max-width: calc(100% - var(--sidebar-width));
+  }
+
+  .subbar {
+    margin-left: var(--sidebar-width);             
+    width: calc(100% - var(--sidebar-width));       
+    padding: 0 1rem;                                
+  }
+
+  #toggleSidebar {
+    display: none;
+  }
+}
