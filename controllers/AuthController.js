@@ -10,21 +10,24 @@ class AuthController {
 
     static async login(req, res) {
         try {
-            const { username, password } = req.body;
-            const user = await User.getOne(username);
-            console.log(user);
+            const { email, password } = req.body;
+            const users = await User.getByEmail(email); // devuelve un array
+            console.log(users);
 
-            if (!user || user.length === 0) {
-                return res.render("login", { error: `El usuario ${username} no existe` })
+            if (!users || users.length === 0) {
+                return res.render("login", { error: `El usuario ${email} no existe` });
             }
 
-            let isMatch = await bcrypt.compare(password, user.password)
+            const user = users[0]; // primer registro
+
+            const isMatch = await bcrypt.compare(password, user.password);
             console.log("Resultado de bcrypt.compare:", isMatch);
 
             if (!isMatch) {
-                return res.render("login", { error: "Contraseña Incorrecta" })
+                return res.render("login", { error: "Contraseña Incorrecta" });
             }
 
+         
             req.session.user = user;
             res.redirect("/dashboard");
 
@@ -38,10 +41,10 @@ class AuthController {
         req.session.destroy(err => {
             if (err) {
                 console.error("Error al destruir la sesión:", err);
-                return res.redirect("/dashboard"); 
+                return res.redirect("/dashboard");
             }
-            res.clearCookie("connect.sid"); 
-            res.redirect("/auth/login"); 
+            res.clearCookie("connect.sid");
+            res.redirect("/auth/login");
         });
     }
 }

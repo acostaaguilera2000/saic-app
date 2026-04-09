@@ -12,23 +12,18 @@ html(lang="es")
     link(rel="stylesheet" href="/css/login.css")
 
   body
-    // Capa azul
-    .overlay
-
-  
-
     // Tarjeta de login
-    .login-card.opacity-75
+    .login-card
       h4.text-center.mb-4.fw-bold.text-dark Iniciar Sesión
       if error
         .alert.alert-danger.text-center #{error}
         
       form(action="/auth/login" method="post")
         .mb-3
-          label.form-label.text-dark(for="username")
+          label.form-label.text-dark(for="email")
             i.bi.bi-envelope
-            |  Usuario
-          input.form-control(type="text" id="username" name="username", required)
+            |  correo
+          input.form-control(type="email" id="email" name="email", required)
         .mb-3
           label.form-label.text-dark(for="password")
             i.bi.bi-lock

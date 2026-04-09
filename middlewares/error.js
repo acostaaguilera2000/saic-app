@@ -6,6 +6,12 @@ const error = {
             message: "El recurso que estas buscando no existe"
         });
     },
+     error400: (req, res, error) => {
+        res.status(400).render("error", {
+            title: "Error 400 Bad Request",
+            message: error.message
+        });
+    },
     error401: (req, res, error) => {
         res.status(401).render("error", {
             title: "Error 401 Authorization required",

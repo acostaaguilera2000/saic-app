@@ -1,73 +1,109 @@
 extends layout
 
 block content
-    // Tarjetas informativas
-    .row.row-cols-1.row-cols-md-2.row-cols-lg-4.g-3.mb-4
-        .col
-            .card.text-center.shadow.h-100
-                .card-body
-                    i.bi.bi-person-plus.fs-3.text-success
-                    h6.card-title Usuarios agregados
-                    p.card-text.small 120
-        .col
-            .card.text-center.shadow.h-100
-                .card-body
-                    i.bi.bi-person-check.fs-3.text-primary
-                    h6.card-title Usuarios activos
-                    p.card-text.small 95
-        .col
-            .card.text-center.shadow.h-100
-                .card-body
-                    i.bi.bi-person-x.fs-3.text-danger
-                    h6.card-title Usuarios inactivos
-                    p.card-text.small 25
-        .col
-            .card.text-center.shadow.h-100
-                .card-body
-                    i.bi.bi-graph-up.fs-3.text-warning
-                    h6.card-title Crecimiento
-                    p.card-text.small +15%
+  //- Estilos específicos para mejorar componentes existentes
+  style.
+    .kpi-card {
+      border: none;
+      border-radius: 12px;
+      transition: all 0.3s ease;
+      background: #ffffff;
+    }
+    .kpi-card:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 10px 20px rgba(0,0,0,0.05);
+    }
+    .icon-shape {
+      width: 48px;
+      height: 48px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border-radius: 12px;
+    }
+    .verse-card {
+      background: linear-gradient(90deg, #ffffff 0%, #fdfbf7 100%);
+      border-left: 4px solid var(--saic-gold, #ffb81c);
+    }
+    .avatar-circle {
+      transition: transform 0.2s;
+    }
+    .avatar-circle:hover {
+      transform: scale(1.1);
+    }
 
-    // Sección de eventos y finanzas
-    section.row.g-3.mb-4
-        .col-lg-6
-            .card.shadow.h-100
-                .card-body
-                    h5.card-title.text-success Eventos próximos
-                    ul.list-group.list-group-flush.mb-3
-                        li.list-group-item
-                            i.bi.bi-calendar-event
-                            |  Reunión general - 28 Feb
-                        li.list-group-item
-                            i.bi.bi-calendar-event
-                            |  Conferencia juvenil - 5 Mar
-                        li.list-group-item
-                            i.bi.bi-calendar-event
-                            |  Campaña solidaria - 12 Mar
-                        li.list-group-item
-                            i.bi.bi-calendar-event
-                            |  Reunion de Lideres - 25 Mar
-                        li.list-group-item
-                            i.bi.bi-calendar-event
-                            |  Reunion de pastores - 19 Mar
-                    button.btn.btn-outline-secondary
-                        i.bi.bi-calendar3
-                        |  Ver calendario
+ 
+  //- KPIs - Distribución con iconos en contenedores de color suave
+  .row.g-3.mb-4.mt-3
+    mixin kpi(title, value, icon, colorClass, trend)
+      .col-12.col-sm-6.col-xl-3
+        .card.kpi-card.shadow-sm
+          .card-body.p-3
+            .d-flex.align-items-center.justify-content-between
+              div
+                small.text-uppercase.fw-bold.text-muted.ls-1= title
+                h3.fw-bold.mb-0.mt-1= value
+                if trend
+                  span.badge.bg-light.text-success.border.mt-2
+                    i.bi.bi-arrow-up-short
+                    | #{trend}
+              .icon-shape(class=`bg-${colorClass}-subtle text-${colorClass}`)
+                i.bi(class=`bi-${icon} fs-3`)
 
-        .col-lg-6
-            .card.shadow.h-100
-                .card-body
-                 h5.card-title.text-success Resumen de Finanzas
-                 ul.list-group.list-group-flush.mb-3
-                    li.list-group-item.d-flex.justify-content-between.align-items-center
-                        span Ingresos
-                        span.text-success $12,500
-                    li.list-group-item.d-flex.justify-content-between.align-items-center
-                        span Egresos
-                        span.text-danger $8,200
-                    li.list-group-item.d-flex.justify-content-between.align-items-center
-                        span Balance
-                        span.text-primary $4,300
-                 button.btn.btn-outline-primary.mt-3
-                    i.bi.bi-cash-stack
-                    | Ver detalle
+    +kpi("Registrados", "120", "person-plus", "success")
+    +kpi("Activos", "95", "person-check", "primary")
+    +kpi("Inactivos", "25", "person-x", "danger")
+    +kpi("Crecimiento", "+15%", "graph-up", "warning")
+
+  .row.g-4
+    //- Próximos Eventos - Diseño tipo Agenda
+    .col-lg-7
+      .card.border-0.shadow-sm.h-100
+        .card-header.bg-white.py-3.d-flex.justify-content-between.align-items-center
+          h6.m-0.fw-bold.text-primary
+            i.bi.bi-calendar3.me-2
+            | PRÓXIMOS EVENTOS
+          a.btn.btn-sm.btn-outline-primary.rounded-pill(href="#") Ver todos
+        .card-body
+          .timeline
+            mixin event(title, date, time, color, badgeText)
+              .d-flex.mb-4.position-relative
+                .flex-shrink-0.text-center(style="width: 50px;")
+                  span.badge.rounded-pill(class=`bg-${color}`)= badgeText
+                .flex-grow-1.ms-3.pb-3.border-bottom
+                  h6.mb-1.fw-bold= title
+                  .d-flex.text-muted.small
+                    span.me-3: i.bi.bi-calendar-event.me-1
+                    | #{date}
+                    span.ms-3: i.bi.bi-clock.me-1
+                    | #{time}
+
+            +event("Culto Dominical", "Domingo 20 Jul", "10:00 AM", "warning", "Hoy")
+            +event("Estudio Bíblico", "Miércoles 23 Jul", "07:00 PM", "success", "3d")
+            +event("Reunión de Jóvenes", "Viernes 25 Jul", "06:30 PM", "success", "5d")
+            +event("Retiro Espiritual", "Sábado 26 Jul", "Todo el día", "info", "6d")
+
+    //- Nuevos Miembros - Diseño tipo Directorio
+    .col-lg-5
+      .card.border-0.shadow-sm.h-100
+        .card-header.bg-white.py-3.d-flex.justify-content-between.align-items-center
+          h6.m-0.fw-bold.text-primary
+            i.bi.bi-people.me-2
+            | NUEVOS MIEMBROS
+          button.btn.btn-sm.btn-light.text-muted: i.bi.bi-three-dots-vertical
+        .card-body.p-0
+          .list-group.list-group-flush
+            mixin member(initials, name, role, color)
+              .list-group-item.py-3.px-4.border-0.d-flex.align-items-center
+                .avatar-circle.me-3.rounded-circle.shadow-sm(style=`width:45px; height:45px; display:flex; align-items:center; justify-content:center; background-color: var(--bs-${color}); color:#fff; font-weight:bold;`)
+                  | #{initials}
+                .flex-grow-1
+                  h6.mb-0.fw-bold= name
+                  small.text-muted= role
+                button.btn.btn-sm.btn-light.rounded-circle: i.bi.bi-chat-text
+
+            +member("MR", "María Rodríguez", "Diaconisa", "primary")
+            +member("JL", "Juan López", "Músico", "success")
+            +member("SC", "Sara Castro", "Maestra de niños", "warning")
+            +member("AM", "Andrés Morales", "Ujier", "danger")
+            +member("LP", "Lucía Pérez", "Grupo de alabanza", "info")

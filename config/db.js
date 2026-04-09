@@ -4,7 +4,7 @@ const pool = mysql.createPool({
     host: "localhost",
     user: "root",
     password: "",
-    database: "todo_list",
+    database: "saic_app",
     waitForConnections: true,
     connectionLimit: 10,
     queueLimit: 0

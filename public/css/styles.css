@@ -1,26 +1,25 @@
 :root {
-  --color-primary: #006D77;          /* Teal principal */
-  --color-secondary: #FF6F61;        /* Coral suave */
-  --color-secondary-hover: #e85c55;  /* Coral más intenso para hover */
-  --color-text-light: #ffffff;
+  /* Paleta SAIC - Basada en tu logo */
+  --color-primary: #FFFFFF;           /* Topbar en blanco puro para limpieza */
+  --color-secondary: #ffb81c;         /* Dorado brillante del logo */
+  --color-secondary-hover: #00267a;   /* Azul más oscuro para contrastes en hover */
+  --color-text-light: #0033a0;        /* Azul brillante del logo */
+  --color-background: #f4f7f9;        /* Un tono apenas gris para que las cards blancas resalten */
+  --color-sidebar: #0033a0;           /* El azul real de la marca */
+  
+  /* Estructurales (Respetando tus medidas) */
   --sidebar-width: 220px;
   --topbar-height: 70px;
-  --subbar-height: 60px;
-  --shadow-sidebar: 2px 0 5px rgba(0, 0, 0, 0.3);
-  --overlay-color: rgba(0, 0, 0, 0.5);
-  --color-background: #EDF6F9;
-  
-  /* Nuevo color para el sidebar */
-  --color-sidebar: #006D77; /* Teal más oscuro */
+  --shadow-sidebar: 4px 0 10px rgba(0, 0, 0, 0.05);
+  --overlay-color: rgba(0, 51, 160, 0.3); /* Overlay con tinte azulado */
 }
-
 
 /* General */
 body {
-
   margin: 0;
   overflow-x: hidden;
   background-color: var(--color-background);
+  font-family: 'Inter', 'Segoe UI', sans-serif; /* Tipografía más moderna */
 }
 
 /* Topbar */
@@ -28,65 +27,80 @@ body {
   background-color: var(--color-primary) !important;
   color: var(--color-text-light) !important;
   height: var(--topbar-height);
+  border-bottom: 2px solid var(--color-secondary); /* Borde dorado más marcado */
+  z-index: 1200;
+  display: flex;
+  align-items: center;
+  padding: 0 1.5rem;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.02);
 }
 
-/* Botón salir */
-.btn-logout {
-  background-color: var(--color-secondary) !important;
-  color: var(--color-text-light) !important;
-  font-weight: bold;
+.topbar span.fw-bold {
+  color: var(--color-text-light); /* Texto en azul para legibilidad */
 }
-.btn-logout:hover {
-  background-color: var(--color-secondary-hover) !important;
+
+.topbar small {
+  color: #6c757d; /* Gris neutro para mensajes secundarios */
 }
 
 /* Sidebar */
 .sidebar {
   position: fixed;
-  top: var(--topbar-height);
-  left: calc(-1 * var(--sidebar-width));
+  top: 0;
+  left: 0;
   width: var(--sidebar-width);
-  height: calc(100vh - var(--topbar-height));
-  background-color: var(--color-sidebar); /* Usamos el gris oscuro */
-  color: var(--color-text-light);
+  height: 100vh;
+  background-color: var(--color-sidebar);
+  color: #fff;
   box-shadow: var(--shadow-sidebar);
-  transition: left 0.3s ease;
-  z-index: 1100;
+  border-right: none;
+  transition: left 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  z-index: 2000;
+  display: flex;
+  flex-direction: column;
   overflow-y: auto;
 }
-.sidebar.show {
-  left: 0;
+
+.sidebar h6 {
+  color: var(--color-secondary);
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.8px;
+  font-size: 0.7rem;
+  padding: 1.5rem 1rem 0.5rem;
+  opacity: 0.9;
 }
 
 /* Links dentro del sidebar */
 .sidebar a {
-  color: var(--color-text-light);
+  color: rgba(255, 255, 255, 0.85);
   text-decoration: none;
   display: flex;
   align-items: center;
-  gap: 10px;
-  padding: 10px;
-  border-radius: 5px;
+  gap: 12px;
+  padding: 10px 15px;
+  margin: 1px 8px;
+  border-radius: 8px;
+  border: 1px solid transparent;
+  transition: all 0.2s ease;
 }
+
 .sidebar a:hover {
-  background-color: var(--color-secondary); /* Coral para resaltar */
+  background-color: rgba(255, 255, 255, 0.1);
+  color: var(--color-secondary);
+  transform: translateX(3px); /* Pequeño efecto de empuje */
 }
 
-/* Barra secundaria debajo del topbar */
-.subbar {
-  height: var(--subbar-height);
-  background-color: #ffffff;
-  border-bottom: 1px solid #dee2e6;
-  display: flex;
-  align-items: center;
-  margin-top: var(--topbar-height); 
+.sidebar i {
+  font-size: 1.25rem;
+  color: var(--color-secondary); /* Iconos siempre dorados */
 }
 
-/* Ajuste del contenido principal */
+/* Contenido principal */
 .main-content {
-  padding: 20px;
+  padding: 25px;
+  margin-top: var(--topbar-height);
 }
-
 /* Overlay */
 .overlay {
   position: fixed;
@@ -102,59 +116,54 @@ body {
   display: block;
 }
 
-/* Links dentro del sidebar */
-.sidebar a {
-  display: flex;
-  align-items: center;
-  gap: 10px;            /* espacio entre ícono y texto */
-  color: var(--color-text-light);
-  text-decoration: none;
-  padding: 10px;
-  border-radius: 5px;
-}
-
-.sidebar a:hover {
-  background-color: var(--color-secondary);
-}
-.sidebar i {
-  font-size: 1.2rem; /* un poco más grande para alinearse mejor */
-}
-
-/* Botón menú minimalista */
-#toggleSidebar {
+/* Cards */
+.card {
   border: none;
-  background: transparent;
-  padding: 0;
-}
-#toggleSidebar:hover {
-  opacity: 0.7;
+  border-radius: 12px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.04);
+  background: #fff;
 }
 
-/*** Parte responsive ***/
-@media (max-width: 991px) {
-  .main-content {
-    margin-left: 0;
-    max-width: 100%;
-  }
-
-  .subbar {
-    margin-left: 0;
-    width: 100%;
-  }
-
-  .subbar .container {
-    padding-left: 20px;
-    padding-right: 20px;
-  }
+.avatar-initial {
+  width: 40px;
+  height: 40px;
+  border-radius: 10px; /* Estilo squircle en lugar de círculo puro */
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  color: #fff;
+  background-color: var(--color-sidebar);
+  font-weight: 700;
+  box-shadow: 0 2px 5px rgba(0,0,0,0.1);
 }
 
+.badge {
+  font-weight: 600;
+  letter-spacing: 0.3px;
+}
+
+/* Botones */
+.btn-warning {
+  background-color: var(--color-secondary);
+  color: #000;
+  font-weight: 700;
+  border-radius: 8px;
+  padding: 0.5rem 1.2rem;
+  border: none;
+  transition: transform 0.2s;
+}
+
+.btn-warning:hover {
+  background-color: #e5a517;
+  transform: translateY(-1px);
+  box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+}
+
+/*** RESPONSIVE (Respetando tu lógica original) ***/
 @media (min-width: 992px) {
-  .sidebar {
-    left: 0 !important;
-  }
-
-  .overlay {
-    display: none !important;
+  .topbar {
+    margin-left: var(--sidebar-width);
+    width: calc(100% - var(--sidebar-width));
   }
 
   .main-content {
@@ -162,13 +171,26 @@ body {
     max-width: calc(100% - var(--sidebar-width));
   }
 
-  .subbar {
-    margin-left: var(--sidebar-width);             
-    width: calc(100% - var(--sidebar-width));       
-    padding: 0 1rem;                                
+  #toggleSidebar {
+    display: none;
+  }
+}
+
+@media (max-width: 991px) {
+  .main-content {
+    margin-left: 0;
+    max-width: 100%;
   }
 
   #toggleSidebar {
-    display: none;
+    display: inline-block;
+  }
+
+  .sidebar {
+    left: calc(-1 * var(--sidebar-width));
+  }
+  
+  .sidebar.show {
+    left: 0;
   }
 }

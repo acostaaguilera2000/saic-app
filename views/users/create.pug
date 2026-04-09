@@ -1,0 +1,54 @@
+extends ../layout
+
+block content
+  .container.mt-4
+    .card.border-0
+      .card-header.text-white(style="background-color: #0033a0;")
+        h4.mb-0 Crear Usuario
+      .card-body
+        if errores && errores.length
+          .alert.alert-danger
+            h5.mb-2 Errores de validación:
+            ul.mb-0
+              each error in errores
+                li= error
+
+        form(action="/users/create" method="POST")
+          .row
+            .col-md-6.mb-3
+              label.form-label(for="username") Username (opcional)
+              input.form-control(type="text" id="username" name="username" )
+
+            .col-md-6.mb-3
+              label.form-label(for="email") Email
+              input.form-control(type="email" id="email"  name="email" )
+
+          .row
+            .col-md-6.mb-3
+              label.form-label(for="password") Contraseña
+              input.form-control(type="password" id="password" name="password" )
+
+            .col-md-6.mb-3
+              label.form-label(for="rol") Rol
+              select.form-select(id="rol" name="rol" required)
+                option(value="") Seleccione un rol
+                option(value="admin") Admin
+                option(value="tesorero") Tesorero
+                option(value="lider") Líder
+                option(value="miembro") Miembro
+
+          .row
+            .col-md-12.mb-3
+              label.form-label(for="id_miembro") Miembro asociado (opcional)
+              select.form-select(id="id_miembro" name="id_miembro")
+                option(value="") Ninguno
+                each miembro in miembros
+                  option(value=miembro.id_miembro)= miembro.nombre + ' ' + miembro.apellido
+
+          .d-flex.justify-content-between.mt-4
+            a.btn.btn-outline-secondary.fw-bold(href="/users/list")
+              i.bi.bi-arrow-left.me-2
+              | Cancelar
+            button.btn.btn-warning.text-white.fw-bold(type="submit")
+              i.bi.bi-check-circle.me-2
+              | Crear Usuario

@@ -1,65 +1,88 @@
 :root {
-    --color-primary: #006D77;          /* Teal principal */
-    --color-secondary: #FF6F61;        /* Coral */
-    --color-secondary-hover: #e85c55;  /* Coral más intenso para hover */
-    --color-background: #EDF6F9;       /* Gris claro fresco */
+    --primary-blue: #0033a0;
+    --saic-gold: #ffb81c;
+    --saic-gold-hover: #e5a517;
+    --white: #ffffff;
 }
 
+/* Fondo con degradado animado para dar vida */
 body {
-    background: var(--color-background) ;
-    background-size: cover;
-    font-family: Arial, sans-serif;
+    background: linear-gradient(-45deg, #0033a0, #00267a, #0b1a3d, #0033a0);
+    background-size: 400% 400%;
+    animation: gradientBG 15s ease infinite;
+    font-family: 'Inter', 'Segoe UI', sans-serif;
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0;
 }
 
-/* Capa de overlay en teal */
-.overlay {
-    background-color: rgba(0, 109, 119, 0.85); /* Teal con transparencia */
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    z-index: 0;
+@keyframes gradientBG {
+    0% { background-position: 0% 50%; }
+    50% { background-position: 100% 50%; }
+    100% { background-position: 0% 50%; }
 }
 
-/* Menú superior */
-.navbar {
-    z-index: 2;
-    background-color: var(--color-primary) !important;
-}
-
-/* Tarjeta de login */
+/* Tarjeta de login con efecto sutil de elevación */
 .login-card {
-    z-index: 2;
-    background-color: #ffffff; /* Fondo blanco para contraste */
-    position: relative;
-    max-width: 400px;
-    margin: auto;
-    margin-top: 100px;
-    border-radius: 10px;
-    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
-    padding: 2rem;
+    background: var(--white);
+    max-width: 420px;
+    width: 100%;
+    padding: 3rem 2.5rem;
+    border-radius: 20px;
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.2);
+    border: 1px solid rgba(255, 255, 255, 0.1);
 }
 
 .login-card h4 {
-    color: var(--color-primary); /* Teal para títulos */
+    color: var(--primary-blue);
+    font-weight: 800;
+    letter-spacing: -0.5px;
+    margin-bottom: 0.5rem;
 }
 
-/* Botón coral */
+/* Estilo de los campos de entrada */
+.form-control {
+    border-radius: 10px;
+    padding: 0.75rem 1rem;
+    border: 2px solid #eef0f2;
+    transition: all 0.3s ease;
+}
+
+.form-control:focus {
+    border-color: var(--primary-blue);
+    box-shadow: 0 0 0 4px rgba(0, 51, 160, 0.1);
+}
+
+/* Botón dorado con estilo moderno */
 .btn-login {
-    background-color: var(--color-secondary);
-    color: #fff;
-    font-weight: bold;
-    border-radius: 8px;
+    background-color: var(--saic-gold);
+    color: #000; /* Mejor contraste */
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    padding: 0.8rem;
+    border-radius: 10px;
+    border: none;
+    transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    width: 100%;
 }
 
 .btn-login:hover {
-    background-color: var(--color-secondary-hover);
+    background-color: var(--saic-gold-hover);
+    transform: translateY(-2px);
+    box-shadow: 0 8px 15px rgba(255, 184, 28, 0.3);
 }
 
-/* Responsive: márgenes en móviles */
-@media (max-width: 576px) {
-    .login-card {
-        margin: 2rem;
-    }
+/* Links secundarios */
+.login-footer a {
+    color: var(--primary-blue);
+    font-size: 0.9rem;
+    text-decoration: none;
+    font-weight: 500;
+}
+
+.login-footer a:hover {
+    text-decoration: underline;
 }
