@@ -1,0 +1,92 @@
+extends ../layout
+
+block content
+  //- 1. Bloque de Alertas de Errores (Solo uno al inicio para mejor visibilidad)
+  if errores && errores.length
+    .alert.alert-danger.alert-dismissible.fade.show.border-0.shadow-sm.mb-4(role="alert")
+      .d-flex.align-items-center
+        i.bi.bi-exclamation-octagon-fill.me-2.fs-4
+        div
+          strong.d-block ¡Atención! No se pudo completar la acción:
+          ul.mb-0.small.mt-1
+            each error in errores
+              li= error
+      button.btn-close(type="button" data-bs-dismiss="alert" aria-label="Close")
+
+  //- 2. Encabezado de página
+  .d-flex.flex-wrap.justify-content-between.align-items-center.mb-4
+    div
+      h2.fw-bold.text-dark.mb-1 Gestión de Usuarios
+      p.text-muted.small.mb-0 Administra el acceso y los roles del personal administrativo.
+
+    a.btn.btn-action.shadow-sm.px-4(href="/users/create")
+      i.bi.bi-person-plus-fill.me-2
+      | Nuevo Usuario
+
+  //- 3. Contenedor Principal (Tabla)
+  .card.card-custom.border-0.shadow-sm
+    .card-body.p-0
+      .table-responsive
+        table.table.table-hover.align-middle.mb-0
+          thead.bg-light
+            tr
+              th.ps-4.py-3.text-muted.small.fw-bold(style="width: 80px;") ID
+              th.py-3.text-muted.small.fw-bold USUARIO
+              th.py-3.text-muted.small.fw-bold EMAIL
+              th.py-3.text-muted.small.fw-bold ROL
+              th.py-3.text-muted.small.fw-bold MIEMBRO ASOCIADO
+              th.pe-4.py-3.text-muted.small.fw-bold.text-end ACCIONES
+
+          tbody
+            each usuario in usuarios
+              tr
+                td.ps-4
+                  span.text-muted.fw-medium ##{usuario.id_usuario}
+
+                td
+                  .d-flex.align-items-center
+                    img.rounded-circle.me-3(
+                      src=`https://ui-avatars.com/api/?name=${usuario.username || 'User'}&background=002855&color=fff&size=40` 
+                      width="40" 
+                      height="40"
+                    )
+                    div
+                      strong.d-block.text-dark(style="font-size: 0.95rem;") #{usuario.username}
+                     
+
+                td
+                  span.small.text-muted
+                    i.bi.bi-envelope.me-2
+                    | #{usuario.email}
+
+                td
+                  - var badgeClass = usuario.rol === 'admin' ? 'bg-primary-subtle text-primary border-primary' : 'bg-warning-subtle text-warning border-warning'
+                  span.badge.border.px-3.py-2(class=badgeClass)
+                    i.bi.bi-shield-check.me-1
+                    | #{usuario.rol.toUpperCase()}
+
+                td
+                  if usuario.nombre && usuario.apellido
+                    span.text-dark.small #{usuario.nombre} #{usuario.apellido}
+                  else
+                    span.badge.bg-light.text-muted.border Externo
+
+                td.pe-4.text-end
+                  .d-flex.justify-content-end.gap-2
+                    a.btn.btn-sm.btn-outline-primary.rounded-pill.px-3(href=`/users/update/${usuario.id_usuario}`)
+                      i.bi.bi-pencil-square
+
+                    button.btn.btn-sm.btn-outline-danger.rounded-pill.px-3(
+                      type="button" 
+                      title="Eliminar"
+                      onclick=`confirmarEliminacion('${usuario.id_usuario}', '${usuario.username}')`
+                    )
+                      i.bi.bi-trash
+
+block scripts
+  script.
+    window.confirmarEliminacion = function(id, nombre) {
+      if (confirm(`¿Estás seguro de que deseas eliminar permanentemente al usuario "${nombre}"?`)) {
+        window.location.href = `/users/delete/${id}`;
+      }
+    };

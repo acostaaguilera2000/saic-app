@@ -8,7 +8,7 @@ class UserController {
     static async list(req, res) {
         try {
             const usuarios = await User.listUsers();
-            res.render("users/list", { usuarios });
+            res.render("users/index", { usuarios });
         } catch (err) {
             error.error500(req, res, err)
         }
@@ -71,7 +71,7 @@ class UserController {
                 id_miembro: id_miembro || null,
             });
 
-            res.redirect("/users/list");
+            res.redirect("/users");
         } catch (err) {
             error.error500(req, res, err);
         }
@@ -174,7 +174,7 @@ class UserController {
             await User.update(updates, id);
 
             // 10. Redirigir a la lista
-            return res.status(200).redirect("/users/list");
+            return res.status(200).redirect("/users");
 
         } catch (err) {
             return error.error500(req, res, err);
@@ -182,39 +182,47 @@ class UserController {
     }
 
 
-    static async GetConfirmDelete(req, res) {
-        try {
-            const { id } = req.params;
-
-            if (!id || isNaN(Number(id))) {
-                return error.error400(req, res, { message: "El ID proporcionado no es válido." });
-            }
-
-            const userToDelete = await User.getById(id);
-            return res.render("users/confirm", { userToDelete });
-
-        } catch (error) {
-
-        }
-    }
-
     static async Delete(req, res) {
         try {
             const { id } = req.params;
 
-            // 1. Validar ID
+            // 1. Validación rápida de entrada
             if (!id || isNaN(Number(id))) {
-                return error.error400(req, res, { message: "El ID proporcionado no es válido." });
+                return res.status(400).render("users/index", {
+                    errores: ["El ID de usuario no es válido."],
+                    usuarios: await User.listUsers()
+                });
             }
 
-            await User.Delete(id)
-            res.redirect("/users/list");
-            
+            // 2. Obtener el usuario y verificar existencia
+            const user = await User.getById(id);
+
+            if (!user) {
+                return res.status(404).render("users/index", {
+                    errores: ["El usuario que intenta eliminar ya no existe."],
+                    usuarios: await User.listUsers()
+                });
+            }
+
+            // 3. Verificación 
+            if (user.id_miembro) {
+                return res.status(400).render("users/index", {
+                    errores: [`No se puede eliminar a "${user.username}": tiene un perfil de miembro vinculado.`],
+                    usuarios: await User.listUsers()
+                });
+            }
+
+            // 4. Ejecución del borrado
+            await User.Delete(id);
+
+           
+            res.redirect("/users");
+
         } catch (err) {
-            error.error500(req, res, err);
+            console.error("Error en Delete User:", err);
+            return error.error500(req, res, err);
         }
     }
-
 
 }
 

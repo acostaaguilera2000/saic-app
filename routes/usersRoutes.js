@@ -5,11 +5,10 @@ import { validateUpdateUser } from "../middlewares/validateUpdateUser.js";
 
 const router = express.Router();
 
-router.get("/list", UserController.list)
+router.get("/", UserController.list)
 router.get("/create", UserController.getFormCreate)
 router.post("/create", validateUser, UserController.create)
 router.get("/update/:id", UserController.getFormEdit)
 router.post("/update/:id", validateUpdateUser, UserController.update)
-router.get("/delete/:id",UserController.GetConfirmDelete)
-router.post("/delete/:id",UserController.Delete)
+router.get("/delete/:id",UserController.Delete)
 export default router;

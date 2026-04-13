@@ -1,82 +1,122 @@
 extends ../layout
 
 block content
-  .container.mt-4
-    .card.border-0
-      .card-header.text-white(style="background-color: #1E3A8A;")
-        h4.mb-0 Editar Usuario
-      .card-body
-        if errores && errores.length
-          .alert.alert-danger
-            h5.mb-2 Errores de validación:
-            ul.mb-0
-              each error in errores
-                li= error
+  .row.justify-content-center
+    .col-lg-10
+      //- Cabecera con navegación y contexto
+      .d-flex.align-items-center.justify-content-between.mb-4
+        div
+          .d-flex.align-items-center.gap-3
+            img.rounded-circle.shadow-sm(
+              src=`https://ui-avatars.com/api/?name=${userToEdit.username}&background=D4AF37&color=fff&size=48` 
+              alt="Avatar"
+            )
+            div
+              h2.fw-bold.text-dark.mb-0 Editar Perfil
+              p.text-muted.small.mb-0 Modificando la cuenta de: 
+                strong.text-primary #{userToEdit.username}
+        
+        a.btn.btn-outline-secondary.btn-sm.rounded-pill.px-3(href="/users")
+          i.bi.bi-arrow-left.me-2
+          | Volver
 
-        form(action=`/users/update/${userToEdit.id_usuario}` method="POST")
-          .row
-            .col-md-6.mb-3
-              label.form-label(for="username") Username
-              input.form-control(
-                type="text"
-                id="username"
-                name="username"
-                value=userToEdit.username
-                placeholder="Ingrese nombre de usuario"
-              )
+      .card.card-custom.border-0.shadow-sm
+        .card-body.p-4.p-md-5
+          //- Alertas de Error
+          if errores && errores.length
+            .alert.alert-danger.border-0.shadow-sm.mb-4
+              .d-flex.align-items-center.mb-2
+                i.bi.bi-exclamation-octagon-fill.me-2.fs-5
+                h6.mb-0.fw-bold Error al actualizar:
+              ul.mb-0.small.ps-4
+                each error in errores
+                  li= error
 
-            .col-md-6.mb-3
-              label.form-label(for="email") Email
-              input.form-control(
-                type="email"
-                id="email"
-                name="email"
-                value=userToEdit.email
-                placeholder="ejemplo@correo.com"
-              )
+          form(action=`/users/update/${userToEdit.id_usuario}` method="POST")
+            .row.g-4
+              //- Sección: Datos de Cuenta
+              .col-12
+                .d-flex.align-items-center.mb-2
+                  i.bi.bi-gear-wide-connected.text-primary.me-2
+                  span.fw-bold.text-uppercase.small.text-muted Configuración de Cuenta
+                hr.mt-0.mb-4
 
-          .row
-            .col-md-6.mb-3
-              label.form-label(for="password") Nueva Contraseña (opcional)
-              input.form-control(
-                type="password"
-                id="password"
-                name="password"
-                placeholder="Ingrese nueva contraseña"
-              )
+              .col-md-6
+                label.form-label.fw-semibold(for="username") Nombre de Usuario
+                .input-group
+                  span.input-group-text.bg-light: i.bi.bi-person
+                  input.form-control.bg-light(
+                    type="text" 
+                    id="username" 
+                    name="username" 
+                    value=userToEdit.username
+                  )
 
-            .col-md-6.mb-3
-              label.form-label(for="rol") Rol
-              select.form-select(id="rol" name="rol")
-                option(value="admin" selected=(userToEdit.rol==="admin")) Admin
-                option(value="tesorero" selected=(userToEdit.rol==="tesorero")) Tesorero
-                option(value="lider" selected=(userToEdit.rol==="lider")) Líder
-                option(value="miembro" selected=(userToEdit.rol==="miembro")) Miembro
+              .col-md-6
+                label.form-label.fw-semibold(for="email") Correo Electrónico
+                .input-group
+                  span.input-group-text.bg-light: i.bi.bi-envelope
+                  input.form-control.bg-light(
+                    type="email" 
+                    id="email" 
+                    name="email" 
+                    value=userToEdit.email
+                  )
 
-          .row
-            .col-md-12.mb-3
-              label.form-label(for="id_miembro") Miembro asociado
-              if userToEdit.id_miembro
-                input.form-control(
-                  type="text"
-                  readonly
-                  value=`${userToEdit.nombre_miembro} ${userToEdit.apellido_miembro}`
-                )
-                input(type="hidden" name="id_miembro" value=userToEdit.id_miembro)
-              else
-                select.form-select(id="id_miembro" name="id_miembro")
-                  option(value="") Ninguno
-                  if miembros && miembros.length
-                    each miembro in miembros
-                      option(
-                        value=miembro.id_miembro 
-                        selected=(miembro.id_miembro===userToEdit.id_miembro)
-                      )= miembro.nombre + ' ' + miembro.apellido
+              .col-md-6
+                label.form-label.fw-semibold(for="password") Nueva Contraseña
+                .input-group
+                  span.input-group-text.bg-light: i.bi.bi-shield-lock
+                  input.form-control.bg-light(
+                    type="password" 
+                    id="password" 
+                    name="password" 
+                    placeholder="Dejar en blanco para no cambiar"
+                  )
+                small.text-muted.mt-1 Solo si deseas actualizar el acceso.
 
-          .d-flex.justify-content-between.mt-4
-            a.btn.btn-outline-secondary.fw-bold(href="/users/list")
-              i.bi.bi-arrow-left.me-2
-              | Cancelar
-            button.btn.btn-warning.text-white.fw-bold(type="submit")
-              i.bi.bi-check-circle.me-2
-              | Guardar Cambios
+              .col-md-6
+                label.form-label.fw-semibold(for="rol") Nivel de Permisos
+                .input-group
+                  span.input-group-text.bg-light: i.bi.bi-layers
+                  select.form-select.bg-light(id="rol" name="rol")
+                    option(value="admin" selected=(userToEdit.rol==="admin")) Administrador
+                    option(value="tesorero" selected=(userToEdit.rol==="tesorero")) Tesorero
+                    option(value="lider" selected=(userToEdit.rol==="lider")) Líder Ministerial
+                    option(value="miembro" selected=(userToEdit.rol==="miembro")) Miembro General
+
+              //- Sección: Miembro Vinculado
+              .col-12.mt-5
+                .d-flex.align-items-center.mb-2
+                  i.bi.bi-person-vcard.text-primary.me-2
+                  span.fw-bold.text-uppercase.small.text-muted Vinculación de Identidad
+                hr.mt-0.mb-4
+
+              .col-12
+                label.form-label.fw-semibold Miembro Asociado
+                if userToEdit.id_miembro
+                  .alert.bg-primary-subtle.border-primary-subtle.d-flex.align-items-center.justify-content-between
+                    .d-flex.align-items-center
+                      i.bi.bi-info-circle-fill.text-primary.me-3.fs-4
+                      div
+                        span.d-block.fw-bold.text-primary #{userToEdit.nombre_miembro} #{userToEdit.apellido_miembro}
+                        small.text-muted.text-uppercase Vinculación protegida
+                    input(type="hidden" name="id_miembro" value=userToEdit.id_miembro)
+                else
+                  .input-group
+                    span.input-group-text.bg-light: i.bi.bi-people
+                    select.form-select.bg-light(id="id_miembro" name="id_miembro")
+                      option(value="") Sin asignar (Externo)
+                      if miembros && miembros.length
+                        each miembro in miembros
+                          option(
+                            value=miembro.id_miembro 
+                            selected=(miembro.id_miembro===userToEdit.id_miembro)
+                          )= `${miembro.nombre} ${miembro.apellido}`
+
+            //- Botones Finales
+            .d-flex.justify-content-end.gap-3.mt-5
+              a.btn.btn-light.px-4(href="/users") Cancelar
+              button.btn.btn-action.px-5.shadow-sm(type="submit")
+                i.bi.bi-save.me-2
+                | Guardar Cambios

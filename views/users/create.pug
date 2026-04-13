@@ -1,54 +1,108 @@
 extends ../layout
 
 block content
-  .container.mt-4
-    .card.border-0
-      .card-header.text-white(style="background-color: #0033a0;")
-        h4.mb-0 Crear Usuario
-      .card-body
-        if errores && errores.length
-          .alert.alert-danger
-            h5.mb-2 Errores de validación:
-            ul.mb-0
-              each error in errores
-                li= error
+  .row.justify-content-center
+    .col-lg-10
+      //- Encabezado con navegación
+      .d-flex.align-items-center.justify-content-between.mb-4
+        div
+          h2.fw-bold.text-dark.mb-1 Nuevo Usuario
+          nav(aria-label="breadcrumb")
+            ol.breadcrumb.small.mb-0
+              li.breadcrumb-item: a.text-decoration-none(href="/dashboard") SAIC
+              li.breadcrumb-item: a.text-decoration-none(href="/users") Usuarios
+              li.breadcrumb-item.active(aria-current="page") Crear
+        
+        a.btn.btn-outline-secondary.btn-sm.rounded-pill.px-3(href="/users")
+          i.bi.bi-arrow-left.me-2
+          | Volver a la lista
 
-        form(action="/users/create" method="POST")
-          .row
-            .col-md-6.mb-3
-              label.form-label(for="username") Username (opcional)
-              input.form-control(type="text" id="username" name="username" )
+      .card.card-custom.border-0.shadow-sm
+        .card-body.p-4.p-md-5
+          //- Manejo de Errores Estilizado
+          if errores && errores.length
+            .alert.alert-danger.border-0.shadow-sm.mb-4(role="alert")
+              .d-flex.align-items-center.mb-2
+                i.bi.bi-exclamation-triangle-fill.me-2.fs-4
+                h6.mb-0.fw-bold Revisa los siguientes campos:
+              ul.mb-0.small.ps-4
+                each error in errores
+                  li= error
 
-            .col-md-6.mb-3
-              label.form-label(for="email") Email
-              input.form-control(type="email" id="email"  name="email" )
+          form(action="/users/create" method="POST")
+            .row.g-4
+              //- Sección: Información de Cuenta
+              .col-12
+                .d-flex.align-items-center.mb-2
+                  i.bi.bi-person-badge.text-primary.me-2
+                  span.fw-bold.text-uppercase.small.text-muted Credenciales de Acceso
+                hr.mt-0.mb-4
 
-          .row
-            .col-md-6.mb-3
-              label.form-label(for="password") Contraseña
-              input.form-control(type="password" id="password" name="password" )
+              .col-md-6
+                label.form-label.fw-semibold(for="username") Nombre de Usuario
+                .input-group
+                  span.input-group-text.bg-light.border-end-0: i.bi.bi-at
+                  input.form-control.bg-light.border-start-0(type="text" id="username" name="username" placeholder="ej. macosta")
 
-            .col-md-6.mb-3
-              label.form-label(for="rol") Rol
-              select.form-select(id="rol" name="rol" required)
-                option(value="") Seleccione un rol
-                option(value="admin") Admin
-                option(value="tesorero") Tesorero
-                option(value="lider") Líder
-                option(value="miembro") Miembro
+              .col-md-6
+                label.form-label.fw-semibold(for="email") Correo Electrónico
+                .input-group
+                  span.input-group-text.bg-light.border-end-0: i.bi.bi-envelope
+                  input.form-control.bg-light.border-start-0(type="email" id="email" name="email" placeholder="nombre@ejemplo.com" required)
 
-          .row
-            .col-md-12.mb-3
-              label.form-label(for="id_miembro") Miembro asociado (opcional)
-              select.form-select(id="id_miembro" name="id_miembro")
-                option(value="") Ninguno
-                each miembro in miembros
-                  option(value=miembro.id_miembro)= miembro.nombre + ' ' + miembro.apellido
+              .col-md-6
+                label.form-label.fw-semibold(for="password") Contraseña
+                .input-group
+                  span.input-group-text.bg-light.border-end-0: i.bi.bi-lock
+                  input.form-control.bg-light.border-start-0(type="password" id="password" name="password" placeholder="••••••••" required)
+                  button.btn.btn-outline-secondary.border-start-0.bg-light(type="button" onclick="togglePassword()")
+                    i.bi.bi-eye
 
-          .d-flex.justify-content-between.mt-4
-            a.btn.btn-outline-secondary.fw-bold(href="/users/list")
-              i.bi.bi-arrow-left.me-2
-              | Cancelar
-            button.btn.btn-warning.text-white.fw-bold(type="submit")
-              i.bi.bi-check-circle.me-2
-              | Crear Usuario
+              .col-md-6
+                label.form-label.fw-semibold(for="rol") Rol de Usuario
+                .input-group
+                  span.input-group-text.bg-light.border-end-0: i.bi.bi-shield-lock
+                  select.form-select.bg-light.border-start-0(id="rol" name="rol" required)
+                    option(value="" disabled selected) Seleccione un privilegio...
+                    option(value="admin") Administrador
+                    option(value="tesorero") Tesorero
+                    option(value="lider") Líder Ministerial
+                    option(value="miembro") Miembro General
+
+              //- Sección: Vinculación
+              .col-12.mt-5
+                .d-flex.align-items-center.mb-2
+                  i.bi.bi-link-45deg.text-primary.me-2
+                  span.fw-bold.text-uppercase.small.text-muted Vinculación con Miembro
+                hr.mt-0.mb-4
+
+              .col-md-12
+                label.form-label.fw-semibold(for="id_miembro") Seleccionar Miembro Asociado
+                p.text-muted.small Permite al usuario gestionar su propio perfil de miembro.
+                .input-group
+                  span.input-group-text.bg-light.border-end-0: i.bi.bi-people
+                  select.form-select.bg-light.border-start-0(id="id_miembro" name="id_miembro")
+                    option(value="") Ninguno (Usuario Externo)
+                    each miembro in miembros
+                      option(value=miembro.id_miembro)= `${miembro.nombre} ${miembro.apellido}`
+
+            //- Botones de Acción
+            .d-flex.justify-content-end.gap-3.mt-5
+              a.btn.btn-light.px-4.fw-bold(href="/users") Cancelar
+              button.btn.btn-action.px-5.shadow-sm(type="submit")
+                i.bi.bi-person-check.me-2
+                | Guardar Usuario
+
+block scripts
+  script.
+    function togglePassword() {
+      const input = document.getElementById('password');
+      const icon = event.currentTarget.querySelector('i');
+      if (input.type === 'password') {
+        input.type = 'text';
+        icon.classList.replace('bi-eye', 'bi-eye-slash');
+      } else {
+        input.type = 'password';
+        icon.classList.replace('bi-eye-slash', 'bi-eye');
+      }
+    }
