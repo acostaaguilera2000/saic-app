@@ -1,0 +1,448 @@
+/* ============================================
+   TEMA: IGLESIA JESÚS DE NAZARET (IJERSAC)
+   CSS EXCLUSIVO PARA LA LANDING PAGE
+   ============================================ */
+
+/* Variables CSS - Fácilmente modificables */
+:root {
+    /* Colores principales de la marca IJERSAC */
+    --color-crimson: #8B0000;           /* Rojo carmesí - Sangre de Cristo */
+    --color-crimson-dark: #5C0000;      /* Rojo carmesí oscuro */
+    --color-crimson-light: #A52A2A;     /* Rojo carmesí claro */
+    
+    --color-dark-blue: #0A0E27;         /* Azul oscuro profundo (parece negro) */
+    --color-dark-blue-medium: #1A1F3A;  /* Azul oscuro medio */
+    --color-dark-blue-light: #2A2F4A;   /* Azul oscuro más claro */
+    
+    --color-gray-light: #F5F5F5;        /* Gris suave para fondos */
+    --color-gray-medium: #E0E0E0;       /* Gris medio para bordes */
+    --color-gray-dark: #666666;         /* Gris oscuro para texto secundario */
+    
+    --color-white: #FFFFFF;
+    --color-black: #000000;
+    --color-gold: #C9A84C;              /* Dorado para acentos especiales */
+    --color-text-dark: #2C3E50;         /* Texto principal oscuro */
+    
+    /* Degradados */
+    --gradient-hero: linear-gradient(135deg, var(--color-dark-blue) 0%, var(--color-dark-blue-medium) 50%, var(--color-crimson-dark) 100%);
+    --gradient-logo: linear-gradient(to bottom, var(--color-dark-blue), var(--color-crimson-dark));
+    
+    /* Sombras */
+    --shadow-card: 0 5px 20px rgba(0, 0, 0, 0.1);
+    --shadow-logo: 0 10px 30px rgba(139, 0, 0, 0.3);
+    --shadow-hover: 0 10px 30px rgba(0, 0, 0, 0.15);
+    
+    /* Fuentes */
+    --font-primary: 'Georgia', 'Times New Roman', serif;
+    --font-secondary: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    
+    /* Transiciones */
+    --transition-speed: 0.3s;
+}
+
+/* Estilos globales */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: var(--font-secondary);
+    color: var(--color-text-dark);
+    line-height: 1.6;
+    background-color: var(--color-white);
+}
+
+/* Utilidades de color */
+.text-crimson { color: var(--color-crimson) !important; }
+.text-dark-blue { color: var(--color-dark-blue) !important; }
+.text-gray-light { color: var(--color-gray-light) !important; }
+.bg-crimson { background-color: var(--color-crimson) !important; }
+.bg-dark-blue { background-color: var(--color-dark-blue) !important; }
+.bg-gray-light { background-color: var(--color-gray-light) !important; }
+.border-crimson { border-color: var(--color-crimson) !important; }
+.border-dark-blue { border-color: var(--color-dark-blue) !important; }
+
+/* ==================== */
+/* NAVBAR               */
+/* ==================== */
+#churchNavbar {
+    background: var(--color-dark-blue);
+    padding: 15px 0;
+    transition: all var(--transition-speed) ease;
+    border-bottom: 2px solid var(--color-crimson);
+}
+
+#churchNavbar.scrolled {
+    padding: 10px 0;
+    background: rgba(10, 14, 39, 0.98);
+    backdrop-filter: blur(10px);
+}
+
+.brand-logo-sm {
+    display: flex;
+    flex-direction: column;
+}
+
+.brand-text-lg {
+    font-family: var(--font-primary);
+    font-size: 1.5rem;
+    font-weight: bold;
+    color: var(--color-white);
+    letter-spacing: 2px;
+}
+
+.brand-subtext {
+    font-size: 0.7rem;
+    color: var(--color-crimson-light);
+    letter-spacing: 1px;
+}
+
+.navbar-dark .nav-link {
+    color: var(--color-gray-light) !important;
+    font-weight: 500;
+    padding: 8px 15px !important;
+    transition: color var(--transition-speed) ease;
+}
+
+.navbar-dark .nav-link:hover,
+.navbar-dark .nav-link.active {
+    color: var(--color-crimson-light) !important;
+}
+
+/* Botón SAIC en navbar */
+.btn-saic-nav {
+    border: 2px solid var(--color-crimson);
+    color: var(--color-white);
+    padding: 8px 20px;
+    border-radius: 25px;
+    font-weight: 600;
+    text-decoration: none;
+    transition: all var(--transition-speed) ease;
+    font-size: 0.9rem;
+}
+
+.btn-saic-nav:hover {
+    background: var(--color-crimson);
+    color: var(--color-white);
+    transform: translateY(-2px);
+    box-shadow: 0 5px 15px rgba(139, 0, 0, 0.3);
+}
+
+/* ==================== */
+/* HERO SECTION         */
+/* ==================== */
+.hero-section {
+    position: relative;
+    background: var(--gradient-hero);
+    min-height: 100vh;
+    overflow: hidden;
+}
+
+.hero-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1440 320"><path fill="rgba(139,0,0,0.1)" fill-opacity="1" d="M0,160L48,176C96,192,192,224,288,213.3C384,203,480,149,576,138.7C672,128,768,160,864,181.3C960,203,1056,213,1152,197.3C1248,181,1344,139,1392,117.3L1440,96L1440,320L1392,320C1344,320,1248,320,1152,320C1056,320,960,320,864,320C768,320,672,320,576,320C480,320,384,320,288,320C192,320,96,320,48,320L0,320Z"></path></svg>') no-repeat bottom;
+    background-size: cover;
+}
+
+.hero-section .container {
+    padding-top: 120px;
+}
+
+/* Logo de la Iglesia */
+.church-logo-main {
+    animation: fadeInUp 1s ease-out;
+}
+
+.logo-container {
+    background: var(--color-dark-blue);
+    padding: 2.5rem;
+    border-radius: 15px;
+    display: inline-block;
+    box-shadow: var(--shadow-logo);
+    border: 3px solid var(--color-crimson);
+    position: relative;
+}
+
+.logo-title {
+    font-family: var(--font-primary);
+    font-size: 3.5rem;
+    font-weight: 900;
+    color: var(--color-white);
+    letter-spacing: 8px;
+    margin: 0;
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+}
+
+.logo-divider-crimson {
+    width: 80%;
+    height: 3px;
+    background: var(--color-crimson);
+    margin: 15px auto;
+}
+
+.logo-subtitle {
+    font-family: var(--font-secondary);
+    font-size: 1.2rem;
+    font-weight: 600;
+    color: var(--color-white);
+    letter-spacing: 3px;
+    margin: 0;
+}
+
+.logo-blood-line {
+    width: 60%;
+    height: 2px;
+    background: var(--color-crimson-light);
+    margin: 10px auto;
+}
+
+.logo-motto {
+    font-family: var(--font-primary);
+    font-size: 0.9rem;
+    font-weight: bold;
+    color: var(--color-crimson-light);
+    letter-spacing: 2px;
+    margin: 0;
+    font-style: italic;
+}
+
+.hero-welcome {
+    font-family: var(--font-primary);
+    font-weight: 700;
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+}
+
+.hero-description {
+    font-size: 1.1rem;
+    line-height: 1.8;
+    opacity: 0.9;
+}
+
+/* Botones del Hero */
+.btn-crimson {
+    background-color: var(--color-crimson);
+    color: var(--color-white);
+    border: none;
+    padding: 12px 30px;
+    font-weight: 600;
+    border-radius: 30px;
+    transition: all var(--transition-speed) ease;
+}
+
+.btn-crimson:hover {
+    background-color: var(--color-crimson-dark);
+    transform: translateY(-2px);
+    box-shadow: 0 10px 25px rgba(139, 0, 0, 0.4);
+    color: var(--color-white);
+}
+
+/* Versículo */
+.verse-card {
+    background: rgba(255, 255, 255, 0.1);
+    backdrop-filter: blur(10px);
+    padding: 2rem;
+    border-radius: 20px;
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    animation: fadeInRight 1s ease-out;
+}
+
+.verse-text {
+    color: var(--color-white);
+    font-family: var(--font-primary);
+    font-style: italic;
+    font-size: 1.1rem;
+    line-height: 1.8;
+}
+
+.verse-reference {
+    color: var(--color-crimson-light);
+    font-weight: bold;
+    font-family: var(--font-primary);
+}
+
+/* ==================== */
+/* SECCIONES            */
+/* ==================== */
+.section-title {
+    font-family: var(--font-primary);
+    color: var(--color-dark-blue);
+    font-weight: 700;
+    font-size: 2.5rem;
+}
+
+.section-divider {
+    width: 80px;
+    height: 3px;
+    background: var(--color-crimson);
+    margin-top: 15px;
+    border-radius: 2px;
+}
+
+/* Feature Cards */
+.feature-card {
+    border: 1px solid var(--color-gray-medium);
+    border-radius: 15px;
+    transition: all var(--transition-speed) ease;
+    height: 100%;
+}
+
+.feature-card:hover {
+    transform: translateY(-10px);
+    box-shadow: var(--shadow-hover);
+    border-color: var(--color-crimson);
+}
+
+.icon-circle-red {
+    width: 80px;
+    height: 80px;
+    background: var(--color-crimson);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0 auto;
+    transition: all var(--transition-speed) ease;
+}
+
+.feature-card:hover .icon-circle-red {
+    background: var(--color-dark-blue);
+    transform: rotate(360deg);
+}
+
+/* Schedule Cards */
+.schedule-card {
+    border-radius: 10px;
+    overflow: hidden;
+    transition: all var(--transition-speed) ease;
+}
+
+.schedule-card:hover {
+    transform: translateY(-5px);
+    box-shadow: var(--shadow-hover);
+}
+
+.schedule-card .card-header {
+    padding: 15px;
+    font-weight: 600;
+}
+
+/* Ministry Items */
+.ministry-item {
+    padding: 20px;
+    transition: all var(--transition-speed) ease;
+}
+
+.ministry-icon-box {
+    width: 90px;
+    height: 90px;
+    background: var(--color-gray-light);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0 auto 15px;
+    color: var(--color-crimson);
+    border: 2px solid transparent;
+    transition: all var(--transition-speed) ease;
+}
+
+.ministry-item:hover .ministry-icon-box {
+    background: var(--color-crimson);
+    color: var(--color-white);
+    border-color: var(--color-dark-blue);
+    transform: scale(1.1);
+}
+
+/* ==================== */
+/* FOOTER               */
+/* ==================== */
+.footer-church {
+    background: var(--color-dark-blue);
+    color: var(--color-gray-light);
+    padding: 60px 0 20px;
+    border-top: 3px solid var(--color-crimson);
+}
+
+.footer-church h5 {
+    font-family: var(--font-primary);
+    font-weight: bold;
+    margin-bottom: 20px;
+}
+
+.footer-church a {
+    color: var(--color-gray-light);
+    text-decoration: none;
+    transition: color var(--transition-speed) ease;
+}
+
+.footer-church a:hover {
+    color: var(--color-crimson-light);
+}
+
+/* ==================== */
+/* ANIMACIONES          */
+/* ==================== */
+@keyframes fadeInUp {
+    from {
+        opacity: 0;
+        transform: translateY(30px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@keyframes fadeInRight {
+    from {
+        opacity: 0;
+        transform: translateX(30px);
+    }
+    to {
+        opacity: 1;
+        transform: translateX(0);
+    }
+}
+
+/* ==================== */
+/* RESPONSIVE           */
+/* ==================== */
+@media (max-width: 991.98px) {
+    .logo-title {
+        font-size: 2.5rem;
+    }
+    
+    .logo-container {
+        padding: 1.5rem;
+    }
+    
+    .hero-section .container {
+        padding-top: 100px;
+    }
+}
+
+@media (max-width: 767.98px) {
+    .logo-title {
+        font-size: 2rem;
+        letter-spacing: 4px;
+    }
+    
+    .logo-subtitle {
+        font-size: 1rem;
+    }
+    
+    .ministry-icon-box {
+        width: 70px;
+        height: 70px;
+    }
+    
+    .section-title {
+        font-size: 2rem;
+    }
+}

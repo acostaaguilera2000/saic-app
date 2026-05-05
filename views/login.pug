@@ -2,40 +2,52 @@ doctype html
 html(lang="es")
   head
     meta(charset="UTF-8")
-    meta(name="viewport" content="width=device-width, initial-scale=1")
-    title Login - SAIC
-    // Bootstrap CSS
-    link(rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css")
-    // Bootstrap Icons
-    link(rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css")
-    // estilos del login personalizados desde carpeta public/css
+    meta(name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes")
+    title Acceso | IJERSAC - Sistema SAIC
+
+    //- Bootstrap 5 CSS
+    link(href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet")
+    //- Google Fonts: Inter
+    link(href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,400;14..32,500;14..32,600;14..32,700&display=swap" rel="stylesheet")
+    //- Font Awesome 6
+    link(rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css")
+    //- CSS Personalizado
     link(rel="stylesheet" href="/css/login.css")
 
   body
-    // Tarjeta de login
     .login-card
-      h4.text-center.mb-4.fw-bold.text-dark Iniciar Sesión
+      //- =======================
+      //- LOGO DE LA MARCA (Identidad IJERSAC)
+      //- =======================
+      .logo-container
+        .logo-marca
+          i.fas.fa-place-of-worship
+
+      h3.brand-title SAIC
+      p.text-muted.small.mb-4 Gestión de iglesia | IJERSAC
+
       if error
         .alert.alert-danger.text-center #{error}
-        
-      form(action="/auth/login" method="post")
-        .mb-3
-          label.form-label.text-dark(for="email")
-            i.bi.bi-envelope
-            |  correo
-          input.form-control(type="email" id="email" name="email", required)
-        .mb-3
-          label.form-label.text-dark(for="password")
-            i.bi.bi-lock
-            | Contraseña
-          input.form-control(type="password" id="password" name="password" required)
-        button.btn.btn-login.w-100(type="submit")
-          i.bi.bi-box-arrow-in-right
-          |  Entrar
-      .text-center.mt-3
-        a.text-decoration-none(href="#")
-          i.bi.bi-key
-          | ¿Olvidaste tu contraseña?
 
-    // Bootstrap JS
-    script(src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js")
+      form(action="/auth/login" method="POST")
+        //- Entrada de Correo
+        .input-group-modern
+          input.form-control-modern(type="email" name="email" placeholder="Correo electrónico" required)
+          i.fas.fa-envelope
+
+        //- Entrada de Contraseña
+        .input-group-modern
+          input.form-control-modern(type="password" name="password" placeholder="Contraseña" required)
+          i.fas.fa-lock
+
+        button.btn.btn-login(type="submit")
+          i.fas.fa-arrow-right-to-bracket.me-2
+          | Iniciar Sesión
+
+      a.forgot-link(href="#")
+        i.fas.fa-key.me-1
+        | ¿No puedes acceder? Recuperar clave
+
+    //- Bootstrap JS
+    script(src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js")
+

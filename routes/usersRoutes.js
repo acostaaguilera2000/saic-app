@@ -10,5 +10,10 @@ router.get("/create", UserController.getFormCreate)
 router.post("/create", validateUser, UserController.create)
 router.get("/update/:id", UserController.getFormEdit)
 router.post("/update/:id", validateUpdateUser, UserController.update)
-router.get("/delete/:id",UserController.Delete)
+router.get("/delete/:id", UserController.Delete)
+
+// Vista del perfil del usuario logueado
+router.get('/profile', UserController.renderProfile);
+router.post('/profile/update', UserController.updateProfile);
+
 export default router;

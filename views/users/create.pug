@@ -19,16 +19,6 @@ block content
 
       .card.card-custom.border-0.shadow-sm
         .card-body.p-4.p-md-5
-          //- Manejo de Errores Estilizado
-          if errores && errores.length
-            .alert.alert-danger.border-0.shadow-sm.mb-4(role="alert")
-              .d-flex.align-items-center.mb-2
-                i.bi.bi-exclamation-triangle-fill.me-2.fs-4
-                h6.mb-0.fw-bold Revisa los siguientes campos:
-              ul.mb-0.small.ps-4
-                each error in errores
-                  li= error
-
           form(action="/users/create" method="POST")
             .row.g-4
               //- Sección: Información de Cuenta
@@ -42,19 +32,41 @@ block content
                 label.form-label.fw-semibold(for="username") Nombre de Usuario
                 .input-group
                   span.input-group-text.bg-light.border-end-0: i.bi.bi-at
-                  input.form-control.bg-light.border-start-0(type="text" id="username" name="username" placeholder="ej. macosta")
+                  //- Agregado value desde la variable valores
+                  input.form-control.bg-light.border-start-0(
+                    type="text" 
+                    id="username" 
+                    name="username" 
+                    placeholder="ej. macosta"
+                    value= valores ? valores.username : ''
+                  )
 
               .col-md-6
                 label.form-label.fw-semibold(for="email") Correo Electrónico
                 .input-group
                   span.input-group-text.bg-light.border-end-0: i.bi.bi-envelope
-                  input.form-control.bg-light.border-start-0(type="email" id="email" name="email" placeholder="nombre@ejemplo.com" required)
+                  //- Agregado value desde la variable valores
+                  input.form-control.bg-light.border-start-0(
+                    type="email" 
+                    id="email" 
+                    name="email" 
+                    placeholder="nombre@ejemplo.com" 
+                    required
+                    value= valores ? valores.email : ''
+                  )
 
               .col-md-6
                 label.form-label.fw-semibold(for="password") Contraseña
                 .input-group
                   span.input-group-text.bg-light.border-end-0: i.bi.bi-lock
-                  input.form-control.bg-light.border-start-0(type="password" id="password" name="password" placeholder="••••••••" required)
+                  //- Por seguridad, no se devuelve el valor de la contraseña
+                  input.form-control.bg-light.border-start-0(
+                    type="password" 
+                    id="password" 
+                    name="password" 
+                    placeholder="••••••••" 
+                    required
+                  )
                   button.btn.btn-outline-secondary.border-start-0.bg-light(type="button" onclick="togglePassword()")
                     i.bi.bi-eye
 
@@ -63,11 +75,12 @@ block content
                 .input-group
                   span.input-group-text.bg-light.border-end-0: i.bi.bi-shield-lock
                   select.form-select.bg-light.border-start-0(id="rol" name="rol" required)
-                    option(value="" disabled selected) Seleccione un privilegio...
-                    option(value="admin") Administrador
-                    option(value="tesorero") Tesorero
-                    option(value="lider") Líder Ministerial
-                    option(value="miembro") Miembro General
+                    option(value="" disabled selected= !valores) Seleccione un privilegio...
+                    //- Se marca 'selected' si coincide con el valor enviado previamente
+                    option(value="admin" selected= (valores && valores.rol === 'admin')) Administrador
+                    option(value="tesorero" selected= (valores && valores.rol === 'tesorero')) Tesorero
+                    option(value="lider" selected= (valores && valores.rol === 'lider')) Líder Ministerial
+                    option(value="miembro" selected= (valores && valores.rol === 'miembro')) Miembro General
 
               //- Sección: Vinculación
               .col-12.mt-5
@@ -82,13 +95,17 @@ block content
                 .input-group
                   span.input-group-text.bg-light.border-end-0: i.bi.bi-people
                   select.form-select.bg-light.border-start-0(id="id_miembro" name="id_miembro")
-                    option(value="") Ninguno (Usuario Externo)
+                    option(value="" selected= (valores && valores.id_miembro === "")) Ninguno (Usuario Externo)
                     each miembro in miembros
-                      option(value=miembro.id_miembro)= `${miembro.nombre} ${miembro.apellido}`
+                      //- Comprobamos si el ID del miembro coincide con el seleccionado anteriormente
+                      option(
+                        value=miembro.id_miembro 
+                        selected= (valores && valores.id_miembro == miembro.id_miembro)
+                      )= `${miembro.nombre} ${miembro.apellido}`
 
             //- Botones de Acción
             .d-flex.justify-content-end.gap-3.mt-5
-              a.btn.btn-light.px-4.fw-bold(href="/users") Cancelar
+              a.btn.btn-secondary.px-4.fw-bold(href="/users") Cancelar
               button.btn.btn-action.px-5.shadow-sm(type="submit")
                 i.bi.bi-person-check.me-2
                 | Guardar Usuario

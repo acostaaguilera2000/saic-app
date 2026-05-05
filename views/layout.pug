@@ -38,8 +38,7 @@ html(lang="es")
             i.bi.bi-chat-left.me-3
             | Comunicados
           
-          
-
+        
     .main-wrapper
       //- Header
       header.top-header
@@ -52,14 +51,15 @@ html(lang="es")
             .text-end.d-none.d-sm-block
               p.mb-0.fw-bold.lh-1(style="color: var(--saic-blue);") #{user ? user.username : 'Manuel Acosta'}
               small.text-muted #{user ? user.rol : 'Super Admin'}
-            img.rounded-circle.shadow-sm(src=`https://ui-avatars.com/api/?name=${user ? user.username : 'Manuel+Acosta'}&background=003a7a&color=fff` width="45")
+            img.rounded-circle.shadow-sm(src=`https://ui-avatars.com/api/?name=${user ? user.username : 'Manuel+Acosta'}&background=162a4a&color=fff` width="45")
           ul.dropdown-menu.dropdown-menu-end.border-0.shadow.mt-3
-            li: a.dropdown-item.py-2(href="#"): i.bi.bi-person.me-2 Mi Cuenta
+            li: a.dropdown-item.py-2(href=`/users/profile`): i.bi.bi-person.me-2 Mi Cuenta
             li: hr.dropdown-divider
             li: a.dropdown-item.py-2.text-danger(href="/auth/logout"): i.bi.bi-box-arrow-right.me-2 Salir
 
       //- Contenido principal
       .content-body
+        include ./partials/_messages
         block content
 
     //- Nav Móvil

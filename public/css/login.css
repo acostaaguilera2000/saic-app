@@ -1,88 +1,212 @@
+/* ==========================================================================
+   VARIABLES DE TEMATIZACIÓN - IJERSAC
+   Modificamos estos valores para adaptar el login a cualquier institución.
+   ========================================================================== */
 :root {
-    --primary-blue: #0033a0;
-    --saic-gold: #ffb81c;
-    --saic-gold-hover: #e5a517;
-    --white: #ffffff;
+    /* 1. Colores de Identidad (Logo e Institución) */
+    --color-primario-dark: #001F3F;
+    /* Azul Profundo */
+    --color-acento-carmesi: #9B1D2C;
+    /* Rojo Carmesí principal */
+    --color-acento-dark: #5E0F1A;
+    /* Rojo Carmesí oscuro para degradados */
+
+    /* 2. Colores de Interfaz (Fondos y Superficies) */
+    --bg-gradient-top: #0a192f;
+    /* Azul noche para el fondo body */
+    --bg-gradient-bottom: #162a4a;
+    --card-bg: #F5F7FC;
+    /* Gris claro sutil para la tarjeta */
+    --input-bg: #FFFFFF;
+
+    /* 3. Colores de Texto */
+    --text-title: #0F2A44;
+    /* Azul para títulos */
+    --text-muted: #6C757D;
+    /* Gris para subtítulos */
+    --text-body: #1F2A3E;
+    /* Gris azulado oscuro */
+    --text-white: #FFFFFF;
+    --text-icon-logo: #F2E8E0;
+    /* Gris cálido para el icono */
+
+    /* 4. Bordes y Sombras */
+    --border-light: rgba(220, 200, 200, 0.4);
+    --input-border: #D6DDE6;
+    --shadow-card: 0 25px 45px -12px rgba(0, 0, 0, 0.4);
+    --shadow-button: 0 8px 18px rgba(155, 29, 44, 0.35);
+
+    /* 5. Efectos de Error (Lo que añadimos para el mensaje de error) */
+    --color-error: #8B0000;
+    --error-bg: #fff5f5;
 }
 
-/* Fondo con degradado animado para dar vida */
+/* RESET & BASE */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
 body {
-    background: linear-gradient(-45deg, #0033a0, #00267a, #0b1a3d, #0033a0);
-    background-size: 400% 400%;
-    animation: gradientBG 15s ease infinite;
-    font-family: 'Inter', 'Segoe UI', sans-serif;
+    background: linear-gradient(180deg, var(--bg-gradient-top) 0%, var(--bg-gradient-bottom) 100%);
+    font-family: 'Inter', sans-serif;
     min-height: 100vh;
     display: flex;
     align-items: center;
     justify-content: center;
-    margin: 0;
+    padding: 1.5rem;
+    position: relative;
 }
 
-@keyframes gradientBG {
-    0% { background-position: 0% 50%; }
-    50% { background-position: 100% 50%; }
-    100% { background-position: 0% 50%; }
-}
-
-/* Tarjeta de login con efecto sutil de elevación */
+/* TARJETA PRINCIPAL */
 .login-card {
-    background: var(--white);
-    max-width: 420px;
+    background: var(--card-bg);
+    border-radius: 2rem;
+    box-shadow: var(--shadow-card), 0 8px 18px rgba(0, 0, 0, 0.2);
+    padding: 2.5rem 2rem;
     width: 100%;
-    padding: 3rem 2.5rem;
-    border-radius: 20px;
-    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.2);
-    border: 1px solid rgba(255, 255, 255, 0.1);
+    max-width: 460px;
+    transition: transform 0.25s ease, box-shadow 0.3s;
+    text-align: center;
+    border: 1px solid var(--border-light);
+    position: relative;
+    z-index: 2;
 }
 
-.login-card h4 {
-    color: var(--primary-blue);
+.login-card:hover {
+    transform: translateY(-6px);
+    box-shadow: 0 30px 50px -15px rgba(0, 0, 0, 0.45);
+}
+
+/* LOGOTIPO */
+.logo-container {
+    margin-bottom: 1.4rem;
+    display: flex;
+    justify-content: center;
+}
+
+.logo-marca {
+    width: 90px;
+    height: 90px;
+    background: linear-gradient(145deg, var(--color-acento-carmesi), var(--color-acento-dark));
+    border-radius: 32px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 15px 22px -8px rgba(155, 29, 44, 0.4);
+    transition: all 0.2s;
+    border: 2px solid rgba(255, 245, 240, 0.25);
+}
+
+.logo-marca i {
+    font-size: 48px;
+    color: var(--text-icon-logo);
+    filter: drop-shadow(0 2px 5px rgba(0, 0, 0, 0.3));
+}
+
+/* TEXTOS */
+.brand-title {
     font-weight: 800;
-    letter-spacing: -0.5px;
-    margin-bottom: 0.5rem;
+    font-size: 2.1rem;
+    background: linear-gradient(120deg, var(--text-title), #1A3A5C);
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+    margin-bottom: 0.2rem;
 }
 
-/* Estilo de los campos de entrada */
-.form-control {
-    border-radius: 10px;
-    padding: 0.75rem 1rem;
-    border: 2px solid #eef0f2;
-    transition: all 0.3s ease;
+.text-muted {
+    color: var(--text-muted) !important;
+    font-size: 0.85rem;
 }
 
-.form-control:focus {
-    border-color: var(--primary-blue);
-    box-shadow: 0 0 0 4px rgba(0, 51, 160, 0.1);
+/* MENSAJES DE ERROR (Dinámico) */
+.alert-danger {
+    background-color: var(--error-bg);
+    border-left: 4px solid var(--color-error);
+    color: var(--color-error);
+    font-weight: 500;
+    margin-bottom: 1.5rem;
 }
 
-/* Botón dorado con estilo moderno */
-.btn-login {
-    background-color: var(--saic-gold);
-    color: #000; /* Mejor contraste */
-    font-weight: 700;
-    text-transform: uppercase;
-    letter-spacing: 1px;
-    padding: 0.8rem;
-    border-radius: 10px;
-    border: none;
-    transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+/* INPUTS MODERNOS */
+.input-group-modern {
+    position: relative;
+    margin-bottom: 1.6rem;
+}
+
+.form-control-modern {
     width: 100%;
+    padding: 0.9rem 1rem 0.9rem 3rem;
+    font-size: 1rem;
+    border: 1.5px solid var(--input-border);
+    border-radius: 1.8rem;
+    background-color: var(--input-bg);
+    transition: all 0.25s ease;
+    color: var(--text-body);
+    outline: none;
+}
+
+.form-control-modern:focus {
+    border-color: var(--color-acento-carmesi);
+    box-shadow: 0 0 0 4px rgba(155, 29, 44, 0.2);
+}
+
+.input-group-modern i {
+    position: absolute;
+    left: 1.2rem;
+    top: 50%;
+    transform: translateY(-50%);
+    color: #8F9BB3;
+    font-size: 1.15rem;
+    pointer-events: none;
+}
+
+.form-control-modern:focus+i {
+    color: var(--color-acento-carmesi);
+}
+
+/* BOTÓN LOGIN */
+.btn-login {
+    background: linear-gradient(105deg, var(--color-acento-carmesi), var(--color-acento-dark));
+    border: none;
+    padding: 0.85rem 1rem;
+    border-radius: 2.5rem;
+    font-weight: 700;
+    width: 100%;
+    color: var(--text-white);
+    box-shadow: var(--shadow-button);
+    transition: all 0.25s;
+    margin-bottom: 1.4rem;
 }
 
 .btn-login:hover {
-    background-color: var(--saic-gold-hover);
+    filter: brightness(1.1);
     transform: translateY(-2px);
-    box-shadow: 0 8px 15px rgba(255, 184, 28, 0.3);
+    box-shadow: 0 12px 24px -6px rgba(128, 24, 40, 0.5);
 }
 
-/* Links secundarios */
-.login-footer a {
-    color: var(--primary-blue);
-    font-size: 0.9rem;
+/* ENLACES Y FOOTER */
+.forgot-link {
+    font-size: 0.85rem;
+    color: #1C4E6F;
     text-decoration: none;
-    font-weight: 500;
+    font-weight: 600;
+    transition: color 0.2s;
 }
 
-.login-footer a:hover {
+.forgot-link:hover {
+    color: var(--color-acento-carmesi);
     text-decoration: underline;
+}
+
+.footer-note {
+    font-size: 0.7rem;
+    color: #98A2B3;
+    margin-top: 1.2rem;
+    border-top: 1px solid #E2E8F0;
+    padding-top: 1rem;
+    width: 100%;
+    display: block;
 }

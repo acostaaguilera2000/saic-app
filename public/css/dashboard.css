@@ -1,107 +1,419 @@
+/* ==========================================================================
+   CONFIGURACIÓN Y VARIABLES - ADAPTADO A IJERSAC
+   ========================================================================== */
 :root {
-    --saic-blue: #002855;
-    --saic-blue-light: #003a7a;
-    --saic-gold: #D4AF37;
-    --saic-bg: #f0f2f5;
+    /* Colores extraídos de image.png */
+    --ijersac-navy: #0a192f;        /* Azul profundo del logo */
+    --ijersac-navy-light: #162a4a;  /* Variante para degradados */
+    --ijersac-red: #8b0000;         /* Rojo de la gota de sangre */
+    --ijersac-red-light: #b30000;   /* Variante para hovers */
+    --ijersac-bg: #f4f7f9;          /* Fondo neutro limpio */
     --sidebar-width: 260px;
+    --transition-smooth: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
-body { 
-    font-family: 'Inter', sans-serif; 
-    background-color: var(--saic-bg);
+/* Personalización del Scrollbar */
+::-webkit-scrollbar {
+    width: 8px;
+}
+
+::-webkit-scrollbar-track {
+    background: var(--ijersac-bg);
+}
+
+::-webkit-scrollbar-thumb {
+    background: var(--ijersac-navy);
+    border-radius: 10px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: var(--ijersac-red);
+}
+
+/* ==========================================================================
+   ESTILOS BASE
+   ========================================================================== */
+body {
+    font-family: 'Inter', sans-serif;
+    background-color: var(--ijersac-bg);
+    color: #2d3436;
     overflow-x: hidden;
 }
 
-/* SIDEBAR */
+/* ==========================================================================
+   SIDEBAR (MENÚ LATERAL)
+   ========================================================================== */
 .sidebar {
     width: var(--sidebar-width);
     height: 100vh;
     position: fixed;
     left: 0;
     top: 0;
-    background: linear-gradient(180deg, var(--saic-blue) 0%, var(--saic-blue-light) 100%);
+    background: linear-gradient(180deg, var(--ijersac-navy) 0%, var(--ijersac-navy-light) 100%);
     color: white;
     z-index: 1100;
-    transition: all 0.3s;
-    border-right: 4px solid var(--saic-gold);
+    transition: var(--transition-smooth);
+    border-right: 4px solid var(--ijersac-red);
+    display: flex;
+    flex-direction: column;
 }
 
 .sidebar-header {
-    padding: 1.5rem;
+    padding: 2rem 1.5rem;
     text-align: center;
-    border-bottom: 1px solid rgba(255,255,255,0.1);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
 }
 
 .sidebar .nav-link {
-    color: rgba(255,255,255,0.7);
-    padding: 12px 25px;
+    color: rgba(255, 255, 255, 0.7);
+    padding: 14px 25px;
     font-weight: 500;
-    transition: 0.2s;
+    transition: var(--transition-smooth);
     border-left: 4px solid transparent;
+    display: flex;
+    align-items: center;
 }
 
-.sidebar .nav-link:hover, .sidebar .nav-link.active {
-    color: var(--saic-gold);
-    background: rgba(255,255,255,0.05);
-    border-left: 4px solid var(--saic-gold);
+.sidebar .nav-link i {
+    font-size: 1.2rem;
+    transition: transform 0.3s ease;
 }
 
-/* MAIN WRAPPER */
+.sidebar .nav-link:hover {
+    color: white;
+    background: rgba(255, 255, 255, 0.08);
+    border-left: 4px solid var(--ijersac-red);
+    padding-left: 30px;
+}
+
+.sidebar .nav-link:hover i {
+    color: var(--ijersac-red-light);
+    transform: scale(1.2) rotate(5deg);
+}
+
+.sidebar .nav-link.active {
+    color: white;
+    background: rgba(255, 255, 255, 0.1);
+    border-left: 4px solid var(--ijersac-red);
+    font-weight: 600;
+}
+
+/* ==========================================================================
+   ÁREA DE CONTENIDO PRINCIPAL
+   ========================================================================== */
 .main-wrapper {
     margin-left: var(--sidebar-width);
     width: calc(100% - var(--sidebar-width));
-    transition: all 0.3s;
+    min-height: 100vh;
+    transition: var(--transition-smooth);
+    animation: fadeIn 0.6s ease-out;
 }
 
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(10px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+/* TOP NAVBAR */
 .top-header {
-    height: 70px;
+    height: 75px;
     background: white;
     display: flex;
     align-items: center;
     justify-content: space-between;
-    padding: 0 2rem;
-    box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+    padding: 0 2.5rem;
+    box-shadow: 0 2px 15px rgba(0, 0, 0, 0.04);
+    position: sticky;
+    top: 0;
+    z-index: 1000;
 }
 
-.content-body { padding: 2rem; }
-
-.card-custom {
+.top-header img {
+    border: 2px solid var(--ijersac-red);
+    padding: 2px;
     background: white;
-    border: none;
-    border-radius: 15px;
-    box-shadow: 0 4px 20px rgba(0,0,0,0.04);
     transition: transform 0.3s ease;
 }
 
-.card-custom:hover { transform: translateY(-5px); }
+.top-header img:hover {
+    transform: scale(1.05);
+}
 
+.content-body {
+    padding: 2.5rem;
+}
+
+/* ==========================================================================
+   COMPONENTES (CARDS, BUTTONS, BADGES)
+   ========================================================================== */
+.card-custom {
+    background: white;
+    border: 1px solid rgba(0, 0, 0, 0.05);
+    border-radius: 18px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.02);
+    transition: var(--transition-smooth);
+}
+
+.card-custom:hover {
+    transform: translateY(-8px);
+    box-shadow: 0 15px 35px rgba(139, 0, 0, 0.08); /* Sombra con toque rojo */
+}
+
+.btn-action {
+    background: white;
+    border: 1px solid var(--ijersac-red);
+    color: var(--ijersac-navy);
+    padding: 10px 20px;
+    font-weight: 600;
+    border-radius: 12px;
+    transition: var(--transition-smooth);
+}
+
+.btn-action:hover {
+    background: var(--ijersac-red);
+    color: white;
+    box-shadow: 0 5px 15px rgba(139, 0, 0, 0.3);
+}
+
+/* EVENTOS */
 .event-card {
     display: flex;
     align-items: center;
-    padding: 15px;
-    margin-bottom: 15px;
-    border-radius: 12px;
+    padding: 1.2rem;
+    margin-bottom: 1rem;
+    border-radius: 15px;
     background: #fff;
-    border-left: 5px solid var(--saic-gold);
+    border: 1px solid rgba(0, 0, 0, 0.05);
+    border-left: 6px solid var(--ijersac-red);
+    transition: var(--transition-smooth);
+}
+
+.event-card:hover {
+    background: #fafafa;
+    border-left-width: 10px;
 }
 
 .date-box {
-    min-width: 50px;
+    min-width: 60px;
     text-align: center;
-    background: var(--saic-bg);
-    border-radius: 8px;
-    padding: 5px;
-    margin-right: 15px;
+    background: var(--ijersac-bg);
+    border-radius: 10px;
+    padding: 8px;
+    margin-right: 1.2rem;
+    color: var(--ijersac-navy);
+    font-weight: bold;
+    box-shadow: inset 0 0 5px rgba(0, 0, 0, 0.02);
 }
 
-/* MOBILE NAV */
+/* BADGES MODERNOS (SOFT STYLE) */
+.badge-soft-success {
+    background-color: rgba(25, 135, 84, 0.1) !important;
+    color: #198754 !important;
+    border: 1px solid rgba(25, 135, 84, 0.15);
+}
+
+.badge-soft-warning {
+    background-color: rgba(255, 193, 7, 0.1) !important;
+    color: #856404 !important;
+    border: 1px solid rgba(255, 193, 7, 0.15);
+}
+
+/* ==========================================================================
+   MEJORAS DE CONTENIDO - ESTILO PREMIUM IJERSAC
+   ========================================================================== */
+
+/* 1. Tipografía y Espaciado Global */
+h2, h4, h5, h6 {
+    color: var(--ijersac-navy);
+    letter-spacing: -0.5px;
+}
+
+.text-muted {
+    color: #64748b !important; /* Gris azulado más moderno */
+}
+
+/* 2. Refinamiento de Tarjetas de Métricas (Dashboard) */
+.card-custom {
+    background: #ffffff;
+    border: none;
+    border-radius: 20px;
+    position: relative;
+    overflow: hidden;
+    transition: var(--transition-smooth);
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05), 0 2px 4px -1px rgba(0, 0, 0, 0.03);
+}
+
+.card-custom:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+}
+
+/* Decoración sutil de fondo para las cards */
+.card-custom::before {
+    content: "";
+    position: absolute;
+    top: -20px;
+    right: -20px;
+    width: 100px;
+    height: 100px;
+    background: radial-gradient(circle, var(--ijersac-navy) 0%, transparent 70%);
+    opacity: 0.03;
+    border-radius: 50%;
+}
+
+/* 3. Iconos de Métricas */
+.icon-box {
+    width: 48px;
+    height: 48px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 14px;
+    font-size: 1.25rem;
+    margin-bottom: 1rem;
+}
+
+/* 4. Tabla de Usuarios Recientes (Estilo limpio) */
+.table {
+    --bs-table-hover-bg: rgba(10, 25, 47, 0.03);
+}
+
+.table thead th {
+    background-color: var(--ijersac-bg);
+    text-transform: uppercase;
+    font-size: 0.75rem;
+    letter-spacing: 1px;
+    font-weight: 700;
+    color: var(--ijersac-navy);
+    border: none;
+    padding: 15px;
+}
+
+.table tbody td {
+    padding: 16px 15px;
+    vertical-align: middle;
+    border-color: #f1f5f9;
+}
+
+/* 5. Avatar Styling */
+.avatar-img {
+    border: 2px solid white;
+    box-shadow: 0 0 10px rgba(0,0,0,0.1);
+    transition: var(--transition-smooth);
+}
+
+.avatar-img:hover {
+    border-color: var(--ijersac-red);
+    transform: scale(1.1);
+}
+
+/* 6. Mejoras en Gráficos */
+#growthChart {
+    filter: drop-shadow(0px 10px 10px rgba(10, 25, 47, 0.1));
+}
+
+/* 7. Botones de Acción (Dashboard) */
+.btn-primary {
+    background: var(--ijersac-navy);
+    border: none;
+    padding: 10px 24px;
+    border-radius: 12px;
+    font-weight: 600;
+    transition: var(--transition-smooth);
+}
+
+.btn-primary:hover {
+    background: var(--ijersac-navy-light);
+    box-shadow: 0 10px 20px rgba(10, 25, 47, 0.2);
+    transform: translateY(-2px);
+}
+
+.btn-white {
+    background: white;
+    color: var(--ijersac-navy);
+    border: 1px solid #e2e8f0;
+}
+
+.btn-white:hover {
+    background: #f8fafc;
+    border-color: var(--ijersac-navy);
+}
+
+/* 8. Event Card (Refinado) */
+.event-card {
+    border: 1px solid #f1f5f9;
+    border-left: 5px solid var(--ijersac-red);
+    box-shadow: 0 2px 4px rgba(0,0,0,0.02);
+}
+
+.date-badge {
+    border: 1px solid #edf2f7;
+    transition: var(--transition-smooth);
+}
+
+.event-card:hover .date-badge {
+    background-color: var(--ijersac-navy) !important;
+}
+
+.event-card:hover .date-badge span {
+    color: white !important;
+}
+
+/* 9. Elementos de Formulario (Selects en Dashboard) */
+.form-select-sm {
+    border-radius: 8px;
+    border: 1px solid #e2e8f0;
+    font-size: 0.8rem;
+    font-weight: 600;
+    color: var(--ijersac-navy);
+}
+
+.form-select-sm:focus {
+    border-color: var(--ijersac-red);
+    box-shadow: 0 0 0 3px rgba(139, 0, 0, 0.1);
+}
+
+/* ==========================================================================
+   RESPONSIVE DESIGN
+   ========================================================================== */
 @media (max-width: 991.98px) {
-    .sidebar { transform: translateX(-100%); }
-    .main-wrapper { margin-left: 0; width: 100%; }
-    .mobile-bottom-nav { 
-        position: fixed; bottom: 0; width: 100%; 
-        background: var(--saic-blue); z-index: 1200; 
-        border-top: 3px solid var(--saic-gold);
+    .sidebar {
+        transform: translateX(-100%);
     }
-    .content-body { margin-bottom: 80px; }
+
+    .main-wrapper {
+        margin-left: 0;
+        width: 100%;
+    }
+
+    .mobile-bottom-nav {
+        position: fixed;
+        bottom: 0;
+        width: 100%;
+        background: var(--ijersac-navy);
+        z-index: 1200;
+        padding-bottom: env(safe-area-inset-bottom);
+        box-shadow: 0 -5px 20px rgba(0, 0, 0, 0.15);
+        border-top: 4px solid var(--ijersac-red);
+    }
+
+    .mobile-bottom-nav a {
+        color: rgba(255,255,255,0.7);
+        opacity: 0.8;
+        transition: 0.3s;
+    }
+
+    .mobile-bottom-nav a:active {
+        color: var(--ijersac-red-light) !important;
+        transform: scale(0.9);
+    }
+
+    .content-body {
+        padding: 1.5rem;
+        margin-bottom: 90px;
+    }
+
+    .top-header {
+        padding: 0 1.5rem;
+    }
 }

@@ -2,7 +2,7 @@ import db from "../config/db.js";
 class User {
 
 
-    static async listUsers() {
+    static async listUsers(id_sesion) {
         try {
             const [rows] = await db.query(`
             SELECT 
@@ -17,8 +17,8 @@ class User {
             m.activo
             FROM usuario u
             LEFT JOIN miembro m ON u.id_miembro = m.id_miembro
-            WHERE u.username!="Root"
-            `);
+            WHERE u.username!="Root" &&  u.id_usuario!=?
+            `, [id_sesion]);
             return rows || [];
 
         } catch (error) {
@@ -108,6 +108,24 @@ class User {
         } catch (error) {
             console.error("Error al eliminar usuario:", error);
             throw { status: 500, message: "Error al eliminar el usuario" };
+        }
+    }
+
+    // models/UserModel.js
+    static async updateProfileInfo(data) {
+        try {
+            if (data.password) {
+                // Actualiza todo incluyendo contraseña
+                const sql = "UPDATE usuario SET username = ?, password = ? WHERE id_usuario = ?";
+                return await db.query(sql, [data.username, data.password, data.id_usuario]);
+            } else {
+                // Actualiza solo username
+                const sql = "UPDATE usuario SET username = ? WHERE id_usuario = ?";
+                return await db.query(sql, [data.username, data.id_usuario]);
+            }
+        } catch (error) {
+            console.error("Error al eliminar usuario:", error);
+            throw { status: 500, message: "Error al actualizar el perfil" };
         }
     }
 

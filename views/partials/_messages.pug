@@ -1,0 +1,26 @@
+//- Mensajes de éxito (flash success_msg)
+
+if success_msg && success_msg.length > 0
+    .alert.alert-success.border-0.shadow-sm.alert-dismissible.fade.show.mb-4(role="alert")
+        .d-flex.align-items-center
+            i.bi.bi-check-circle-fill.me-2
+            strong= success_msg
+        button.btn-close(type="button" data-bs-dismiss="alert" aria-label="Close")
+
+//- Mensajes de error general (flash error_msg)
+if error_msg && error_msg.length > 0
+    .alert.alert-danger.border-0.shadow-sm.alert-dismissible.fade.show.mb-4(role="alert")
+        .d-flex.align-items-center
+            i.bi.bi-exclamation-triangle-fill.me-2
+            strong= error_msg
+        button.btn-close(type="button" data-bs-dismiss="alert" aria-label="Close")
+
+//- Errores de validación (array de errores)
+if errores && errores.length > 0
+    .alert.alert-danger.border-0.shadow-sm.mb-4(role="alert")
+        .d-flex.align-items-center.mb-2
+            i.bi.bi-exclamation-octagon-fill.me-2
+            h6.mb-0.fw-bold Revisa lo siguiente:
+        ul.mb-0.small.ps-4
+            each error in errores
+                li= error

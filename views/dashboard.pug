@@ -1,130 +1,115 @@
 extends layout
 
 block content
-  //- Botones de Acción Rápida
-  .d-flex.gap-2.mb-4.overflow-auto.pb-2
-    button.btn.btn-action.shadow-sm.px-4.text-nowrap 
-      i.bi.bi-plus-lg.me-2
-      | Nuevo Miembro
-    button.btn.btn-action.shadow-sm.px-4.text-nowrap 
-      i.bi.bi-cash-coin.me-2
-      | Registrar Ofrenda
-    button.btn.btn-action.shadow-sm.px-4.text-nowrap 
-      i.bi.bi-megaphone.me-2
-      | Crear Comunicado
+  //- Header del Dashboard
+  .d-flex.justify-content-between.align-items-center.mb-4
+    div
+      h4.fw-bold.mb-0 Panel de Control Administrativo
+      p.text-muted.small Gestión integral de la congregación IJERSAC
+    .d-flex.gap-2
+      button.btn.btn-white.border.shadow-sm.btn-sm
+        i.bi.bi-download.me-2
+        | Reporte PDF
+      button.btn.btn-primary.shadow-sm.btn-sm
+        i.bi.bi-plus-lg.me-2
+        | Nuevo Registro
 
-  //- Fila de Tarjetas de Métricas
+  //- SECCIÓN 1: Tarjetas de Métricas Principales
   .row.g-4.mb-4
-    //- Total Usuarios
-    .col-xl-3.col-md-6
-      .card.card-custom.p-4.border-bottom.border-primary.border-5.h-100
-        span.text-muted.small.fw-bold.text-uppercase Total Usuarios
-        h2.fw-bold.mt-2.mb-0 1,520
-        small.text-success
-          i.bi.bi-arrow-up.me-1
-          | 8.5% esta semana
-    
-    //- Activos
-    .col-xl-3.col-md-6
-      .card.card-custom.p-4.border-bottom.border-success.border-5.h-100
-        span.text-muted.small.fw-bold.text-uppercase Activos
-        h2.fw-bold.mt-2.mb-0 1,405
-        .progress.mt-3(style="height: 6px;")
-          .progress-bar.bg-success(role="progressbar" style="width: 92%" aria-valuenow="92" aria-valuemin="0" aria-valuemax="100")
-    
-    //- Inactivos
-    .col-xl-3.col-md-6
-      .card.card-custom.p-4.border-bottom.border-danger.border-5.h-100
-        span.text-muted.small.fw-bold.text-uppercase Inactivos
-        h2.fw-bold.mt-2.mb-0 115
-        small.text-muted Requieren seguimiento
-    
-    //- Crecimiento
-    .col-xl-3.col-md-6
-      .card.card-custom.p-4.border-bottom.border-warning.border-5.h-100
-        span.text-muted.small.fw-bold.text-uppercase Crecimiento
-        h2.fw-bold.mt-2.mb-0 +12%
-        small.text-muted Promedio mes actual
+    - 
+      const metrics = [
+        { label: 'Total Usuarios', value: '1,520', trend: '8.5%', color: 'primary', icon: 'bi-people' },
+        { label: 'Activos', value: '1,405', trend: '92%', color: 'success', icon: 'bi-person-check' },
+        { label: 'Inactivos', value: '115', trend: 'Requiere atención', color: 'danger', icon: 'bi-person-x' },
+        { label: 'Crecimiento', value: '+12%', trend: 'Mes actual', color: 'warning', icon: 'bi-graph-up-arrow' }
+      ]
 
-  //- Fila del Gráfico
-  .row.mb-4
+    each item in metrics
+      .col-xl-3.col-md-6
+        .card.border-0.shadow-sm.h-100.overflow-hidden
+          .card-body.p-4
+            .d-flex.justify-content-between.align-items-start.mb-3
+              .icon-box.rounded-3(class=`bg-${item.color}-subtle text-${item.color}` style="padding: 10px 15px;")
+                i.bi(class=item.icon style="font-size: 1.2rem;")
+              if item.label === 'Total Usuarios'
+                span.badge.bg-success-subtle.text-success.rounded-pill +8.5%
+            
+            div
+              span.text-muted.small.fw-semibold.text-uppercase.ls-1= item.label
+              h2.fw-bold.mt-1.mb-0= item.value
+              
+              if item.label === 'Activos'
+                .progress.mt-3(style="height: 5px;")
+                  .progress-bar.bg-success(role="progressbar" style="width: 92%")
+              else if item.label === 'Inactivos'
+                small.text-danger.fw-medium= item.trend
+              else if item.label === 'Crecimiento'
+                small.text-muted.fw-medium Promedio mensual
+          //- Línea decorativa inferior
+          .border-bottom(class=`border-${item.color} border-4`)
+
+  //- SECCIÓN 2: Gráfico y Resumen Detallado
+  .row.g-4.mb-4
+    //- Gráfico (Columna 6)
+    .col-lg-6
+      .card.border-0.shadow-sm.h-100
+        .card-header.bg-transparent.border-0.p-4.pb-0
+          .d-flex.justify-content-between.align-items-center
+            div
+              h6.fw-bold.mb-1 Análisis de Crecimiento
+              p.text-muted.small Tendencia de nuevos ingresos anual
+            select.form-select.form-select-sm.border-light.shadow-none(style="width: 100px; background-color: #f8f9fa;")
+              option(selected) 2026
+              option 2025
+        .card-body.px-4.pb-4
+          div(style="height: 320px; position: relative;")
+            canvas#growthChart
+
+    //- Sección de Nuevos Ingresos (Columna 6 para balancear la fila)
+    .col-lg-6
+      .card.border-0.shadow-sm.h-100
+        .card-header.bg-transparent.border-0.p-4.pb-0
+          .d-flex.justify-content-between.align-items-center
+            h6.fw-bold.mb-0 Usuarios Recientes
+            span.badge.bg-primary-subtle.text-primary.px-3 Últimos 7 días
+        .card-body.p-4
+          .table-responsive
+            table.table.table-hover.align-middle.mb-0
+              tbody
+                - const users = [{n:'Ana María Gómez', m:'Niños', b:'002855'}, {n:'Pedro Soto', m:'Alabanza', b:'D4AF37'}, {n:'Lucía Rivas', m:'Escuela Dominical', b:'003a7a'}]
+                each user in users
+                  tr
+                    td.ps-0(style="width: 50px;")
+                      img.rounded-circle(src=`https://ui-avatars.com/api/?name=${user.n.replace(/ /g, '+')}&background=${user.b}&color=fff` width="42")
+                    td
+                      div.fw-bold.text-dark= user.n
+                      div.text-muted.x-small= user.ministerio || 'Ministerio'
+                    td.text-end.pe-0
+                      button.btn.btn-light.btn-sm.rounded-circle
+                        i.bi.bi-three-dots-vertical
+
+  //- SECCIÓN 3: Eventos (Ancho Completo o Inferior)
+  .row
     .col-12
-      .card.card-custom.p-4
-        .d-flex.justify-content-between.align-items-center.mb-3
-          h6.fw-bold.mb-0 Análisis de Crecimiento Mensual
-          select.form-select.form-select-sm(style="width: 120px;")
-            option(selected) 2026
-            option 2025
-        div(style="height: 300px;")
-          canvas#growthChart
-
-  //- Fila Inferior: Eventos y Nuevos Ingresos
-  .row.g-4
-    //- Sección de Eventos
-    .col-xl-6
-      .card.card-custom.p-4.h-100
-        .d-flex.justify-content-between.align-items-center.mb-4
-          h5.fw-bold.mb-0 Próximos Eventos
-          a.btn.btn-sm.btn-outline-secondary(href="#") Ver todo
-        
-        //- Evento 1
-        .event-card.shadow-sm
-          .date-box
-            span.fw-bold.d-block.text-primary 15
-            small ABR
-          .flex-grow-1
-            h6.mb-0.fw-bold Culto Especial de Oración
-            small.text-muted
-              i.bi.bi-geo-alt.me-1
-              | Auditorio Principal
-          span.badge.bg-success-subtle.text-success.border.border-success Confirmado
-        
-        //- Evento 2
-        .event-card.shadow-sm
-          .date-box
-            span.fw-bold.d-block.text-primary 22
-            small ABR
-          .flex-grow-1
-            h6.mb-0.fw-bold Cena Ministerial
-            small.text-muted
-              i.bi.bi-geo-alt.me-1
-              | Salón de Eventos B
-          span.badge.bg-warning-subtle.text-warning.border.border-warning Pendiente
-
-    //- Sección de Nuevos Ingresos
-    .col-xl-6
-      .card.card-custom.p-4.h-100
-        .d-flex.justify-content-between.align-items-center.mb-4
-          h5.fw-bold.mb-0 Nuevos Ingresos
-          span.badge.rounded-pill.bg-primary-subtle.text-primary Últimos 7 días
-        
-        .list-group.list-group-flush
-          //- Usuario 1
-          .list-group-item.px-0.border-0.mb-3.d-flex.align-items-center
-            img.rounded-circle.me-3(src="https://ui-avatars.com/api/?name=Ana+Gomez&background=002855&color=fff" width="50" alt="Avatar")
-            .flex-grow-1
-              h6.mb-0.fw-bold Ana María Gómez
-              small.text-muted Ministerio de Niños
-            button.btn.btn-sm.btn-light.border
-              i.bi.bi-three-dots
+      .card.border-0.shadow-sm
+        .card-body.p-4
+          .d-flex.justify-content-between.align-items-center.mb-4
+            h6.fw-bold.mb-0 Calendario de Próximos Eventos
+            a.text-primary.text-decoration-none.small.fw-bold(href="#") Ver Calendario Completo
           
-          //- Usuario 2
-          .list-group-item.px-0.border-0.mb-3.d-flex.align-items-center
-            img.rounded-circle.me-3(src="https://ui-avatars.com/api/?name=Pedro+Soto&background=D4AF37&color=fff" width="50" alt="Avatar")
-            .flex-grow-1
-              h6.mb-0.fw-bold Pedro Soto
-              small.text-muted Ministerio de Alabanza
-            button.btn.btn-sm.btn-light.border
-              i.bi.bi-three-dots
-          
-          //- Usuario 3
-          .list-group-item.px-0.border-0.d-flex.align-items-center
-            img.rounded-circle.me-3(src="https://ui-avatars.com/api/?name=Lucia+Rivas&background=003a7a&color=fff" width="50" alt="Avatar")
-            .flex-grow-1
-              h6.mb-0.fw-bold Lucía Rivas
-              small.text-muted Escuela Dominical
-            button.btn.btn-sm.btn-light.border
-              i.bi.bi-three-dots
+          .row.g-3
+            each event in [{d:'15', m:'ABR', t:'Culto Especial', s:'Confirmado', c:'success'}, {d:'22', m:'ABR', t:'Cena Ministerial', s:'Pendiente', c:'warning'}]
+              .col-md-6
+                .p-3.rounded-3.border.d-flex.align-items-center.bg-light-subtle
+                  .date-badge.me-3.text-center.bg-white.shadow-sm.rounded-3.p-2(style="min-width: 60px;")
+                    span.d-block.fw-bold.text-primary.h5.mb-0= event.d
+                    small.text-muted.fw-bold= event.m
+                  .flex-grow-1
+                    h6.mb-1.fw-bold= event.t
+                    small.text-muted
+                      i.bi.bi-geo-alt.me-1
+                      | Auditorio Principal
+                  span.badge.border(class=`bg-${event.c}-subtle text-${event.c} border-${event.c}`)= event.s
 
 block scripts
   script(src="https://cdn.jsdelivr.net/npm/chart.js")

@@ -20,6 +20,7 @@
   "homepage": "https://github.com/acostaaguilera2000/saic-app#readme",
   "dependencies": {
     "bcrypt": "^6.0.0",
+    "connect-flash": "^0.1.1",
     "cors": "^2.8.6",
     "express": "^5.2.1",
     "express-session": "^1.19.0",

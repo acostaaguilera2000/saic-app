@@ -3,106 +3,191 @@ html(lang="es")
   head
     meta(charset="UTF-8")
     meta(name="viewport" content="width=device-width, initial-scale=1.0")
-    title SAIC - Software Administrativo para Iglesias Cristianas
-    
-    //- Bootstrap 5 CSS
+    title IJERSAC - Iglesia Jesús de Nazaret | Redimidos por la Sangre de Cristo
     link(href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet")
-    //- Google Fonts
-    link(href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;700&display=swap" rel="stylesheet")
-    
-    style.
-      :root {
-        --saic-blue: #003a7a;
-        --saic-gold: #ffb81c;
-        --saic-dark: #1a1a1a;
-      }
-      body { font-family: 'Roboto', sans-serif; }
-      .navbar { border-bottom: 3px solid var(--saic-gold); }
-      .navbar-brand { font-weight: bold; color: var(--saic-blue) !important; }
-      .hero {
-        background: linear-gradient(rgba(0, 51, 160, 0.9), rgba(0, 51, 160, 0.8)), 
-                    url('https://images.unsplash.com/photo-1438232992991-995b7058bbb3?auto=format&fit=crop&q=80&w=1920') no-repeat center center/cover;
-        color: white;
-        padding: 100px 0;
-        text-align: center;
-      }
-      .hero p { color: var(--saic-gold); }
-      .btn-primary { background-color: var(--saic-gold); border-color: var(--saic-gold); color: #000; font-weight: bold; }
-      .btn-primary:hover { background-color: #e5a517; border-color: #e5a517; }
-      .feature-icon { font-size: 2.5rem; color: var(--saic-blue); margin-bottom: 1rem; }
-      .card { border: none; transition: transform 0.3s; box-shadow: 0 4px 15px rgba(0,0,0,0.1); }
-      .card:hover { transform: translateY(-10px); }
-      footer { background-color: var(--saic-dark); color: white; padding: 50px 0; }
+    link(rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css")
+    link(rel="stylesheet" href="css/landing.css")
 
   body
-    //- Navegación
-    nav.navbar.navbar-expand-lg.sticky-top.bg-white
+    //- Navbar de la Iglesia
+    nav#churchNavbar.navbar.navbar-expand-lg.navbar-dark.fixed-top
       .container
-        a.navbar-brand(href="#")
-          span(style="font-size: 1.5rem;") SAIC
+        a.navbar-brand.d-flex.align-items-center(href="#")
+          .brand-logo-sm
+            span.brand-text-lg IJERSAC
+         
+
         button.navbar-toggler(type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav")
           span.navbar-toggler-icon
+
         #navbarNav.collapse.navbar-collapse
-          ul.navbar-nav.ms-auto
-            li.nav-item: a.nav-link(href="#inicio") Inicio
-            li.nav-item: a.nav-link(href="#funciones") Funciones
+          ul.navbar-nav.ms-auto.align-items-center
+            li.nav-item: a.nav-link.active(href="#inicio") Inicio
+            li.nav-item: a.nav-link(href="#nosotros") Nosotros
+            li.nav-item: a.nav-link(href="#reuniones") Reuniones
+            li.nav-item: a.nav-link(href="#ministerios") Ministerios
             li.nav-item: a.nav-link(href="#contacto") Contacto
-            li.nav-item: a.btn.btn-primary.ms-lg-3(href="/auth/login") Login
+            li.nav-item.ms-lg-3
+              a.btn.btn-saic-nav(href="/auth/login")
+                i.fas.fa-lock.me-1
+                | Acceder a SAIC
 
     //- Hero Section
-    header#inicio.hero
-      .container
-        h1.display-4.fw-bold Gestión Eficiente para tu Iglesia
-        p.lead.mb-4 Software Administrativo para Iglesias Cristianas: Orden, Transparencia y Crecimiento.
-        .d-grid.gap-2.d-sm-flex.justify-content-sm-center
-          a.btn.btn-primary.btn-lg.px-4.gap-3(href="#contacto") Empezar Ahora
-          button.btn.btn-outline-light.btn-lg.px-4(type="button") Saber más
+    header#inicio.hero-section
+      .hero-overlay
+      .container.position-relative
+        .row.min-vh-90.align-items-center
+          .col-lg-7.text-center.text-lg-start
+            h1.hero-welcome.text-white.mb-3 Bienvenidos a Nuestra Iglesia
+            p.hero-description.text-gray-light.mb-4.
+              Una comunidad de fe que predica el evangelio de Jesucristo, transformando vidas 
+              a través del poder redentor de Su sangre.
+            .hero-buttons
+              a.btn.btn-crimson.btn-lg.me-2(href="#nosotros")
+                i.fas.fa-chevron-down.me-2
+                | Conócenos
+              a.btn.btn-outline-light.btn-lg(href="#contacto")
+                i.fas.fa-map-marker-alt.me-2
+                | Visítanos
 
-    //- Características
-    section#funciones.py-5
+          .col-lg-5.text-center.mt-4.mt-lg-0
+            .verse-card
+              i.fas.fa-cross.fa-3x.text-crimson.mb-3
+              blockquote.verse-text.
+                "Porque de tal manera amó Dios al mundo, que ha dado a su Hijo unigénito, 
+                para que todo aquel que en él cree, no se pierda, mas tenga vida eterna."
+              footer.verse-reference — Juan 3:16
+
+    //- Sección Nosotros
+    section#nosotros.py-5
       .container
         .text-center.mb-5
-          h2.fw-bold Todo lo que tu congregación necesita
-          .mx-auto(style="width: 60px; height: 3px; background: var(--saic-gold);")
-        
-        .row.g-4.text-center
-          //- Mixin para tarjetas (reutilización)
-          mixin feature(icon, title, text)
+          h2.section-title Nuestra Iglesia
+          .section-divider.mx-auto
+          p.lead.text-muted Una congregación fundamentada en la Palabra de Dios
+
+        .row.g-4
+          - 
+            const features = [
+              { icon: 'fa-cross', title: 'Nuestra Fe', desc: 'Creemos en Jesucristo como nuestro Señor y Salvador personal, quien nos redimió con su sangre preciosa.' },
+              { icon: 'fa-heart', title: 'Nuestra Misión', desc: 'Predicar el evangelio de Jesucristo y hacer discípulos, siguiendo el mandato de la Gran Comisión.' },
+              { icon: 'fa-users', title: 'Nuestra Comunidad', desc: 'Somos una familia espiritual que se ama, se apoya y crece unida en el conocimiento de Dios.' }
+            ]
+
+          each item in features
             .col-md-4
-              .card.h-100.p-4
-                .feature-icon #{icon}
-                h3 #{title}
-                p #{text}
+              .card.feature-card
+                .card-body.text-center.p-4
+                  .icon-circle-red.mb-3
+                    i.fas.fa-2x.text-white(class=item.icon)
+                  h4= item.title
+                  p.text-muted= item.desc
 
-          +feature("👥", "Membresía", "Control detallado de miembros, bautismos, ministerios y grupos familiares.")
-          +feature("💰", "Finanzas", "Gestión transparente de diezmos, ofrendas y reportes contables automáticos.")
-          +feature("📅", "Eventos", "Calendario de actividades y control de asistencia a servicios y reuniones.")
-
-    //- Contacto
-    section#contacto.py-5.bg-light
+    //- Reuniones
+    section#reuniones.py-5.bg-gray-light
       .container
-        .row.align-items-center
-          .col-lg-6
-            h2.fw-bold Lleva tu administración al siguiente nivel
-            p Déjanos tus datos y un asesor te contactará para una demostración personalizada del sistema SAIC.
-          .col-lg-6
-            .bg-white.p-4.rounded.shadow
-              form
-                .mb-3
-                  label.form-label Nombre de la Iglesia
-                  input.form-control(type="text" placeholder="Ej. Iglesia Central")
-                .mb-3
-                  label.form-label Correo Electrónico
-                  input.form-control(type="email" placeholder="nombre@correo.com")
-                button.btn.btn-primary.w-100(type="submit") Solicitar Información
+        .text-center.mb-5
+          h2.section-title Nuestras Reuniones
+          .section-divider.mx-auto
+          p.lead.text-muted Te esperamos en cada uno de nuestros servicios
 
-    //- Footer
-    footer.text-center
+        .row.g-4
+          //- Domingo
+          .col-md-6.col-lg-3
+            .card.schedule-card.border-crimson.h-100
+              .card-header.bg-crimson.text-white.text-center
+                i.fas.fa-sun.me-2
+                | Domingo
+              .card-body.text-center
+                p: strong 9:00 AM #[br] Escuela Dominical
+
+          //- Martes
+          .col-md-6.col-lg-3
+            .card.schedule-card.border-dark-blue.h-100
+              .card-header.bg-dark-blue.text-white.text-center
+                i.fas.fa-bible.me-2
+                | Martes
+              .card-body.text-center
+                p: strong 7:00 PM #[br] Estudio Bíblico
+
+
+          //- Jueves
+          .col-md-6.col-lg-3
+            .card.schedule-card.border-dark-blue.h-100
+              .card-header.bg-dark-blue.text-white.text-center
+                i.fas.fa-pray.fa-2x.d-block.mb-1
+                | Jueves
+              .card-body.text-center
+                p: strong 7:00 PM #[br] Vigilia de Oración
+
+
+          //- Sábado
+          .col-md-6.col-lg-3
+            .card.schedule-card.border-crimson.h-100
+              .card-header.bg-crimson.text-white.text-center
+                i.fas.fa-calendar-day.me-2
+                | Sábado
+              .card-body.text-center
+                p: strong 5:00 PM #[br] Reunión de Jóvenes
+
+    //- Ministerios
+    section#ministerios.py-5
       .container
-        h3.mb-4 SAIC
-        p Software Administrativo para Iglesias Cristianas
-        hr.my-4.bg-secondary
-        p.small.text-muted &copy; 2026 SAIC. Todos los derechos reservados.
+        .text-center.mb-5
+          h2.section-title Nuestros Ministerios
+          .section-divider.mx-auto
+          p.lead.text-muted Sirviendo a Dios en diferentes áreas
 
-    //- Bootstrap JS
+        .row.g-4
+          - 
+            const ministries = [
+              { icon: 'fa-child', name: 'Niños', sub: 'Escuela Dominical' },
+              { icon: 'fa-users', name: 'Jóvenes', sub: 'Liderazgo Juvenil' },
+              { icon: 'fa-music', name: 'Alabanza', sub: 'Adoración' },
+              { icon: 'fa-hand-holding-heart', name: 'Servicio', sub: 'Acción Social' }
+            ]
+
+          each m in ministries
+            .col-6.col-md-3
+              .ministry-item.text-center
+                .ministry-icon-box
+                  i.fas.fa-2x(class=m.icon)
+                h5= m.name
+                small.text-muted= m.sub
+
+    //- Footer con SAIC
+    footer#contacto.footer-church
+      .container
+        .row
+          .col-md-5.mb-4
+            h5.text-crimson IJERSAC
+            p Iglesia Jesús de Nazaret #[br] "Redimidos por la sangre de Cristo"
+            p.small Una iglesia comprometida con la predicación del evangelio y el servicio a la comunidad.
+
+
+          .col-md-4.mb-4
+            h5.text-crimson Contacto
+            p
+              i.fas.fa-map-marker-alt.me-2
+              | Juan Arias Magangué Bolivar
+            p
+              i.fas.fa-phone.me-2
+              | Teléfono de contacto
+            p
+              i.fas.fa-envelope.me-2
+              | info@ijersac.org
+
+          .col-md-3.mb-4
+            h5.text-crimson SAIC
+            p.small Sistema Administrativo para Iglesias Cristianas
+            a.btn.btn-crimson.btn-sm(href="/auth/login")
+              i.fas.fa-lock.me-1
+              | Acceder a SAIC
+
+        hr.border-secondary
+        .text-center
+          p.mb-0.small &copy; 2026 Iglesia Jesús de Nazaret. Todos los derechos reservados.
+          p.mb-0.small Powered by #[strong SAIC] - Sistema Administrativo para Iglesias Cristianas
+
     script(src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js")
+    script(src="js/landing.js")

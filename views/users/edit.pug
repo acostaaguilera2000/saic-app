@@ -22,16 +22,6 @@ block content
 
       .card.card-custom.border-0.shadow-sm
         .card-body.p-4.p-md-5
-          //- Alertas de Error
-          if errores && errores.length
-            .alert.alert-danger.border-0.shadow-sm.mb-4
-              .d-flex.align-items-center.mb-2
-                i.bi.bi-exclamation-octagon-fill.me-2.fs-5
-                h6.mb-0.fw-bold Error al actualizar:
-              ul.mb-0.small.ps-4
-                each error in errores
-                  li= error
-
           form(action=`/users/update/${userToEdit.id_usuario}` method="POST")
             .row.g-4
               //- Sección: Datos de Cuenta
