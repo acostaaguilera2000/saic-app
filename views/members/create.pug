@@ -1,0 +1,48 @@
+extends ../layout
+
+block content
+    .row.justify-content-center
+        .col-md-8
+            //- Encabezado e Historial de Navegación
+            .d-flex.justify-content-between.align-items-center.mb-3
+                div
+                    h3.fw-bold.text-dark.mb-1 Registrar Nuevo Miembro
+                    p.text-muted.small Formulario de ingreso para el alistamiento de la información básica y eclesiástica.
+                a.btn.btn-sm.btn-light.border.px-3(href="/members")
+                    i.bi.bi-arrow-left.me-1
+                    | Volver al listado
+
+
+            //- Tarjeta del Formulario
+            .card.card-custom.border-0.shadow-sm
+                .card-body.p-4
+                    form(action="/members/create" method="POST")
+                        .row.g-3
+                            .col-md-6
+                                label.form-label.text-muted.small.fw-bold(for="nombre") Nombres
+                                input#nombre.form-control(type="text" name="nombre" value=(valores.nombre || '') placeholder="Ej. Juan Carlos" required)
+
+                            .col-md-6
+                                label.form-label.text-muted.small.fw-bold(for="apellido") Apellidos
+                                input#apellido.form-control(type="text" name="apellido" value=(valores.apellido || '') placeholder="Ej. Pérez Gómez" required)
+
+                            .col-md-12
+                                label.form-label.text-muted.small.fw-bold(for="documento") Documento de Identidad
+                                input#documento.form-control(type="text" name="documento" value=(valores.documento || '') placeholder="Número de C.C" required)
+
+                            .col-md-6
+                                label.form-label.text-muted.small.fw-bold(for="fecha_registro") Fecha de Ingreso/Registro
+                                input#fecha_registro.form-control(type="date" name="fecha_registro" value=(valores.fecha_registro || '') required)
+
+                            .col-md-6
+                                label.form-label.text-muted.small.fw-bold(for="fecha_bautismo") Fecha de Bautismo (Opcional)
+                                input#fecha_bautismo.form-control(type="date" name="fecha_bautismo" value=(valores.fecha_bautismo || ''))
+                                .form-text.text-muted.small Dejar en blanco si el miembro aún no se ha bautizado.
+
+                        .hr.my-4.text-muted.opacity-25
+
+                        .d-flex.justify-content-end.gap-2
+                            a.btn.btn-light.border.px-4(href="/members") Cancelar
+                            button.btn.btn-primary.px-4(type="submit")
+                                i.bi.bi-save.me-2
+                                | Guardar Miembro

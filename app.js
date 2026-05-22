@@ -10,6 +10,7 @@ import morgan from "morgan";
 // Importación de rutas y middlewares
 import authRoutes from "./routes/authRoutes.js";
 import userRoutes from "./routes/usersRoutes.js";
+import miembroRoutes from "./routes/miembroRoutes.js"
 import error from "./middlewares/error.js";
 import { isAuthenticated } from "./middlewares/auth.js";
 
@@ -70,7 +71,7 @@ app.use(session({
 }));
 
 // INICIALIZAR FLASH (Debe ir después de session)
-app.use(flash()); 
+app.use(flash());
 
 // Middleware global para pasar datos a todas las vistas Pug
 app.use((req, res, next) => {
@@ -78,7 +79,7 @@ app.use((req, res, next) => {
     res.locals.success_msg = req.flash('success_msg');
     res.locals.error_msg = req.flash('error_msg');
     // Si usas express-validator y pasas 'errores', esto ayuda a que no explote si no existen
-    res.locals.errores = req.flash('errores') || []; 
+    res.locals.errores = req.flash('errores') || [];
     next();
 });
 
@@ -93,6 +94,7 @@ app.get("/dashboard", isAuthenticated, (req, res) => {
     res.render("dashboard", { title: "Panel de control" });
 });
 app.use("/users", isAuthenticated, userRoutes);
+app.use("/members", isAuthenticated, miembroRoutes);
 
 // 6. Manejo de errores 
 app.use(error.error404);

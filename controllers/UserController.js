@@ -29,7 +29,7 @@ class UserController {
     static async create(req, res) {
         try {
             const miembros = await Miembro.listMiembrosDisponibles();
-            
+
             // Validaciones de middleware 
             if (req.validationErrors) {
                 return res.status(400).render("users/create", {
@@ -129,6 +129,8 @@ class UserController {
             const updates = {};
 
             // Validaciones de unicidad en actualización
+
+            updates.email = user.email;
             if (email && email !== user.email) {
                 const checkEmail = await User.getByEmail(email);
                 if (checkEmail.length > 0) {
@@ -141,6 +143,7 @@ class UserController {
                 updates.email = email;
             }
 
+            updates.username = user.username;
             if (username && username !== user.username) {
                 const checkUser = await User.getByUsername(username);
                 if (checkUser.length > 0) {
@@ -154,7 +157,7 @@ class UserController {
             }
 
             updates.rol = rol || user.rol;
-            updates.id_miembro = id_miembro && id_miembro !== "" ? id_miembro : user.id_miembro;
+            updates.id_miembro = id_miembro && id_miembro.trim() !== "" ? Number(id_miembro) : null;
 
             if (password && password.trim() !== "") {
                 updates.password = await bcrypt.hash(password, 10);

@@ -1,0 +1,50 @@
+extends ../layout
+
+block content
+    .row.justify-content-center
+        .col-md-8
+            //- Encabezado
+            .d-flex.justify-content-between.align-items-center.mb-3
+                div
+                    h3.fw-bold.text-dark.mb-1 Modificar Datos de Miembro
+                    p.text-muted.small Actualiza los campos informativos correspondientes al registro ##{miembroToEdit.id_miembro}.
+                a.btn.btn-sm.btn-light.border.px-3(href="/members")
+                    i.bi.bi-arrow-left.me-1
+                    | Volver
+
+
+            //- Tarjeta de Edición
+            .card.card-custom.border-0.shadow-sm
+                .card-body.p-4
+                    form(action=`/members/update/${miembroToEdit.id_miembro}` method="POST")
+                        .row.g-3
+                            .col-md-6
+                                label.form-label.text-muted.small.fw-bold(for="nombre") Nombres
+                                input#nombre.form-control(type="text" name="nombre" value=miembroToEdit.nombre required)
+
+                            .col-md-6
+                                label.form-label.text-muted.small.fw-bold(for="apellido") Apellidos
+                                input#apellido.form-control(type="text" name="apellido" value=miembroToEdit.apellido required)
+
+                            .col-md-12
+                                label.form-label.text-muted.small.fw-bold(for="documento") Documento de Identidad
+                                input#documento.form-control(type="text" name="documento" value=miembroToEdit.documento required)
+
+                            .col-md-6
+                                label.form-label.text-muted.small.fw-bold(for="fecha_registro") Fecha de Ingreso/Registro
+                                //- Conversión nativa segura de fecha ISO a YYYY-MM-DD para el input date
+                                - var dateReg = miembroToEdit.fecha_registro ? new Date(miembroToEdit.fecha_registro).toISOString().split('T')[0] : ''
+                                input#fecha_registro.form-control(type="date" name="fecha_registro" value=dateReg required)
+
+                            .col-md-6
+                                label.form-label.text-muted.small.fw-bold(for="fecha_bautismo") Fecha de Bautismo
+                                - var dateBau = miembroToEdit.fecha_bautismo ? new Date(miembroToEdit.fecha_bautismo).toISOString().split('T')[0] : ''
+                                input#fecha_bautismo.form-control(type="date" name="fecha_bautismo" value=dateBau)
+                                
+                        .hr.my-4.text-muted.opacity-25
+
+                        .d-flex.justify-content-end.gap-2
+                            a.btn.btn-light.border.px-4(href="/members") Cancelar
+                            button.btn.btn-success.px-4(type="submit")
+                                i.bi.bi-check-all.me-2
+                                | Actualizar Cambios
