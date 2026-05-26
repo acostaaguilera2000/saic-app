@@ -2,12 +2,11 @@
    CONFIGURACIÓN Y VARIABLES - ADAPTADO A IJERSAC
    ========================================================================== */
 :root {
-    /* Colores extraídos de image.png */
-    --ijersac-navy: #0a192f;        /* Azul profundo del logo */
-    --ijersac-navy-light: #162a4a;  /* Variante para degradados */
-    --ijersac-red: #8b0000;         /* Rojo de la gota de sangre */
-    --ijersac-red-light: #b30000;   /* Variante para hovers */
-    --ijersac-bg: #f4f7f9;          /* Fondo neutro limpio */
+    --ijersac-navy: #0a192f;
+    --ijersac-navy-light: #162a4a;
+    --ijersac-red: #8b0000;
+    --ijersac-red-light: #b30000;
+    --ijersac-bg: #f4f7f9;
     --sidebar-width: 260px;
     --transition-smooth: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 }
@@ -110,8 +109,15 @@ body {
 }
 
 @keyframes fadeIn {
-    from { opacity: 0; transform: translateY(10px); }
-    to { opacity: 1; transform: translateY(0); }
+    from {
+        opacity: 0;
+        transform: translateY(10px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
 }
 
 /* TOP NAVBAR */
@@ -156,21 +162,22 @@ body {
 
 .card-custom:hover {
     transform: translateY(-8px);
-    box-shadow: 0 15px 35px rgba(139, 0, 0, 0.08); /* Sombra con toque rojo */
+    box-shadow: 0 15px 35px rgba(139, 0, 0, 0.08);
+    /* Sombra con toque rojo */
 }
 
 .btn-action {
     background: white;
-    border: 1px solid var(--ijersac-red);
+    border: 1px solid var(--ijersac-navy-light);
     color: var(--ijersac-navy);
     padding: 10px 20px;
     font-weight: 600;
-    border-radius: 12px;
+
     transition: var(--transition-smooth);
 }
 
 .btn-action:hover {
-    background: var(--ijersac-red);
+    background: var(--ijersac-navy-light);
     color: white;
     box-shadow: 0 5px 15px rgba(139, 0, 0, 0.3);
 }
@@ -223,13 +230,17 @@ body {
    ========================================================================== */
 
 /* 1. Tipografía y Espaciado Global */
-h2, h4, h5, h6 {
+h2,
+h4,
+h5,
+h6 {
     color: var(--ijersac-navy);
     letter-spacing: -0.5px;
 }
 
 .text-muted {
-    color: #64748b !important; /* Gris azulado más moderno */
+    color: #64748b !important;
+    /* Gris azulado más moderno */
 }
 
 /* 2. Refinamiento de Tarjetas de Métricas (Dashboard) */
@@ -298,7 +309,7 @@ h2, h4, h5, h6 {
 /* 5. Avatar Styling */
 .avatar-img {
     border: 2px solid white;
-    box-shadow: 0 0 10px rgba(0,0,0,0.1);
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
     transition: var(--transition-smooth);
 }
 
@@ -343,7 +354,7 @@ h2, h4, h5, h6 {
 .event-card {
     border: 1px solid #f1f5f9;
     border-left: 5px solid var(--ijersac-red);
-    box-shadow: 0 2px 4px rgba(0,0,0,0.02);
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.02);
 }
 
 .date-badge {
@@ -373,6 +384,7 @@ h2, h4, h5, h6 {
     box-shadow: 0 0 0 3px rgba(139, 0, 0, 0.1);
 }
 
+
 /* ==========================================================================
    RESPONSIVE DESIGN
    ========================================================================== */
@@ -398,7 +410,7 @@ h2, h4, h5, h6 {
     }
 
     .mobile-bottom-nav a {
-        color: rgba(255,255,255,0.7);
+        color: rgba(255, 255, 255, 0.7);
         opacity: 0.8;
         transition: 0.3s;
     }

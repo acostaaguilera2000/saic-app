@@ -10,7 +10,9 @@ import morgan from "morgan";
 // Importación de rutas y middlewares
 import authRoutes from "./routes/authRoutes.js";
 import userRoutes from "./routes/usersRoutes.js";
-import miembroRoutes from "./routes/miembroRoutes.js"
+import miembroRoutes from "./routes/miembroRoutes.js";
+import cultoRoutes from "./routes/cultoRoutes.js";
+import logisticaRoutes from "./routes/logisticaRoutes.js";
 import error from "./middlewares/error.js";
 import { isAuthenticated } from "./middlewares/auth.js";
 
@@ -45,6 +47,7 @@ app.use(
                     "https://cdn.jsdelivr.net",
                     "https://cdnjs.cloudflare.com"
                 ],
+                // DataTables usa a veces backgrounds con imágenes codificadas en data: para las flechas
                 "img-src": ["'self'", "data:", "https://ui-avatars.com"],
                 "connect-src": ["'self'", "https://cdn.jsdelivr.net"],
                 "upgrade-insecure-requests": [],
@@ -52,7 +55,6 @@ app.use(
         },
     })
 );
-
 app.use(morgan("dev"));
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
@@ -78,7 +80,7 @@ app.use((req, res, next) => {
     res.locals.user = req.session.user || null;
     res.locals.success_msg = req.flash('success_msg');
     res.locals.error_msg = req.flash('error_msg');
-    // Si usas express-validator y pasas 'errores', esto ayuda a que no explote si no existen
+    // express-validator y se pasa 'errores', esto ayuda a que no explote si no existen
     res.locals.errores = req.flash('errores') || [];
     next();
 });
@@ -95,6 +97,8 @@ app.get("/dashboard", isAuthenticated, (req, res) => {
 });
 app.use("/users", isAuthenticated, userRoutes);
 app.use("/members", isAuthenticated, miembroRoutes);
+app.use("/cultos", isAuthenticated, cultoRoutes);
+app.use("/logistica", isAuthenticated, logisticaRoutes);
 
 // 6. Manejo de errores 
 app.use(error.error404);
