@@ -9,12 +9,16 @@ import morgan from "morgan";
 
 // Importación de rutas y middlewares
 import authRoutes from "./routes/authRoutes.js";
-import userRoutes from "./routes/usersRoutes.js";
-import miembroRoutes from "./routes/miembroRoutes.js";
-import cultoRoutes from "./routes/cultoRoutes.js";
-import logisticaRoutes from "./routes/logisticaRoutes.js";
+import userRoutes from "./routes/userRoutes.js";
+import memberRoutes from "./routes/memberRoutes.js";
+import servicePlatformRoutes from "./routes/servicePlatformRoutes.js";
+import profileRoutes from "./routes/profileRoutes.js";
+import logisticsRoutes from "./routes/logisticsRoutes.js";
+import reportRoutes from "./routes/reportRoutes.js";
+
 import error from "./middlewares/error.js";
-import { isAuthenticated } from "./middlewares/auth.js";
+import { isAuthenticated } from "./middlewares/validate-modules/auth.js";
+import activeModule from "./middlewares/activeModule.js";
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -55,6 +59,7 @@ app.use(
         },
     })
 );
+
 app.use(morgan("dev"));
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
@@ -64,7 +69,7 @@ app.set("views", path.join(__dirname, "views"));
 app.set("view engine", "pug");
 app.use(express.static(path.join(__dirname, "public")));
 
-// 3. Configuración de sesión y Flash (ORDEN CRÍTICO)
+// 3. Configuración de sesión y Flash 
 app.use(session({
     secret: process.env.SESSION_SECRET || "mi secreto",
     resave: false,
@@ -72,10 +77,10 @@ app.use(session({
     cookie: { secure: false } // Cambiar a true si usas HTTPS
 }));
 
-// INICIALIZAR FLASH (Debe ir después de session)
+// INICIALIZAR FLASH 
 app.use(flash());
 
-// Middleware global para pasar datos a todas las vistas Pug
+// Middleware global 
 app.use((req, res, next) => {
     res.locals.user = req.session.user || null;
     res.locals.success_msg = req.flash('success_msg');
@@ -84,6 +89,8 @@ app.use((req, res, next) => {
     res.locals.errores = req.flash('errores') || [];
     next();
 });
+
+app.use(activeModule);
 
 // 4. Rutas públicas
 app.get("/", (req, res) => {
@@ -96,9 +103,11 @@ app.get("/dashboard", isAuthenticated, (req, res) => {
     res.render("dashboard", { title: "Panel de control" });
 });
 app.use("/users", isAuthenticated, userRoutes);
-app.use("/members", isAuthenticated, miembroRoutes);
-app.use("/cultos", isAuthenticated, cultoRoutes);
-app.use("/logistica", isAuthenticated, logisticaRoutes);
+app.use("/profile", isAuthenticated, profileRoutes);
+app.use("/members", isAuthenticated, memberRoutes);
+app.use("/service", isAuthenticated, servicePlatformRoutes);
+app.use("/logistic", isAuthenticated, logisticsRoutes);
+app.use("/report", isAuthenticated, reportRoutes);
 
 // 6. Manejo de errores 
 app.use(error.error404);

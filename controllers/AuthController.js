@@ -1,53 +1,45 @@
-import bcrypt from "bcrypt";
-import User from "../models/User.js";
-import error from "../middlewares/error.js";
+import AuthService from "../services/AuthService.js";
+import errorHandler from "../middlewares/error.js";
 
 class AuthController {
 
-    static getFormLogin(req, res) {
-        return res.render("login")
+    static renderLoginForm(req, res) {
+        return res.render("login", { error: null });
     }
 
-    static async login(req, res) {
+    static async processLogin(req, res) {
         try {
             const { email, password } = req.body;
-            const users = await User.getByEmail(email); // devuelve un array
-            console.log(users);
+            const authenticatedUser = await AuthService.authenticateUser(email, password);
 
-            if (!users || users.length === 0) {
-                return res.render("login", { error: `El usuario ${email} no existe` });
-            }
-
-            const user = users[0]; // primer registro
-
-            const isMatch = await bcrypt.compare(password, user.password);
-            console.log("Resultado de bcrypt.compare:", isMatch);
-
-            if (!isMatch) {
-                return res.render("login", { error: "Contraseña Incorrecta" });
-            }
-
-         
-            req.session.user = user;
-            res.redirect("/dashboard");
+            // Guardamos los datos del usuario en la sesión express-session
+            req.session.user = authenticatedUser;
+            
+            return res.redirect("/dashboard");
 
         } catch (err) {
-            error.error500(req, res, err);
+            // Si las credenciales fallan, capturamos el error de negocio y notificamos en la UI
+            if (err.name === "AuthenticationError") {
+                return res.render("login", { error: err.message, valores: req.body  });
+            }
+            
+            // Si ocurre una falla del servidor o base de datos, disparamos el error genérico 500
+            console.error("Critical failure in AuthController.processLogin:", err);
+            errorHandler.error500(req, res, err);
         }
     }
 
-
-    static logOut(req, res) {
+    static processLogout(req, res) {
         req.session.destroy(err => {
             if (err) {
-                console.error("Error al destruir la sesión:", err);
+                console.error("Error destroying active session in AuthController.processLogout:", err);
                 return res.redirect("/dashboard");
             }
+            // Limpieza del identificador de la cookie de sesión de Express
             res.clearCookie("connect.sid");
             res.redirect("/auth/login");
         });
     }
 }
-
 
 export default AuthController;

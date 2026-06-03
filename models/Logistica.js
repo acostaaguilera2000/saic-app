@@ -2,16 +2,15 @@
 import db from "../config/db.js";
 
 class Logistica {
-    
     // Obtener la logística de un culto específico (si no existe, retornará null)
     static async getByCultoId(id_culto) {
         try {
             const query = `
                 SELECT 
                     l.*,
-                    m_son.nombre AS nombre_sonido, m_son.apellido AS apellido_sonido,
-                    m_mul.nombre AS nombre_multimedia, m_mul.apellido AS apellido_multimedia,
-                    m_ase.nombre AS nombre_aseo, m_ase.apellido AS apellido_aseo
+                    m_son.nombre AS son_nom, m_son.apellido AS son_ape,
+                    m_mul.nombre AS mul_nom, m_mul.apellido AS mul_ape,
+                    m_ase.nombre AS ase_nom, m_ase.apellido AS ase_ape
                 FROM logistica_culto l
                 LEFT JOIN miembro m_son ON l.id_sonido = m_son.id_miembro
                 LEFT JOIN miembro m_mul ON l.id_multimedia = m_mul.id_miembro

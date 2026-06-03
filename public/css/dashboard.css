@@ -8,12 +8,13 @@
     --ijersac-red-light: #b30000;
     --ijersac-bg: #f4f7f9;
     --sidebar-width: 260px;
-    --transition-smooth: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    --transition-smooth: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 /* Personalización del Scrollbar */
 ::-webkit-scrollbar {
-    width: 8px;
+    width: 6px;
+    height: 6px;
 }
 
 ::-webkit-scrollbar-track {
@@ -21,7 +22,7 @@
 }
 
 ::-webkit-scrollbar-thumb {
-    background: var(--ijersac-navy);
+    background: var(--ijersac-navy-light);
     border-radius: 10px;
 }
 
@@ -35,8 +36,25 @@
 body {
     font-family: 'Inter', sans-serif;
     background-color: var(--ijersac-bg);
-    color: #2d3436;
+    color: #334155;
+    /* Slate 700 para una lectura más suave que el negro puro */
     overflow-x: hidden;
+    -webkit-font-smoothing: antialiased;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+    color: var(--ijersac-navy);
+    letter-spacing: -0.5px;
+}
+
+.text-muted {
+    color: #64748b !important;
+    /* Gris azulado moderno */
 }
 
 /* ==========================================================================
@@ -60,12 +78,12 @@ body {
 .sidebar-header {
     padding: 2rem 1.5rem;
     text-align: center;
-    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.06);
 }
 
 .sidebar .nav-link {
-    color: rgba(255, 255, 255, 0.7);
-    padding: 14px 25px;
+    color: rgba(255, 255, 255, 0.65);
+    padding: 14px 24px;
     font-weight: 500;
     transition: var(--transition-smooth);
     border-left: 4px solid transparent;
@@ -74,44 +92,44 @@ body {
 }
 
 .sidebar .nav-link i {
-    font-size: 1.2rem;
-    transition: transform 0.3s ease;
+    font-size: 1.15rem;
+    transition: transform 0.25s ease, color 0.25s ease;
 }
 
 .sidebar .nav-link:hover {
     color: white;
-    background: rgba(255, 255, 255, 0.08);
+    background: rgba(255, 255, 255, 0.06);
     border-left: 4px solid var(--ijersac-red);
-    padding-left: 30px;
+    padding-left: 28px;
 }
 
 .sidebar .nav-link:hover i {
     color: var(--ijersac-red-light);
-    transform: scale(1.2) rotate(5deg);
+    transform: scale(1.15) rotate(3deg);
 }
 
 .sidebar .nav-link.active {
     color: white;
-    background: rgba(255, 255, 255, 0.1);
+    background: rgba(255, 255, 255, 0.09);
     border-left: 4px solid var(--ijersac-red);
     font-weight: 600;
 }
 
 /* ==========================================================================
-   ÁREA DE CONTENIDO PRINCIPAL
+   ÁREA DE CONTENIDO PRINCIPAL Y CABECERA
    ========================================================================== */
 .main-wrapper {
     margin-left: var(--sidebar-width);
     width: calc(100% - var(--sidebar-width));
     min-height: 100vh;
     transition: var(--transition-smooth);
-    animation: fadeIn 0.6s ease-out;
+    animation: fadeIn 0.45s ease-out;
 }
 
 @keyframes fadeIn {
     from {
         opacity: 0;
-        transform: translateY(10px);
+        transform: translateY(8px);
     }
 
     to {
@@ -120,25 +138,25 @@ body {
     }
 }
 
-/* TOP NAVBAR */
 .top-header {
-    height: 75px;
+    height: 70px;
     background: white;
     display: flex;
     align-items: center;
     justify-content: space-between;
     padding: 0 2.5rem;
-    box-shadow: 0 2px 15px rgba(0, 0, 0, 0.04);
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.02);
     position: sticky;
     top: 0;
     z-index: 1000;
+    border-bottom: 1px solid #e2e8f0;
 }
 
 .top-header img {
     border: 2px solid var(--ijersac-red);
     padding: 2px;
     background: white;
-    transition: transform 0.3s ease;
+    transition: transform 0.2s ease;
 }
 
 .top-header img:hover {
@@ -150,243 +168,165 @@ body {
 }
 
 /* ==========================================================================
-   COMPONENTES (CARDS, BUTTONS, BADGES)
+   🍱 NUEVO SISTEMA BENTO GRID (MÉTRIQUES & DASHBOARD)
    ========================================================================== */
-.card-custom {
-    background: white;
-    border: 1px solid rgba(0, 0, 0, 0.05);
-    border-radius: 18px;
-    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.02);
-    transition: var(--transition-smooth);
-}
-
-.card-custom:hover {
-    transform: translateY(-8px);
-    box-shadow: 0 15px 35px rgba(139, 0, 0, 0.08);
-    /* Sombra con toque rojo */
-}
-
-.btn-action {
-    background: white;
-    border: 1px solid var(--ijersac-navy-light);
-    color: var(--ijersac-navy);
-    padding: 10px 20px;
-    font-weight: 600;
-
-    transition: var(--transition-smooth);
-}
-
-.btn-action:hover {
-    background: var(--ijersac-navy-light);
-    color: white;
-    box-shadow: 0 5px 15px rgba(139, 0, 0, 0.3);
-}
-
-/* EVENTOS */
-.event-card {
-    display: flex;
-    align-items: center;
-    padding: 1.2rem;
-    margin-bottom: 1rem;
-    border-radius: 15px;
-    background: #fff;
-    border: 1px solid rgba(0, 0, 0, 0.05);
-    border-left: 6px solid var(--ijersac-red);
-    transition: var(--transition-smooth);
-}
-
-.event-card:hover {
-    background: #fafafa;
-    border-left-width: 10px;
-}
-
-.date-box {
-    min-width: 60px;
-    text-align: center;
-    background: var(--ijersac-bg);
-    border-radius: 10px;
-    padding: 8px;
-    margin-right: 1.2rem;
-    color: var(--ijersac-navy);
-    font-weight: bold;
-    box-shadow: inset 0 0 5px rgba(0, 0, 0, 0.02);
-}
-
-/* BADGES MODERNOS (SOFT STYLE) */
-.badge-soft-success {
-    background-color: rgba(25, 135, 84, 0.1) !important;
-    color: #198754 !important;
-    border: 1px solid rgba(25, 135, 84, 0.15);
-}
-
-.badge-soft-warning {
-    background-color: rgba(255, 193, 7, 0.1) !important;
-    color: #856404 !important;
-    border: 1px solid rgba(255, 193, 7, 0.15);
-}
-
-/* ==========================================================================
-   MEJORAS DE CONTENIDO - ESTILO PREMIUM IJERSAC
-   ========================================================================== */
-
-/* 1. Tipografía y Espaciado Global */
-h2,
-h4,
-h5,
-h6 {
-    color: var(--ijersac-navy);
-    letter-spacing: -0.5px;
-}
-
-.text-muted {
-    color: #64748b !important;
-    /* Gris azulado más moderno */
-}
-
-/* 2. Refinamiento de Tarjetas de Métricas (Dashboard) */
-.card-custom {
+.bento-card {
     background: #ffffff;
-    border: none;
-    border-radius: 20px;
-    position: relative;
-    overflow: hidden;
-    transition: var(--transition-smooth);
-    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05), 0 2px 4px -1px rgba(0, 0, 0, 0.03);
+    border: none !important;
+    border-radius: 16px !important;
+    /* Bordes suaves característicos de Bento */
+    transition: transform 0.25s cubic-bezier(0.4, 0, 0.2, 1), box-shadow 0.25s ease !important;
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.02), 0 2px 4px -1px rgba(0, 0, 0, 0.01) !important;
 }
 
-.card-custom:hover {
-    transform: translateY(-5px);
-    box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+.bento-card:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 12px 20px -5px rgba(10, 25, 47, 0.06), 0 8px 8px -5px rgba(10, 25, 47, 0.03) !important;
 }
 
-/* Decoración sutil de fondo para las cards */
-.card-custom::before {
-    content: "";
-    position: absolute;
-    top: -20px;
-    right: -20px;
-    width: 100px;
-    height: 100px;
-    background: radial-gradient(circle, var(--ijersac-navy) 0%, transparent 70%);
-    opacity: 0.03;
-    border-radius: 50%;
-}
-
-/* 3. Iconos de Métricas */
+/* Cajas de Iconos dentro de las Celdas Bento */
 .icon-box {
-    width: 48px;
-    height: 48px;
+    width: 38px;
+    height: 38px;
     display: flex;
     align-items: center;
     justify-content: center;
-    border-radius: 14px;
-    font-size: 1.25rem;
-    margin-bottom: 1rem;
-}
-
-/* 4. Tabla de Usuarios Recientes (Estilo limpio) */
-.table {
-    --bs-table-hover-bg: rgba(10, 25, 47, 0.03);
-}
-
-.table thead th {
-    background-color: var(--ijersac-bg);
-    text-transform: uppercase;
-    font-size: 0.75rem;
-    letter-spacing: 1px;
-    font-weight: 700;
-    color: var(--ijersac-navy);
-    border: none;
-    padding: 15px;
-}
-
-.table tbody td {
-    padding: 16px 15px;
-    vertical-align: middle;
-    border-color: #f1f5f9;
-}
-
-/* 5. Avatar Styling */
-.avatar-img {
-    border: 2px solid white;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    border-radius: 10px;
+    font-size: 1.1rem;
     transition: var(--transition-smooth);
 }
 
-.avatar-img:hover {
-    border-color: var(--ijersac-red);
-    transform: scale(1.1);
+.bento-card:hover .icon-box {
+    transform: scale(1.05);
 }
 
-/* 6. Mejoras en Gráficos */
-#growthChart {
-    filter: drop-shadow(0px 10px 10px rgba(10, 25, 47, 0.1));
+/* Filas de la Agenda de Eventos Bento */
+.event-row {
+    border: 1px solid #e2e8f0 !important;
+    transition: background-color 0.2s ease, border-color 0.2s ease;
 }
 
-/* 7. Botones de Acción (Dashboard) */
-.btn-primary {
-    background: var(--ijersac-navy);
-    border: none;
-    padding: 10px 24px;
-    border-radius: 12px;
+.event-row:hover {
+    background-color: #f8fafc !important;
+    border-color: #cbd5e1 !important;
+}
+
+.date-badge {
+    border: 1px solid #e2e8f0;
+    transition: var(--transition-smooth);
+}
+
+.event-row:hover .date-badge {
+    background-color: var(--ijersac-navy) !important;
+    border-color: var(--ijersac-navy) !important;
+}
+
+.event-row:hover .date-badge span {
+    color: #ffffff !important;
+}
+
+/* ==========================================================================
+   COMPONENTES PREMIUM  BOTONES, UTILIDADES)
+   ========================================================================== */
+
+
+/* Botonera Institucional */
+.btn-dark {
+    background: var(--ijersac-navy) !important;
+    border: none !important;
+    padding: 8px 18px;
+    border-radius: 10px;
     font-weight: 600;
     transition: var(--transition-smooth);
 }
 
-.btn-primary:hover {
-    background: var(--ijersac-navy-light);
-    box-shadow: 0 10px 20px rgba(10, 25, 47, 0.2);
-    transform: translateY(-2px);
+.btn-dark:hover {
+    background: var(--ijersac-navy-light) !important;
+    box-shadow: 0 8px 16px rgba(10, 25, 47, 0.15);
+    transform: translateY(-1px);
 }
 
 .btn-white {
-    background: white;
+    background: #ffffff;
     color: var(--ijersac-navy);
     border: 1px solid #e2e8f0;
+    padding: 8px 18px;
+    border-radius: 10px;
+    font-weight: 600;
+    transition: var(--transition-smooth);
 }
 
 .btn-white:hover {
     background: #f8fafc;
-    border-color: var(--ijersac-navy);
+    border-color: #cbd5e1;
+    color: var(--ijersac-navy);
 }
 
-/* 8. Event Card (Refinado) */
-.event-card {
-    border: 1px solid #f1f5f9;
-    border-left: 5px solid var(--ijersac-red);
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.02);
+.btn-xs {
+    padding: 2px 6px;
+    font-size: 12px;
+    background-color: #f1f5f9;
+    color: #475569;
 }
 
-.date-badge {
-    border: 1px solid #edf2f7;
-    transition: var(--transition-smooth);
+.btn-xs:hover {
+    background-color: var(--ijersac-navy);
+    color: #ffffff;
 }
 
-.event-card:hover .date-badge {
-    background-color: var(--ijersac-navy) !important;
-}
-
-.event-card:hover .date-badge span {
-    color: white !important;
-}
-
-/* 9. Elementos de Formulario (Selects en Dashboard) */
+/* Filtros e Inputs */
 .form-select-sm {
     border-radius: 8px;
     border: 1px solid #e2e8f0;
-    font-size: 0.8rem;
+    font-size: 0.75rem;
     font-weight: 600;
     color: var(--ijersac-navy);
 }
 
 .form-select-sm:focus {
     border-color: var(--ijersac-red);
-    box-shadow: 0 0 0 3px rgba(139, 0, 0, 0.1);
+    box-shadow: 0 0 0 3px rgba(139, 0, 0, 0.08);
+}
+
+/* Efecto de sombra para el gráfico */
+#growthChart {
+    filter: drop-shadow(0px 8px 8px rgba(10, 25, 47, 0.03));
+}
+
+/* Tipografías Micro-UI */
+.ls-1 {
+    letter-spacing: 0.5px;
+}
+
+.small-text {
+    font-size: 13px;
+}
+
+.x-small {
+    font-size: 11.5px;
+}
+
+.xx-small {
+    font-size: 10.5px;
 }
 
 
+/* Botón de acción superior */
+.btn-action {
+    background-color: var(--ijersac-navy);
+    color: #ffffff;
+    border: none;
+    transition: all 0.2s ease;
+}
+
+.btn-action:hover {
+    background-color: var(--ijersac-navy-light);
+    color: #ffffff;
+    transform: translateY(-1px);
+}
+
 /* ==========================================================================
-   RESPONSIVE DESIGN
+   RESPONSIVE DESIGN (PROTEGIDO)
    ========================================================================== */
 @media (max-width: 991.98px) {
     .sidebar {
@@ -412,20 +352,20 @@ h6 {
     .mobile-bottom-nav a {
         color: rgba(255, 255, 255, 0.7);
         opacity: 0.8;
-        transition: 0.3s;
+        transition: 0.2s;
     }
 
     .mobile-bottom-nav a:active {
         color: var(--ijersac-red-light) !important;
-        transform: scale(0.9);
+        transform: scale(0.95);
     }
 
     .content-body {
-        padding: 1.5rem;
-        margin-bottom: 90px;
+        padding: 1.25rem;
+        margin-bottom: 85px;
     }
 
     .top-header {
-        padding: 0 1.5rem;
+        padding: 0 1.25rem;
     }
 }

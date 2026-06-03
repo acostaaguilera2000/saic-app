@@ -97,6 +97,38 @@
     color: #fff;
 }
 
+/* Tablas de Micro-UI */
+.table {
+    --bs-table-hover-bg: rgba(10, 25, 47, 0.02);
+}
+
+.table thead th {
+    background-color: #f8fafc;
+    text-transform: uppercase;
+    font-size: 0.7rem;
+    letter-spacing: 0.8px;
+    font-weight: 700;
+    color: var(--ijersac-navy);
+    border: none;
+    padding: 12px;
+}
+
+.table tbody td {
+    padding: 12px;
+    vertical-align: middle;
+    border-color: #f1f5f9;
+}
+
+/* Refinamiento de Avatares */
+.table img.rounded-circle {
+    border: 2px solid #ffffff;
+    box-shadow: 0 0 8px rgba(0, 0, 0, 0.06);
+    transition: var(--transition-smooth);
+}
+
+.table tr:hover img.rounded-circle {
+    border-color: var(--ijersac-red);
+}
 /* Corrección de bordes Bootstrap que rompen DataTables */
 .table-bordered> :not(caption)>*>* {
     border-width: 0 0 1px 0 !important;

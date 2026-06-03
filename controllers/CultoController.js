@@ -1,6 +1,6 @@
 // src/controllers/CultoController.js
 import Culto from "../models/Culto.js";
-import Miembro from "../models/Miembro.js";
+import Miembro from "../models/Member.js";
 import error from "../middlewares/error.js";
 
 class CultoController {

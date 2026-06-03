@@ -1,0 +1,80 @@
+extends ../layout
+
+block content
+    .row.justify-content-center
+        .col-lg-10
+            .d-flex.justify-content-between.align-items-center.mb-3
+                div
+                    h3.fw-bold.text-dark.mb-1 Editar Culto ##{cultoToEdit.id_culto}
+                    p.text-muted.small Modificando los parámetros del servicio.
+                a.btn.btn-sm.btn-light.border.px-3(href="/cultos")
+                    i.bi.bi-arrow-left.me-1
+                    | Volver
+
+            if errores && errores.length > 0
+                .alert.alert-danger.border-0.shadow-sm.mb-4
+                    h6.fw-bold.mb-2 Corrija los siguientes errores:
+                    ul.mb-0.ps-3.small
+                        each err in errores
+                            li #{err}
+
+            .card.card-custom.border-0.shadow-sm
+                .card-body.p-4.p-md-5
+                    form(action=`/service/update/${cultoToEdit.id_culto}` method="POST")
+                        .row.g-4
+                            .col-md-3
+                                label.form-label.fw-semibold(for="fecha") Fecha del Culto
+                                - var dateValue = cultoToEdit.fecha ? new Date(cultoToEdit.fecha).toISOString().split('T')[0] : ''
+                                input#fecha.form-control(type="date" name="fecha" value=dateValue required)
+
+                            .col-md-3
+                                label.form-label.fw-semibold(for="hora") Hora
+                                input#hora.form-control(type="time" name="hora" value=cultoToEdit.hora required)
+
+                            .col-md-6
+                                label.form-label.fw-semibold(for="tipo_culto") Tipo de Culto
+                                select#tipo_culto.form-select(name="tipo_culto" required)
+                                    option(value="Culto General" selected=(cultoToEdit.tipo_culto === "Culto General")) Culto General
+                                    option(value="Culto de Jóvenes" selected=(cultoToEdit.tipo_culto === "Culto de Jóvenes")) Culto de Jóvenes
+                                    option(value="Culto de Damas" selected=(cultoToEdit.tipo_culto === "Culto de Damas")) Culto de Damas
+                                    option(value="Culto de Caballeros" selected=(cultoToEdit.tipo_culto === "Culto de Caballeros")) Culto de Caballeros
+                                    option(value="Escuela Bíblica Dominical" selected=(cultoToEdit.tipo_culto === "Escuela Bíblica Dominical")) Escuela Bíblica Dominical
+                                    option(value="Culto de Oración" selected=(cultoToEdit.tipo_culto === "Culto de Oración")) Culto de Oración
+
+                            .col-12.mt-4
+                                span.fw-bold.text-uppercase.small.text-muted Linea de Dirección (Altar)
+                                hr.mt-1.mb-3
+
+                            .col-md-6
+                                label.form-label.fw-semibold(for="id_dirigente") Dirigente Local
+                                select#id_dirigente.form-select(name="id_dirigente")
+                                    option(value="") -- Seleccione un Miembro Interno --
+                                    if miembros && miembros.length
+                                        each m in miembros
+                                            option(value=m.id_miembro selected=(cultoToEdit.id_dirigente == m.id_miembro))= `${m.nombre} ${m.apellido}`
+
+                            .col-md-6
+                                label.form-label.fw-semibold(for="dirigente_externo") O Dirigente Invitado (Externo)
+                                input#dirigente_externo.form-control(type="text" name="dirigente_externo" value=cultoToEdit.dirigente_externo)
+
+                            .col-12.mt-4
+                                span.fw-bold.text-uppercase.small.text-muted Palabra Central (Predicación)
+                                hr.mt-1.mb-3
+
+                            .col-md-6
+                                label.form-label.fw-semibold(for="id_predicador") Predicador Local
+                                select#id_predicador.form-select(name="id_predicador")
+                                    option(value="") -- Seleccione un Miembro Interno --
+                                    if miembros && miembros.length
+                                        each m in miembros
+                                            option(value=m.id_miembro selected=(cultoToEdit.id_predicador == m.id_miembro))= `${m.nombre} ${m.apellido}`
+
+                            .col-md-6
+                                label.form-label.fw-semibold(for="predicador_externo") O Predicador Invitado (Externo)
+                                input#predicador_externo.form-control(type="text" name="predicador_externo" value=cultoToEdit.predicador_externo)
+
+                        .d-flex.justify-content-end.gap-3.mt-5
+                            a.btn.btn-light.px-4(href="/service") Cancelar
+                            button.btn.btn-action.px-5(type="submit")
+                                i.bi.bi-arrow-repeat.me-2
+                                | Actualizar Culto
