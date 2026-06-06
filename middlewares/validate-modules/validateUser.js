@@ -1,6 +1,6 @@
 // Validaciones comunes para evitar repetición de código
 const validateCommonFields = (req, errors) => {
-    const {username, email, rol, id_miembro } = req.body;
+    const { username, email, rol, id_miembro } = req.body;
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
     if (!email || !emailRegex.test(email)) {
@@ -32,9 +32,8 @@ const validateCommonFields = (req, errors) => {
 
 };
 
-/**
- * Middleware para validar la creación de un usuario (Contraseña Obligatoria)
- */
+// Middleware para validar la creación de un usuario (Contraseña Obligatoria)
+
 export const validateUserCreate = (req, res, next) => {
     const { password } = req.body;
     const errors = [];
@@ -51,9 +50,8 @@ export const validateUserCreate = (req, res, next) => {
     next();
 };
 
-/**
- * Middleware para validar la actualización de un usuario (Contraseña Opcional)
- */
+// Middleware para validar la actualización de un usuario (Contraseña Opcional)
+
 export const validateUserUpdate = (req, res, next) => {
     const { password } = req.body;
     const errors = [];

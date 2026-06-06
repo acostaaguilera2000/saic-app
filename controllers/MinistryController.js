@@ -4,14 +4,13 @@ import errorHandler from "../middlewares/error.js";
 
 class MinistryController {
 
-    /**
-     * Recupera y despliega la lista global de ministerios en el sistema
-     */
+    // Recupera y despliega la lista global de ministerios en el sistema
+
     static async getAllMinistries(req, res) {
         try {
             // Invocación del servicio encargado de recopilar el listado de ministerios
             const ministries = await MinistryService.getMinistriesDashboard();
-            
+
             // Mantiene el envío de la variable 'datos' en español para la vista index.pug
             res.render("ministries-views/index", { datos: ministries });
         } catch (err) {
@@ -20,9 +19,7 @@ class MinistryController {
         }
     }
 
-    /**
-     * Recupera el detalle completo de un ministerio, sus integrantes y los candidatos aptos
-     */
+    // Recupera el detalle completo de un ministerio, sus integrantes y los candidatos aptos
     static async getMinistryDetails(req, res) {
         try {
             const { id } = req.params;
@@ -46,9 +43,7 @@ class MinistryController {
         }
     }
 
-    /**
-     * Procesa el registro de un nuevo ministerio evaluando el estado de las validaciones
-     */
+    // Procesa el registro de un nuevo ministerio evaluando el estado de las validaciones
     static async processCreateMinistry(req, res) {
         try {
             // Si el middleware de validación sintáctica detectó errores, frena el flujo
@@ -81,9 +76,8 @@ class MinistryController {
         }
     }
 
-    /**
-     * Procesa la vinculación relacional de un miembro con un ministerio específico
-     */
+    //Procesa la vinculación relacional de un miembro con un ministerio específico
+
     static async processAddMember(req, res) {
         const { id_ministerio, id_miembro } = req.body;
         try {
@@ -103,9 +97,8 @@ class MinistryController {
         }
     }
 
-    /**
-     * Rompe el vínculo relacional entre un integrante y su ministerio asignado
-     */
+    // Rompe el vínculo relacional entre un integrante y su ministerio asignado
+
     static async processRemoveMember(req, res) {
         const { id_ministerio, id_miembro } = req.body;
         try {

@@ -1,9 +1,3 @@
-/**
- * @param {Object} req
- * @param {Object} res
- * @param {Function} next
- * @returns {void}
- */
 const validateLogistics = (req, res, next) => {
     const errores = [];
     const { id_sonido, id_multimedia, id_aseo, observaciones } = req.body;

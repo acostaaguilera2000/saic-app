@@ -4,13 +4,11 @@ import errorHandler from "../middlewares/error.js";
 
 class MemberController {
 
-    /**
-     * Recupera y despliega la lista global de miembros en el sistema
-     */
+    // Recupera y despliega la lista global de miembros en el sistema
     static async getAllMembers(req, res) {
         try {
             const members = await Member.findAll();
-            // Mantiene el envío de la variable 'miembros' en español para la vista index.pug
+            // Mantiene el envío de la variable 'miembros' para la vista index.pug
             res.render("members-views/index", { miembros: members });
         } catch (err) {
             console.error("Error in MemberController.getAllMembers:", err);
@@ -29,7 +27,7 @@ class MemberController {
             if (req.validationErrors) {
                 return res.status(400).render("members-views/create", {
                     errores: req.validationErrors,
-                    valores: req.body 
+                    valores: req.body
                 });
             }
 
@@ -79,7 +77,7 @@ class MemberController {
     static async processUpdateMember(req, res) {
         const { id } = req.params;
         try {
-            // Si el validador detiene la petición, re-renderizamos manteniendo la data 
+            // Si el validador detiene la petición, renderizamos manteniendo la data 
             if (req.validationErrors) {
                 return res.status(400).render("members-views/edit", {
                     errores: req.validationErrors,
@@ -118,7 +116,7 @@ class MemberController {
                 return res.redirect("/members");
             }
 
-            // 2. Invertimos el valor numérico basándonos en la columna exacta de la BD
+            // 2. Invertimos el valor numérico 
             const newStatus = member.activo === 1 ? 0 : 1;
 
             // 3. Mandamos la actualización a la base de datos

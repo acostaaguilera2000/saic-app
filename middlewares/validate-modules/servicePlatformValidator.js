@@ -1,9 +1,3 @@
-/**
- * Valida los campos obligatorios y sintácticos de la agenda de un culto individual
- * @param {Object} culto - Objeto que representa una fila del formulario masivo
- * @param {number} index - Índice de la fila para dar mejor feedback visual
- * @param {Array} errors - Array donde se acumulan los mensajes de error
- */
 const validateCommonFields = (culto, index, errors) => {
     const filaNum = index + 1;
     const { fecha, hora, tipo_culto, id_dirigente, dirigente_externo, id_predicador, predicador_externo } = culto;

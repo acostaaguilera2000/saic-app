@@ -60,11 +60,9 @@ block content
                   td
                     if culto.id_dirigente
                       span.small.text-dark.fw-medium
-                        i.bi.bi-person-check.text-primary.me-1
                         | #{culto.nombre_dirigente} #{culto.apellido_dirigente}
                     else if culto.dirigente_externo
-                      span.small.text-warning.fw-semibold
-                        i.bi.bi-person-dash.me-1
+                      span.small.text-muted.fw-semibold
                         | #{culto.dirigente_externo} (Invitado)
                     else
                       span.small.text-muted.fst-italic Sin asignar
@@ -72,11 +70,9 @@ block content
                   td
                     if culto.id_predicador
                       span.small.text-dark.fw-medium
-                        i.bi.bi-megaphone.text-success.me-1
                         | #{culto.nombre_predicador} #{culto.apellido_predicador}
                     else if culto.predicador_externo
-                      span.small.text-warning.fw-semibold
-                        i.bi.bi-person-dash.me-1
+                      span.small.text-secondary.fw-semibold
                         | #{culto.predicador_externo} (Invitado)
                     else
                       span.small.text-muted.fst-italic Sin asignar

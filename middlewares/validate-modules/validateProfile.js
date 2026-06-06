@@ -1,6 +1,3 @@
-/**
- * Valida los campos comunes del perfil
- */
 const validateCommonFields = (req, errors) => {
     const { username, currentPassword } = req.body;
 
@@ -23,9 +20,8 @@ const validateCommonFields = (req, errors) => {
     }
 };
 
-/**
- * Middleware para validar la actualización del perfil del usuario logueado
- */
+// Middleware para validar la actualización del perfil del usuario logueado
+
 export const validateProfileUpdate = (req, res, next) => {
     const { newPassword, confirmPassword } = req.body;
     const errors = [];

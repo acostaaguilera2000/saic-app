@@ -61,7 +61,7 @@ class User {
     static async findByEmail(email) {
         try {
             const [rows] = await db.query(
-                "SELECT * FROM usuario WHERE email = ? LIMIT 1", 
+                "SELECT * FROM usuario WHERE email = ? LIMIT 1",
                 [email]
             );
             return rows[0] || null;
@@ -79,7 +79,7 @@ class User {
     static async findByUsername(username) {
         try {
             const [rows] = await db.query(
-                "SELECT * FROM usuario WHERE username = ? LIMIT 1", 
+                "SELECT * FROM usuario WHERE username = ? LIMIT 1",
                 [username]
             );
             return rows[0] || null;

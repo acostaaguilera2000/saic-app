@@ -61,12 +61,17 @@ block content
                                 tr.fila-reporte
                                     //- Columna 1: Fecha y Hora
                                     td.celda-fecha
-                                        - var f = item.fecha ? new Date(item.fecha).toLocaleDateString('es-ES', {timeZone: 'UTC', weekday: 'short', day: 'numeric', month: 'short'}) : 'No asignada' 
+
+                                        //- Tratamiento de fecha visual segura en UTC
+                                        - var f = item.fecha ? new Date(item.fecha).toLocaleDateString('es-ES', {timeZone: 'UTC', weekday: 'long', day: 'numeric', month: 'short'}) : 'No asignada' 
                                         span.text-uppercase.d-block.fw-bold.txt-institucional #{f}
                                         if item.hora
-                                            span.text-secondary.x-small.fw-medium #{item.hora} hs
+                                            - var [horas, minutos] = item.hora.split(':')
+                                            - var fechaBase = new Date(2000, 0, 1, horas, minutos)
+                                            - var horaFormateada = fechaBase.toLocaleTimeString('es-CO', { hour: 'numeric', minute: '2-digit', hour12: true })
+                                            span.text-muted.small.fw-semibold #{horaFormateada}
                                         else
-                                            span.text-muted.x-small.fst-italic Por definir
+                                            span.text-muted.small.fw-semibold Por definir
 
                                     //- Columna 2: Liturgia / Tipo de Culto
                                     td

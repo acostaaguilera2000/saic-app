@@ -1,4 +1,3 @@
-// src/models/Logistica.js
 import db from "../config/db.js";
 
 class Logistica {

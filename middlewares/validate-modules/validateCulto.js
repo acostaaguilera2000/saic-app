@@ -1,5 +1,3 @@
-// src/middlewares/validateCulto.js
-
 const validateCulto = (req, res, next) => {
     const errores = [];
     const { cultos, fecha, hora, tipo_culto } = req.body;

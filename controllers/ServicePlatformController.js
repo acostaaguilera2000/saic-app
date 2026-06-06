@@ -16,7 +16,7 @@ class ServicePlatformController {
 
     static async renderCreateForm(req, res) {
         try {
-            const availableMembers = await Member.findAllActive(); 
+            const availableMembers = await Member.findAllActive();
             res.render("service-views/create", { valores: {}, miembros: availableMembers });
         } catch (err) {
             console.error("Error en ServicePlatformController.renderCreateForm:", err);
@@ -28,11 +28,10 @@ class ServicePlatformController {
         try {
             if (req.validationErrors) {
                 const availableMembers = await Member.findAllActive();
-                // Almacenamos el listado de errores en flash para que tu partial global los renderice
-                req.flash('error_msg', req.validationErrors); 
-                
+                req.flash('error_msg', req.validationErrors);
+
                 return res.status(400).render("service-views/create", {
-                    valores: req.body, // Contiene el array 'cultos' para persistir los valores del usuario
+                    valores: req.body, 
                     miembros: availableMembers
                 });
             }
@@ -45,7 +44,7 @@ class ServicePlatformController {
             if (err.name === "BusinessValidationError") {
                 const availableMembers = await Member.findAllActive();
                 req.flash('error_msg', err.message);
-                
+
                 return res.status(400).render("service-views/create", {
                     valores: req.body,
                     miembros: availableMembers

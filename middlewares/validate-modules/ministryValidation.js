@@ -1,8 +1,3 @@
-/**
- * Validaciones comunes para evitar repetición de código en la gestión de ministerios
- * @param {Object} req - Objeto de petición HTTP de Express
- * @param {Array} errors - Array donde se acumulan los mensajes de error detectados
- */
 const validateCommonFields = (req, errors) => {
     const { nombre, descripcion } = req.body;
 
