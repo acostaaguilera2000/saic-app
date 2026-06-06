@@ -1,5 +1,3 @@
-// middlewares/validateMiembro.js
-
 // Expresión regular para verificar que una cadena contenga solo números
 const numericoRegex = /^\d+$/;
 

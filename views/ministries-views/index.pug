@@ -1,0 +1,62 @@
+extends ../layout
+
+block content
+    .d-flex.justify-content-between.align-items-center.mb-4
+        div
+            h2.fw-bold.mb-1 Panel de Ministerios
+            p.text-muted.small-text Gestión de los grupos de operaciones y servicios de la congregación.
+        button.btn.btn-action(data-bs-toggle="modal" data-bs-target="#createMinistryModal")
+            i.bi.bi-plus-lg.me-2
+            | Nuevo Ministerio
+
+
+    // Contenedor Bento Grid (Estructura Asimétrica)
+    .row.g-3
+        if datos && datos.length > 0
+            each ministerio, index in datos
+                // Alternamos el tamaño de las tarjetas de forma dinámica para crear el efecto Bento
+                - const colSize = (index % 3 === 0) ? 'col-lg-8' : 'col-lg-4'
+
+                div(class=`col-12 ${colSize}`)
+                    .card.bento-card.h-100.p-4.d-flex.flex-column.justify-content-between
+                        div
+                            .d-flex.justify-content-between.align-items-start.mb-3
+                                // Caja de icono representativo con colores institucionales
+                                .icon-box.bg-soft-success
+                                    i.bi.bi-collection-fill.text-success
+                                span.badge.bg-light.text-dark.x-small.border.ls-1= `ID: #0${ministerio.id_ministerio}`
+
+                            h4.fw-bold.mb-2= ministerio.nombre
+                            p.text-muted.x-small.mb-4= ministerio.descripcion
+
+                        .d-flex.justify-content-end.align-items-center.pt-2.border-top.border-light
+                            a.btn.btn-action.btn-xs(href=`/ministries/${ministerio.id_ministerio}`)
+                                | Gestionar Integrantes
+                                i.bi.bi-arrow-right.ms-2
+        else
+            .col-12
+                .card.bento-card.p-5.text-center
+                    i.bi.bi-folder-x.display-4.text-muted.mb-3
+                    h5.fw-bold No hay ministerios registrados
+                    p.text-muted.x-small Crea un ministerio usando el botón superior para comenzar a asignar miembros.
+
+    // Modal Institucional para la Creación de Ministerios
+    .modal.fade#createMinistryModal(tabindex="-1" aria-labelledby="createMinistryModalLabel" aria-hidden="true")
+        .modal-dialog.modal-dialog-centered
+            .modal-content.border-0.shadow-lg(style="border-radius: 16px;")
+                .modal-header.border-0.pb-0
+                    h5.modal-title.fw-bold#createMinistryModalLabel Nuevo Ministerio
+                    button.btn-close(type="button" data-bs-dismiss="modal" aria-label="Close")
+                .modal-body.pt-3
+                    form(action="/ministries/create" method="POST")
+                        .mb-3
+                            label.form-label.x-small.fw-bold(for="nombre") Nombre del Ministerio
+                            input.form-control.form-control-sm#nombre(type="text" name="nombre" value=(valores ? valores.nombre : '') placeholder="Ej: Ministerio de Alabanza" required)
+                        .mb-3
+                            label.form-label.x-small.fw-bold(for="descripcion") Descripción Operativa
+                            textarea.form-control.form-control-sm#descripcion(name="descripcion" rows="4" placeholder="Describe brevemente las funciones y responsabilidades de este grupo..." required)= (valores ? valores.descripcion : '')
+                        .d-flex.justify-content-end.gap-2.mt-4
+                            button.btn.btn-light(type="button" data-bs-dismiss="modal") Cancelar
+                            button.btn.btn-action(type="submit") Registrar Ministerio
+
+

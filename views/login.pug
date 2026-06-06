@@ -32,7 +32,7 @@ html(lang="es")
       form(action="/auth/login" method="POST")
         //- Entrada de Correo
         .input-group-modern
-          input.form-control-modern(type="email" name="email" value=(valores.email || '') placeholder="Correo electrónico" required)
+          input.form-control-modern(type="email" name="email" value=( valores ? valores.email :'') placeholder="Correo electrónico" required)
           i.fas.fa-envelope
 
         //- Entrada de Contraseña
