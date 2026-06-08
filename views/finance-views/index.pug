@@ -1,0 +1,110 @@
+extends ../layout
+
+block styles
+    link(rel="stylesheet" href="/css/tablas-institucionales.css")
+
+block content
+    .container-fluid.px-4.py-4
+
+
+        .d-flex.flex-column.flex-md-row.justify-content-between.align-items-start.align-items-md-center.gap-3.mb-4.p-4.rounded-4(style="background: #ffffff; box-shadow: 0 4px 24px rgba(0,0,0,0.02);")
+            div
+                span.badge.bg-soft-primary.text-primary.xx-small.fw-bold.text-uppercase.ls-1 Tesorería General
+                h2.fw-bold.text-dark.mb-1.mt-1 Gestión de Donaciones
+                p.text-muted.small.mb-0 Supervise los ingresos, flujos de caja y auditorías contables del sistema (SAIC).
+
+            a.btn.btn-action.shadow-sm.px-4.py-2.fw-bold.rounded-3.d-inline-flex.align-items-center(href="/finance/create")
+                i.bi.bi-plus-circle-fill.me-2
+                | Nueva Donación
+
+        //- Gestión de Mensajes, Alertas y Auditoría Global de Operaciones
+        include ../partials/_messages
+
+        //- GRID BENTO DE HISTORIAL FINANCIERO
+        .row
+            .col-12
+                .card.bento-card.border-0.shadow-sm.p-4(style="background: #ffffff; border-radius: 16px; box-shadow: 0 4px 24px rgba(0,0,0,0.03);")
+                    .d-flex.flex-column.flex-md-row.justify-content-between.align-items-md-center.gap-3.mb-4
+                        h4.fw-bold.text-dark.m-0 
+                            i.bi.bi-clock-history.text-success.me-2
+                            | Transacciones Registradas
+                        span.badge.bg-light.text-secondary.border.px-3.py-2.fw-semibold(style="border-color: #e2e8f0 !important;") Divisa Base: COP ($)
+
+                    .table-responsive
+                        table.table.table-hover.align-middle.mb-0.tabla-institucional#tabla-donaciones
+                            thead
+                                tr(style="border-bottom: 2px solid #f1f5f9;")
+                                    th.text-secondary.x-small.fw-bold Fecha
+                                    th.text-secondary.x-small.fw-bold Aportante
+                                    th.text-secondary.x-small.fw-bold Categoría
+                                    th.text-secondary.x-small.fw-bold Monto
+                                    th.text-secondary.x-small.fw-bold.text-center Estado
+                                    th.text-secondary.x-small.fw-bold.text-center Acción
+                            tbody
+                                if donaciones && donaciones.length > 0
+                                    each donacion in donaciones
+                                        - var isAnulada = donacion.estado === 'Anulada'
+                                        tr(style=isAnulada ? 'opacity: 0.45; background-color: #f8fafc; text-decoration: line-through;' : '')
+
+                                            //- Fecha de Registro
+                                            td.fw-semibold.text-dark.small-text
+                                                = new Date(donacion.fecha_registro).toLocaleDateString('es-CO', {timeZone: 'UTC', year: 'numeric', month: '2-digit', day: '2-digit'})
+
+                                            //- Datos del Aportante (Miembro o Externo)
+                                            td
+                                                if donacion.nombre_miembro
+                                                    - var aportante = donacion.nombre_miembro
+                                                    span.text-dark.fw-semibold.small-text 
+                                                        i.bi.bi-person-fill.text-muted.me-2
+                                                        | #{donacion.nombre_miembro}
+                                                else
+                                                    - var aportante = donacion.nombre_externo
+                                                    span.text-muted.fst-italic.small-text 
+                                                        i.bi.bi-globe.text-muted.me-2
+                                                        | #{donacion.nombre_externo} (Externo)
+
+                                            //- Categoría del Ingreso
+                                            td
+                                                span.badge.bg-light.text-secondary.border.x-small.px-2.py-1= donacion.categoria_ingreso
+
+                                            //- Monto Monetario Formateado
+                                            td.fw-bold.text-dark.fw-mono
+                                                | $#{parseFloat(donacion.monto).toLocaleString('es-CO', { minimumFractionDigits: 0 })}
+
+                                            //- Estado de la Transacción
+                                            td.text-center
+                                                if donacion.estado === 'Asentada'
+                                                    span.badge.px-2.py-1.rounded-3(style="background-color: #e2f6ed; color: #1f7a53; font-weight: 600; font-size: 0.75rem;") Asentada
+                                                else
+                                                    span.badge.px-2.py-1.rounded-3(style="background-color: #fde8e8; color: #c81e1e; font-weight: 600; font-size: 0.75rem;") Anulada
+
+                                            //- Acciones de Control / Auditoría
+                                            td.text-center
+                                                if donacion.estado === 'Asentada'
+                                                    // Formulario de anulación en background para uso del script del módulo
+                                                    form(id=`cancel-form-${donacion.id_donacion}` action=`/finance/donations/cancel/${donacion.id_donacion}` method="POST" style="display:none;")
+
+                                                    button.btn.btn-link.text-danger.p-0.m-0.border-0(
+                                                        type="button" 
+                                                        title="Anular Transacción" 
+                                                        onclick=`confirmarAnulacion('${donacion.id_donacion}', '${aportante}', '${parseFloat(donacion.monto).toLocaleString("es-CO")}')`
+                                                        style="background: none;"
+                                                    )
+                                                        i.bi.bi-trash3-fill.fs-6
+                                                else
+                                                    button.btn.btn-link.text-muted.p-0.m-0.disabled.border-0(type="button" disabled style="background: none;")
+                                                        i.bi.bi-dash-circle-fill.fs-6
+                                else
+                                    tr
+                                        td.text-center.text-muted.py-5(colspan="6")
+                                            i.bi.bi-cash-stack.display-6.text-black-50.d-block.mb-2
+                                            h6.fw-bold.mb-1 Sin registros de caja
+                                            p.text-muted.xx-small.mb-0 No se han detectado asientos financieros asentados en el sistema todavía.
+
+block scripts
+    script(src="/js/modules/finance-donacion.js")
+    style.
+        .xx-small { font-size: 0.72rem; letter-spacing: 0.5px; }
+        .x-small { font-size: 0.78rem; }
+        .fw-mono { font-family: SFMono-Regular, Menlo, Monaco, Consolas, monospace; }
+        .small-text { font-size: 0.88rem; }

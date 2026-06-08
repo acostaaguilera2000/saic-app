@@ -17,6 +17,7 @@ block content
                     form(action="/profile/update" method="POST")
                         .row.g-3
                             //- Encabezado de Usuario
+                            include ../partials/_messages
                             .col-md-12.text-center.mb-4
                                 .bg-primary.text-white.rounded-circle.d-inline-flex.align-items-center.justify-content-center.shadow-sm(style="width: 80px; height: 80px; font-size: 2rem;")
                                     | #{user.username.charAt(0).toUpperCase()}

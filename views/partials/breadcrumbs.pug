@@ -1,0 +1,25 @@
+//- Mixin existente para las migajas solas
+mixin generateBreadcrumbs(crumbs)
+    nav(aria-label="breadcrumb")
+        ol.breadcrumb.small.mb-0
+            each crumb in crumbs
+                if crumb.active
+                    li.breadcrumb-item.active(aria-current="page")= crumb.text
+                else
+                    li.breadcrumb-item
+                        a.text-decoration-none(href=crumb.link)= crumb.text
+
+//-  NUEVO: Encabezado Estándar Global para Formularios/Vistas Internas
+mixin formHeader(title, backUrl, crumbs)
+    .row.mb-4.justify-content-center
+        .col-12.col-lg-10.col-xl-8
+            .d-flex.align-items-center.justify-content-between.pb-3.border-bottom
+                div
+                    h2.fw-bold.text-dark.m-0= title
+                    if crumbs && crumbs.length > 0
+                        +generateBreadcrumbs(crumbs)
+                if backUrl
+                    .text-end
+                        a.btn.btn-outline-secondary.btn-sm.rounded-pill.px-3.shadow-sm(href=backUrl)
+                            i.bi.bi-arrow-left.me-1
+                            | Volver

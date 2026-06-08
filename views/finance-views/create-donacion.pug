@@ -1,0 +1,145 @@
+extends ../layout
+
+block content
+    .container-fluid.px-4.py-4
+
+        //- 🚀 ENCABEZADO ESTÁNDAR GLOBAL (Centrado y equilibrado con el formulario)
+        +formHeader(
+            'Registrar Ingreso Financiero', 
+            '/finance', 
+            [
+                { text: 'SAIC', link: '/dashboard', active: false },
+                { text: 'Finanzas', link: '/finance', active: false },
+                { text: 'Asentar Donación', active: true }
+            ]
+        )
+
+        //-  CONTENIDO DE FORMULARIO 
+        .row.justify-content-center
+            .col-12.col-lg-10.col-xl-8
+
+                //- Gestión de Mensajes y Alertas Globales de Validación Financiera
+                include ../partials/_messages
+
+                //- Tarjeta Bento Contenedora del Formulario
+                .card.bento-card.p-4.mb-4.border-0.shadow-sm(style="background: #ffffff; border-radius: 16px; box-shadow: 0 4px 24px rgba(0,0,0,0.03);")
+
+                    // Encabezado interno con toque azul institucional
+                    .d-flex.align-items-center.mb-4
+                        .p-2.rounded-3.me-3(style="background-color: var(--ijersac-bg); color: var(--ijersac-navy);")
+                            i.bi.bi-piggy-bank-fill.fs-4
+                        div
+                            h4.fw-bold.text-dark.m-0 Comprobante de Ingreso
+                            p.text-muted.small.m-0 Ingrese los datos fiscales y contables de la transacción.
+
+                    form(action="/finance/donations/create" method="POST")
+
+                        // Conmutador de Procedencia Estilizado con fondo institucional claro
+                        .mb-4.p-3.rounded-3(style="background-color: var(--ijersac-bg);")
+                            label.form-label.fw-bold.text-secondary.small.text-uppercase.tracking-wider Procedencia del Fondo
+                            .d-flex.gap-4.mt-2
+                                .form-check
+                                    input#proc_interno.form-check-input(type="radio" name="procedencia" value="interno" checked=(valores.procedencia !== 'externo') onchange="toggleFormFields()")
+                                    label.form-check-label.fw-semibold.text-dark(for="proc_interno") Miembro Institucional
+                                .form-check
+                                    input#proc_externo.form-check-input(type="radio" name="procedencia" value="externo" checked=(valores.procedencia === 'externo') onchange="toggleFormFields()")
+                                    label.form-check-label.fw-semibold.text-dark(for="proc_externo") Donante Externo / Tercero
+
+                        // Grupo Dinámico 1: Selección de Miembros (Interno)
+                        #group_interno.mb-4
+                            label.form-label.fw-semibold.text-secondary(for="id_miembro") 
+                                i.bi.bi-person-badge.me-2
+                                | Seleccionar Miembro Activo
+                            select#id_miembro.form-select.form-select-lg.rounded-3.fs-6(name="id_miembro")
+                                option(value="") -- Seleccione una persona del listado --
+                                if miembros && miembros.length > 0
+                                    each miembro in miembros
+                                        option(value=miembro.id_miembro selected=(valores.id_miembro == miembro.id_miembro))= `${miembro.apellido}, ${miembro.nombre}`
+
+                        // Grupo Dinámico 2: Datos de Contacto (Externo)
+                        #group_externo.d-none
+                            .mb-3
+                                label.form-label.fw-semibold.text-secondary(for="nombre_externo") 
+                                    i.bi.bi-building.me-2
+                                    | Nombre Completo / Razón Social
+                                input#nombre_externo.form-control.rounded-3(type="text" name="nombre_externo" placeholder="Ej: Juan Pérez o Empresa X" value=valores.nombre_externo)
+                            .row.g-3
+                                .col-md-6
+                                    label.form-label.fw-semibold.text-secondary(for="telefono_externo") Teléfono de Contacto
+                                    input#telefono_externo.form-control.rounded-3(type="text" name="telefono_externo" placeholder="Opcional" value=valores.telefono_externo)
+                                .col-md-6
+                                    label.form-label.fw-semibold.text-secondary(for="correo_externo") Correo Electrónico
+                                    input#correo_externo.form-control.rounded-3(type="email" name="correo_externo" placeholder="Opcional" value=valores.correo_externo)
+
+                        hr.text-muted.my-4
+
+                        // Datos Generales de la Donación
+                        .row.g-3.mb-4
+                            .col-md-6
+                                label.form-label.fw-semibold.text-secondary(for="monto") Valor del Ingreso ($ COP)
+                                .input-group.input-group-lg
+                                    span.input-group-text.border-end-0.fs-6.fw-bold.text-muted(style="background-color: var(--ijersac-bg);") $
+                                    input#monto.form-control.border-start-0.fs-5.fw-bold.text-dark(type="text" name="monto" placeholder="Ej: 50.000" required value=valores.monto || '')
+                                // Advertencia sutil de formato con colores institucionales
+                                small.form-text.d-block.mt-1(style="color: var(--ijersac-red); font-weight: 500; font-size: 0.78rem;")
+                                    i.bi.bi-info-circle-fill.me-1
+                                    | Formato nacional: usa puntos para miles (Ej: 5.000).
+
+                            .col-md-6
+                                label.form-label.fw-semibold.text-secondary(for="fecha") Fecha de Recaudo
+                                input#fecha.form-control.form-control-lg.rounded-3.fs-6(type="date" name="fecha" required value=valores.fecha || new Date().toISOString().split('T')[0])
+
+                        .row.g-3.mb-4
+                            .col-md-6
+                                label.form-label.fw-semibold.text-secondary(for="tipo_pago") Canal / Método de Pago
+                                select#tipo_pago.form-select.form-select-lg.rounded-3.fs-6(name="tipo_pago" required)
+                                    option(value="Efectivo" selected=(valores.tipo_pago === 'Efectivo')) Efectivo
+                                    option(value="Transferencia" selected=(valores.tipo_pago === 'Transferencia')) Transferencia
+                                    option(value="Consignación" selected=(valores.tipo_pago === 'Consignación')) Consignación
+                                    option(value="Cheque" selected=(valores.tipo_pago === 'Cheque')) Cheque
+
+                            .col-md-6
+                                label.form-label.fw-semibold.text-secondary(for="categoria_ingreso") Destino / Categoría Contable
+                                select#categoria_ingreso.form-select.form-select-lg.rounded-3.fs-6(name="categoria_ingreso" required)
+                                    option(value="Ofrenda General" selected=(valores.categoria_ingreso === 'Ofrenda General')) Ofrenda General
+                                    option(value="Diezmo" selected=(valores.categoria_ingreso === 'Diezmo')) Diezmo
+                                    option(value="Donación Especial" selected=(valores.categoria_ingreso === 'Donación Especial')) Donación Especial
+                                    option(value="Pro-Templo" selected=(valores.categoria_ingreso === 'Pro-Templo')) Pro-Templo
+
+                        .mb-4
+                            label.form-label.fw-semibold.text-secondary(for="observacion") Observaciones o Concepto
+                            textarea#observacion.form-control.rounded-3(name="observacion" rows="3" placeholder="Detalle interno aclaratorio sobre el recaudo..." style="resize: none;")= valores.observacion
+
+                        // Botonera de Acción
+                        .d-flex.gap-3.pt-2
+                            a.btn.btn-light.w-25.py-2.fw-bold.rounded-3.text-secondary(href="/finance" style="background-color: var(--ijersac-bg); border: none;") Cancelar
+
+                            button.btn.btn-action.flex-grow-1.py-2.fw-bold.rounded-3.shadow-sm(type="submit")
+                                i.bi.bi-cloud-arrow-up-fill.me-2
+                                | Asentar Registro Diario
+
+block scripts
+    script.
+        function toggleFormFields() {
+            const isInterno = document.getElementById('proc_interno').checked;
+            const groupInterno = document.getElementById('group_interno');
+            const groupExterno = document.getElementById('group_externo');
+            const selectMiembro = document.getElementById('id_miembro');
+            const inputNombreExterno = document.getElementById('nombre_externo');
+
+            if (isInterno) {
+                groupInterno.classList.remove('d-none');
+                groupExterno.classList.add('d-none');
+                selectMiembro.setAttribute('required', 'required');
+                inputNombreExterno.removeAttribute('required');
+            } else {
+                groupInterno.classList.add('d-none');
+                groupExterno.classList.remove('d-none');
+                selectMiembro.removeAttribute('required');
+                inputNombreExterno.setAttribute('required', 'required');
+            }
+        }
+
+        document.addEventListener('DOMContentLoaded', function() {
+            toggleFormFields();
+        });

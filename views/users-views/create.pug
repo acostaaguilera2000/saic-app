@@ -1,38 +1,39 @@
 extends ../layout
 
 block content
-  .row.justify-content-center
-    .col-lg-10
-      //- Encabezado con navegación
-      .d-flex.align-items-center.justify-content-between.mb-4
-        div
-          h2.fw-bold.text-dark.mb-1 Nuevo Usuario
-          nav(aria-label="breadcrumb")
-            ol.breadcrumb.small.mb-0
-              li.breadcrumb-item: a.text-decoration-none(href="/dashboard") SAIC
-              li.breadcrumb-item: a.text-decoration-none(href="/users") Usuarios
-              li.breadcrumb-item.active(aria-current="page") Crear
-        
-        a.btn.btn-outline-secondary.btn-sm.rounded-pill.px-3(href="/users")
-          i.bi.bi-arrow-left.me-2
-          | Volver a la lista
+  .container-fluid.px-4.py-4
 
-      .card.card-custom.border-0.shadow-sm
-        .card-body.p-4.p-md-5
+    //- 🚀 1. ENCABEZADO ESTÁNDAR GLOBAL (Centrado y equilibrado usando el Mixin)
+    +formHeader(
+      'Registrar Usuario', 
+      '/users', 
+      [
+        { text: 'SAIC', link: '/dashboard', active: false },
+        { text: 'Usuarios', link: '/users', active: false },
+        { text: 'Crear', active: true }
+      ]
+    )
+
+    //- 🚀 2. CONTENIDO DE FORMULARIO CENTRADO ESTILO BENTO
+    .row.justify-content-center
+      .col-12.col-lg-10.col-xl-8
+        include ../partials/_messages
+        .card.bento-card.p-4.mb-4.border-0(style="background: #ffffff; border-radius: 16px; box-shadow: 0 4px 24px rgba(0,0,0,0.03);")
+
           form(action="/users/create" method="POST" novalidate=false)
             .row.g-4
-              //- Sección: Información de Cuenta
+
+              // Seccion: Información de Cuenta
               .col-12
-                .d-flex.align-items-center.mb-2
-                  i.bi.bi-person-badge.text-primary.me-2
-                  span.fw-bold.text-uppercase.small.text-muted Credenciales de Acceso
-                hr.mt-0.mb-4
+                .d-flex.align-items-center.p-2.rounded-3(style="background-color: var(--ijersac-bg); color: var(--ijersac-navy);")
+                  i.bi.bi-person-badge-fill.fs-5.me-2
+                  span.fw-bold.text-uppercase.small(style="letter-spacing: 0.5px;") Credenciales de Acceso
 
               .col-md-6
-                label.form-label.fw-semibold(for="username") Nombre de Usuario
+                label.form-label.fw-semibold.text-secondary(for="username") Nombre de Usuario
                 .input-group
-                  span.input-group-text.bg-light.border-end-0: i.bi.bi-at
-                  input.form-control.bg-light.border-start-0(
+                  span.input-group-text.border-end-0(style="background-color: var(--ijersac-bg);"): i.bi.bi-at.text-muted
+                  input.form-control.border-start-0.rounded-end-3(
                     type="text" 
                     id="username" 
                     name="username" 
@@ -42,60 +43,59 @@ block content
                     title="Solo letras, números, puntos o guiones bajos."
                     value= valores ? valores.username : ''
                   )
-                small.text-muted.form-text Mínimo 3 caracteres (letras, números, puntos o _).
+                small.form-text.text-muted Mínimo 3 caracteres (letras, números, puntos o _).
 
               .col-md-6
-                label.form-label.fw-semibold(for="email") Correo Electrónico
+                label.form-label.fw-semibold.text-secondary(for="email") Correo Electrónico
                 .input-group
-                  span.input-group-text.bg-light.border-end-0: i.bi.bi-envelope
-                  input.form-control.bg-light.border-start-0(
+                  span.input-group-text.border-end-0(style="background-color: var(--ijersac-bg);"): i.bi.bi-envelope.text-muted
+                  input.form-control.border-start-0.rounded-end-3(
                     type="email" 
                     id="email" 
                     name="email" 
                     required
                     value= valores ? valores.email : ''
                   )
-                small.text-muted.form-text Correo institucional o personal obligatorio.
+                small.form-text.text-muted Correo institucional o personal obligatorio.
 
               .col-md-6
-                label.form-label.fw-semibold(for="password") Contraseña
+                label.form-label.fw-semibold.text-secondary(for="password") Contraseña
                 .input-group
-                  span.input-group-text.bg-light.border-end-0: i.bi.bi-lock
-                  input.form-control.bg-light.border-start-0(
+                  span.input-group-text.border-end-0(style="background-color: var(--ijersac-bg);"): i.bi.bi-lock.text-muted
+                  input.form-control.border-start-0(
                     type="password" 
                     id="password" 
                     name="password" 
                     required
                     minlength="6"
                   )
-                  button.btn.btn-outline-secondary.border-start-0.bg-light(type="button" onclick="togglePassword(event)")
-                    i.bi.bi-eye
-                small.text-muted.form-text Obligatoria. Debe contener al menos 6 caracteres.
+                  button.btn.btn-outline-secondary.border-start-0(type="button" onclick="togglePassword(event)" style="background-color: var(--ijersac-bg);")
+                    i.bi.bi-eye.text-muted
+                small.form-text.text-muted Obligatoria. Debe contener al menos 6 caracteres.
 
               .col-md-6
-                label.form-label.fw-semibold(for="rol") Rol de Usuario
+                label.form-label.fw-semibold.text-secondary(for="rol") Rol de Usuario
                 .input-group
-                  span.input-group-text.bg-light.border-end-0: i.bi.bi-shield-lock
-                  select.form-select.bg-light.border-start-0(id="rol" name="rol" required)
+                  span.input-group-text.border-end-0(style="background-color: var(--ijersac-bg);"): i.bi.bi-shield-lock.text-muted
+                  select.form-select.border-start-0.rounded-end-3(id="rol" name="rol" required)
                     option(value="" disabled selected= !valores) Seleccione un privilegio...
                     option(value="admin" selected= (valores && valores.rol === 'admin')) Administrador
                     option(value="tesorero" selected= (valores && valores.rol === 'tesorero')) Tesorero
                     option(value="lider" selected= (valores && valores.rol === 'lider')) Líder Ministerial
                     option(value="miembro" selected= (valores && valores.rol === 'miembro')) Miembro General
-                small.text-muted.form-text Define los permisos de acceso dentro del sistema.
+                small.form-text.text-muted Define los privilegios de acceso en el sistema.
 
-              //- Sección: Vinculación
+              // Seccion: Vinculación
               .col-12.mt-5
-                .d-flex.align-items-center.mb-2
-                  i.bi.bi-link-45deg.text-primary.me-2
-                  span.fw-bold.text-uppercase.small.text-muted Vinculación con Miembro
-                hr.mt-0.mb-4
+                .d-flex.align-items-center.p-2.rounded-3(style="background-color: var(--ijersac-bg); color: var(--ijersac-navy);")
+                  i.bi.bi-link-45deg.fs-5.me-2
+                  span.fw-bold.text-uppercase.small(style="letter-spacing: 0.5px;") Vinculación con Miembro
 
-              .col-md-12
-                label.form-label.fw-semibold(for="id_miembro") Seleccionar Miembro Asociado
+              .col-12
+                label.form-label.fw-semibold.text-secondary(for="id_miembro") Seleccionar Miembro Asociado
                 .input-group.mb-1
-                  span.input-group-text.bg-light.border-end-0: i.bi.bi-people
-                  select.form-select.bg-light.border-start-0(id="id_miembro" name="id_miembro")
+                  span.input-group-text.border-end-0(style="background-color: var(--ijersac-bg);"): i.bi.bi-people.text-muted
+                  select.form-select.border-start-0.rounded-end-3(id="id_miembro" name="id_miembro")
                     option(value="" selected= (!valores || valores.id_miembro === "")) Ninguno (Usuario Externo)
                     if availableMembers && availableMembers.length > 0
                       each miembro in availableMembers
@@ -103,14 +103,14 @@ block content
                           value=miembro.id_miembro 
                           selected= (valores && valores.id_miembro == miembro.id_miembro)
                         )= `${miembro.nombre} ${miembro.apellido} — Doc: ${miembro.documento}`
-                small.text-muted.form-text 
-                  i.bi.bi-info-circle.me-1
-                  | Si no selecciona un miembro, el sistema lo registrará automáticamente como un **Usuario Externo**.
+                small.form-text.d-block.mt-1(style="color: var(--ijersac-red); font-weight: 500;")
+                  i.bi.bi-info-circle-fill.me-1
+                  | Si no selecciona un miembro, el sistema lo registrará automáticamente como un Usuario Externo.
 
-            //- Botones de Acción
-            .d-flex.justify-content-end.gap-3.mt-5
-              a.btn.btn-secondary.px-4.fw-bold(href="/users") Cancelar
-              button.btn.btn-action.px-5.shadow-sm(type="submit")
+            // BOTONERA DE ACCIÓN CORPORATIVA ASIMÉTRICA
+            .d-flex.gap-3.pt-2.mt-5.border-top
+              a.btn.btn-light.w-25.py-2.fw-bold.rounded-3.text-secondary(href="/users" style="background-color: var(--ijersac-bg); border: none;") Cancelar
+              button.btn.btn-action.flex-grow-1.py-2.fw-bold.rounded-3.shadow-sm(type="submit")
                 i.bi.bi-person-check.me-2
                 | Guardar Usuario
 

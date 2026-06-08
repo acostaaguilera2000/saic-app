@@ -16,7 +16,7 @@ import profileRoutes from "./routes/profileRoutes.js";
 import logisticsRoutes from "./routes/logisticsRoutes.js";
 import ministryRoutes from "./routes/ministryRoutes.js";
 import reportRoutes from "./routes/reportRoutes.js";
-
+import finaceRoutes from "./routes/finaceRoutes.js";
 import error from "./middlewares/error.js";
 import { isAuthenticated } from "./middlewares/validate-modules/auth.js";
 import activeModule from "./middlewares/activeModule.js";
@@ -109,6 +109,7 @@ app.use("/members", isAuthenticated, memberRoutes);
 app.use("/service", isAuthenticated, servicePlatformRoutes);
 app.use("/logistic", isAuthenticated, logisticsRoutes);
 app.use("/ministries", isAuthenticated, ministryRoutes);
+app.use("/finance", isAuthenticated, finaceRoutes);
 app.use("/report", isAuthenticated, reportRoutes);
 
 // 6. Manejo de errores 

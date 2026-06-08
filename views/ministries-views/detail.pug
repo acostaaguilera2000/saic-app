@@ -1,124 +1,137 @@
 extends ../layout
 
 block content
+    .container-fluid.px-4.py-4
 
-    .row.g-3
-        // Bloque de Título y Contexto Operativo
-        .col-12.col-lg-8
-            .card.bento-card.bg-light.border-0.p-4.h-100.d-flex.flex-column.justify-content-between
-                div
-                    nav(aria-label="breadcrumb").mb-2
-                        ol.breadcrumb.mb-0.x-small
-                            li.breadcrumb-item
-                                a.text-muted.text-decoration-none(href="/ministries") Ministerios
-                            li.breadcrumb-item.active.text-dark.fw-semibold(aria-current="page") Gestión de Integrantes
+        //- Encabezado estándar global con migajas de pan integradas (Ecosistema SAIC)
+        +formHeader(
+            `Gestión de Integrantes`, 
+            '/ministries', 
+            [
+                { text: 'SAIC', link: '/dashboard', active: false },
+                { text: 'Ministerios', link: '/ministries', active: false },
+                { text: datos.ministry.nombre, active: true }
+            ]
+        )
 
-                    .d-flex.align-items-center.gap-2.mt-2
-                        h2.fw-bold.text-dark.mb-0= datos.ministry.nombre
-                        span.badge.bg-soft-success.text-success.xx-small.fw-bold.text-uppercase.ls-1 Activo
+        //- Gestión de Mensajes y Alertas Globales de Validación / Operación
+        include ../partials/_messages
 
-                .mt-3.pt-2.border-top.border-light.d-flex.align-items-center.gap-2
-                    a.btn-white.btn-xs.text-decoration-none(href="/ministries")
-                        i.bi.bi-arrow-left.me-2
-                        | Volver al panel general
+        //- ==========================================
+        //- ENCABEZADO DE CONTEXTO ASIMÉTRICO (BENTO)
+        //- ==========================================
+        .row.g-3.mb-4
+            // Bloque Informativo del Ministerio Principal
+            .col-12.col-lg-8
+                .card.bento-card.border-0.shadow-sm.p-4.h-100.d-flex.flex-column.justify-content-between(style="background: #ffffff; border-radius: 16px;")
+                    div
+                        span.badge.bg-soft-success.text-success.xx-small.fw-bold.text-uppercase.ls-1.mb-2 Activo Operacional
+                        h2.fw-bold.text-dark.mb-2= datos.ministry.nombre
+                        p.text-muted.x-small.mb-0 Código del Ministerio: #0#{datos.ministry.id_ministerio}
 
-        // Bloque Bento de Métricas e Información Rápida
-        .col-12.col-lg-4
-            .card.bento-card.p-4.h-100.d-flex.flex-column.justify-content-between(style="background: linear-gradient(135deg, #ffffff 0%, #f8fafc 100%);")
-                h6.fw-bold.text-muted.xx-small.text-uppercase.ls-1.mb-3 Resumen del Grupo
+                    .mt-4.pt-2.border-top(style="border-color: #f1f5f9 !important;")
+                        a.btn.btn-light.btn-sm.fw-semibold.px-3.rounded-3(href="/ministries" style="background-color: var(--ijersac-bg); color: var(--ijersac-navy); border: none;")
+                            i.bi.bi-arrow-left.me-2
+                            | Volver al panel general
 
-                .d-flex.align-items-center.justify-content-between.mb-2
-                    .d-flex.align-items-center.gap-2
-                        .icon-box.bg-soft-primary(style="width: 28px; height: 28px;")
-                            i.bi.bi-people-fill.text-primary.x-small
-                        span.small-text.text-secondary Integrantes actuales:
-                    span.fw-bold.text-dark.small-text= datos.currentMembers ? datos.currentMembers.length : 0
+            // Bloque Bento de Métricas e Información Rápida
+            .col-12.col-lg-4
+                .card.bento-card.border-0.shadow-sm.p-4.h-100.d-flex.flex-column.justify-content-between(style="background: linear-gradient(135deg, #ffffff 0%, #f8fafc 100%); border-radius: 16px;")
+                    h6.fw-bold.text-muted.xx-small.text-uppercase.ls-1.mb-3 Resumen de Dotación
 
-                .d-flex.align-items-center.justify-content-between
-                    .d-flex.align-items-center.gap-2
-                        .icon-box.bg-soft-warning(style="width: 28px; height: 28px;")
-                            i.bi.bi-person-plus-fill.text-warning.x-small
-                        span.small-text.text-secondary Personal asignable:
-                    span.fw-bold.text-dark.small-text= datos.assignableMembers ? datos.assignableMembers.length : 0
+                    .d-flex.align-items-center.justify-content-between.mb-2.pb-2.border-bottom(style="border-color: #f1f5f9 !important;")
+                        .d-flex.align-items-center.gap-2
+                            .icon-box.rounded-3.d-flex.align-items-center.justify-content-center(style="width: 30px; height: 30px; background-color: var(--ijersac-bg);")
+                                i.bi.bi-people-fill.x-small(style="color: var(--ijersac-navy);")
+                            span.small-text.text-secondary.fw-medium Integrantes actuales:
+                        span.fw-bold.text-dark= datos.currentMembers ? datos.currentMembers.length : 0
 
-    // ==========================================
-    // CUERPO OPERATIVO ASIMÉTRICO
-    // ==========================================
-    .row.g-4
-        // Columna Izquierda: Información del Ministerio y Asignación
-        .col-12.col-lg-4
-            .card.bento-card.p-4.mb-4
-                .d-flex.align-items-center.gap-3.mb-3
-                    .icon-box.bg-soft-warning
-                        i.bi.bi-bookmark-star-fill.text-warning
-                    h5.fw-bold.mb-0 Descripción Operativa
+                    .d-flex.align-items-center.justify-content-between
+                        .d-flex.align-items-center.gap-2
+                            .icon-box.rounded-3.d-flex.align-items-center.justify-content-center(style="width: 30px; height: 30px; background-color: #fef3c7;")
+                                i.bi.bi-person-plus-fill.x-small.text-warning
+                            span.small-text.text-secondary.fw-medium Personal asignable:
+                        span.fw-bold.text-dark= datos.assignableMembers ? datos.assignableMembers.length : 0
 
-                p.text-muted.x-small.mb-0= datos.ministry.descripcion
+        //- ==========================================
+        //- CUERPO OPERATIVO ASIMÉTRICO
+        //- ==========================================
+        .row.g-4
+            // Columna Izquierda: Información del Ministerio y Asignación
+            .col-12.col-lg-4
+                .card.bento-card.border-0.shadow-sm.p-4.mb-4(style="background: #ffffff; border-radius: 16px;")
+                    .d-flex.align-items-center.gap-3.mb-3
+                        .icon-box.rounded-3.d-flex.align-items-center.justify-content-center(style="width: 36px; height: 36px; background-color: #fef3c7;")
+                            i.bi.bi-bookmark-star-fill.text-warning
+                        h5.fw-bold.mb-0.text-dark Descripción Operativa
 
-            // Tarjeta Bento para la Asignación Dinámica de Miembros Activos
-            .card.bento-card.p-4
-                h6.fw-bold.mb-3 Incorporar Miembro Activo
+                    p.text-muted.x-small.mb-0(style="line-height: 1.6;")= datos.ministry.descripcion
 
-                if datos.assignableMembers && datos.assignableMembers.length > 0
-                    form(action="/ministries/add-member" method="POST")
-                        // Campo oculto para pasar el ID del ministerio actual de forma transparente
-                        input(type="hidden" name="id_ministerio" value=datos.ministry.id_ministerio)
+                // Tarjeta Bento para la Asignación Dinámica de Miembros Activos
+                .card.bento-card.border-0.shadow-sm.p-4(style="background: #ffffff; border-radius: 16px;")
+                    .d-flex.align-items-center.mb-3.p-2.rounded-3(style="background-color: var(--ijersac-bg); color: var(--ijersac-navy);")
+                        i.bi.bi-person-plus-fill.me-2
+                        span.fw-bold.text-uppercase.small(style="letter-spacing: 0.5px; font-size: 0.75rem;") Incorporar Miembro Activo
 
-                        .mb-3
-                            label.form-label.xx-small.fw-bold.text-uppercase(for="id_miembro") Seleccionar Hermano
-                            select.form-select#id_miembro(name="id_miembro" required)
-                                option(value="" disabled selected) -- Seleccione un miembro activo --
-                                each candidato in datos.assignableMembers
-                                    option(value=candidato.id_miembro)= `${candidato.apellido}, ${candidato.nombre}`
+                    if datos.assignableMembers && datos.assignableMembers.length > 0
+                        form(action="/ministries/add-member" method="POST")
+                            // Campo oculto para pasar el ID del ministerio actual de forma transparente
+                            input(type="hidden" name="id_ministerio" value=datos.ministry.id_ministerio)
 
-                        button.btn.btn-action.w-100.mt-2(type="submit")
-                            i.bi.bi-person-plus-fill.me-2
-                            | Asignar al Grupo
-                else
-                    .text-center.py-3
-                        i.bi.bi-person-check-fill.text-success.display-6.mb-2
-                        p.text-muted.xx-small.mb-0 Todos los miembros activos disponibles en el sistema ya pertenecen a este ministerio.
+                            .mb-3
+                                label.form-label.xx-small.fw-bold.text-secondary.text-uppercase(for="id_miembro") Seleccionar Hermano
+                                select.form-select.rounded-3#id_miembro(name="id_miembro" required)
+                                    option(value="" disabled selected) -- Seleccione un miembro activo --
+                                    each candidato in datos.assignableMembers
+                                        option(value=candidato.id_miembro)= `${candidato.apellido}, ${candidato.nombre}`
 
-        // Columna Derecha: Tabla Limpia de Integrantes Actuales
-        .col-12.col-lg-8
-            .card.bento-card.p-4
-                h5.fw-bold.mb-3 Integrantes Vinculados
+                            button.btn.btn-action.w-100.mt-2.py-2.fw-bold.rounded-3.shadow-sm(type="submit")
+                                i.bi.bi-plus-circle.me-2
+                                | Asignar al Grupo
+                    else
+                        .text-center.py-3
+                            i.bi.bi-person-check-fill.text-success.display-6.mb-2
+                            p.text-muted.xx-small.mb-0 Todos los miembros activos registrados ya pertenecen a este ministerio.
 
-                if datos.currentMembers && datos.currentMembers.length > 0
-                    .table-responsive
-                        table.table.table-hover.align-middle.mb-0
-                            thead
-                                tr
-                                    th(style="width: 15%") ID
-                                    th(style="width: 65%") Nombre Completo
-                                    th(style="width: 20%").text-center Acciones
-                            tbody
-                                each integrante in datos.currentMembers
-                                    tr.event-row
-                                        td
-                                            span.text-muted.x-small= `#0${integrante.id_miembro}`
-                                        td
-                                            .d-flex.align-items-center.gap-3
-                                                // Avatar de simulación utilizando la inicial del apellido
-                                                .rounded-circle.bg-light.d-flex.align-items-center.justify-content-center.fw-bold.text-secondary.x-small(style="width: 32px; height: 32px; border: 1px solid #e2e8f0;")
-                                                    = integrante.apellido.charAt(0)
-                                                span.fw-semibold.small-text= `${integrante.apellido}, ${integrante.nombre}`
-                                        td.text-center
-                                            // Formulario de baja directa interceptado con la alerta estética de SweetAlert2
-                                            form(action="/ministries/remove-member" method="POST" onsubmit=`confirmarDesvinculacion(event, '${integrante.nombre} ${integrante.apellido}');`)
-                                                input(type="hidden" name="id_ministerio" value=datos.ministry.id_ministerio)
-                                                input(type="hidden" name="id_miembro" value=integrante.id_miembro)
-                                                button.btn.btn-link.text-danger.p-0(type="submit" title="Desvincular miembro")
-                                                    i.bi.bi-trash3-fill.fs-6
-                else
-                    .text-center.py-5
-                        i.bi.bi-people.display-5.text-muted.mb-3
-                        h6.fw-bold Sin integrantes actualmente
-                        p.text-muted.xx-small Utiliza el panel de asignación de la izquierda para vincular personal activo a este ministerio.
+            // Columna Derecha: Tabla Limpia de Integrantes Actuales
+            .col-12.col-lg-8
+                .card.bento-card.border-0.shadow-sm.p-4(style="background: #ffffff; border-radius: 16px;")
+                    h5.fw-bold.text-dark.mb-3 Integrantes Vinculados
+
+                    if datos.currentMembers && datos.currentMembers.length > 0
+                        .table-responsive
+                            table.table.table-hover.align-middle.mb-0
+                                thead
+                                    tr(style="border-bottom: 2px solid #f1f5f9;")
+                                        th.text-secondary.x-small.fw-bold(style="width: 15%") ID
+                                        th.text-secondary.x-small.fw-bold(style="width: 65%") Nombre Completo
+                                        th.text-secondary.x-small.fw-bold(style="width: 20%").text-center Acciones
+                                tbody
+                                    each integrante in datos.currentMembers
+                                        tr.event-row
+                                            td
+                                                span.text-muted.x-small.fw-mono= `#0${integrante.id_miembro}`
+                                            td
+                                                .d-flex.align-items-center.gap-3
+                                                    // Avatar de simulación utilizando la inicial del apellido
+                                                    .rounded-circle.bg-light.d-flex.align-items-center.justify-content-center.fw-bold.text-secondary.x-small(style="width: 32px; height: 32px; border: 1px solid #e2e8f0; background-color: #f8fafc !important;")
+                                                        = integrante.apellido.charAt(0)
+                                                    span.fw-semibold.small-text.text-dark= `${integrante.apellido}, ${integrante.nombre}`
+                                            td.text-center
+                                                // Formulario de baja directa interceptado con la alerta estética de SweetAlert2
+                                                form(action="/ministries/remove-member" method="POST" onsubmit=`confirmarDesvinculacion(event, '${integrante.nombre} ${integrante.apellido}');`)
+                                                    input(type="hidden" name="id_ministerio" value=datos.ministry.id_ministerio)
+                                                    input(type="hidden" name="id_miembro" value=integrante.id_miembro)
+                                                    button.btn.btn-link.text-danger.p-0.border-0(type="submit" title="Desvincular miembro" style="background: none;")
+                                                        i.bi.bi-trash3-fill.fs-6
+                    else
+                        .text-center.py-5
+                            i.bi.bi-people.display-5.text-muted.mb-3
+                            h6.fw-bold.text-dark Sin integrantes actualmente
+                            p.text-muted.xx-small Utiliza el panel de asignación de la izquierda para vincular personal activo a este ministerio.
 
 block scripts
     script.
-
         function confirmarDesvinculacion(event, nombreCompleto) {
             // Detiene el envío automático del formulario del módulo
             event.preventDefault();
@@ -141,9 +154,15 @@ block scripts
                     title: 'fw-bold text-dark'
                 }
             }).then((result) => {
-                // Si el desarrollador o usuario confirma la acción, se procesa el formulario hacia el backend
+                // Si el usuario confirma la acción, se procesa el formulario hacia el backend
                 if (result.isConfirmed) {
                     formulario.submit();
                 }
             });
         }
+
+    style.
+        .xx-small { font-size: 0.72rem; letter-spacing: 0.5px; }
+        .x-small { font-size: 0.78rem; }
+        .fw-mono { font-family: SFMono-Regular, Menlo, Monaco, Consolas, monospace; }
+        .bento-card { transition: transform 0.2s ease, box-shadow 0.2s ease; }

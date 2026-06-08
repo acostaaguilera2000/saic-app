@@ -1,62 +1,117 @@
 extends ../layout
 
 block content
-    .d-flex.justify-content-between.align-items-center.mb-4
-        div
-            h2.fw-bold.mb-1 Panel de Ministerios
-            p.text-muted.small-text Gestión de los grupos de operaciones y servicios de la congregación.
-        button.btn.btn-action(data-bs-toggle="modal" data-bs-target="#createMinistryModal")
-            i.bi.bi-plus-lg.me-2
-            | Nuevo Ministerio
+    //- Contenedor raíz adaptado al estándar de grilla expandida de SAIC
+    .container-fluid.px-4.py-4
 
+        //- Encabezado de la Vista estilo Bento Box Superior
+        .d-flex.flex-column.flex-md-row.justify-content-between.align-items-start.align-items-md-center.gap-3.mb-4.p-4.rounded-4(style="background: #ffffff; box-shadow: 0 4px 24px rgba(0,0,0,0.02);")
+            div
+                h2.fw-bold.text-dark.mb-1 Panel de Ministerios
+                p.text-muted.small.mb-0 Gestión de los grupos de operaciones, servicios y asignaciones litúrgicas de la congregación.
 
-    // Contenedor Bento Grid (Estructura Asimétrica)
-    .row.g-3
-        if datos && datos.length > 0
-            each ministerio, index in datos
-                // Alternamos el tamaño de las tarjetas de forma dinámica para crear el efecto Bento
-                - const colSize = (index % 3 === 0) ? 'col-lg-8' : 'col-lg-4'
+            button.btn.btn-action.shadow-sm.px-4.py-2.fw-semibold.rounded-3(data-bs-toggle="modal" data-bs-target="#createMinistryModal")
+                i.bi.bi-plus-lg.me-2
+                | Nuevo Ministerio
 
-                div(class=`col-12 ${colSize}`)
-                    .card.bento-card.h-100.p-4.d-flex.flex-column.justify-content-between
-                        div
-                            .d-flex.justify-content-between.align-items-start.mb-3
-                                // Caja de icono representativo con colores institucionales
-                                .icon-box.bg-soft-success
-                                    i.bi.bi-collection-fill.text-success
-                                span.badge.bg-light.text-dark.x-small.border.ls-1= `ID: #0${ministerio.id_ministerio}`
+        //- Gestión de Mensajes y Alertas Globales (Ancho completo adaptativo)
+        include ../partials/_messages
 
-                            h4.fw-bold.mb-2= ministerio.nombre
-                            p.text-muted.x-small.mb-4= ministerio.descripcion
+        //- Contenedor Bento Grid (Estructura Asimétrica Optimizada)
+        .row.g-3
+            if datos && datos.length > 0
+                each ministerio, index in datos
+                    // Alternamos el tamaño de las tarjetas de forma dinámica para crear el efecto Bento corporativo
+                    - const colSize = (index % 3 === 0) ? 'col-lg-8' : 'col-lg-4'
 
-                        .d-flex.justify-content-end.align-items-center.pt-2.border-top.border-light
-                            a.btn.btn-action.btn-xs(href=`/ministries/${ministerio.id_ministerio}`)
-                                | Gestionar Integrantes
-                                i.bi.bi-arrow-right.ms-2
-        else
-            .col-12
-                .card.bento-card.p-5.text-center
-                    i.bi.bi-folder-x.display-4.text-muted.mb-3
-                    h5.fw-bold No hay ministerios registrados
-                    p.text-muted.x-small Crea un ministerio usando el botón superior para comenzar a asignar miembros.
+                    div(class=`col-12 ${colSize}`)
+                        .card.bento-card.h-100.p-4.d-flex.flex-column.justify-content-between.border-0.shadow-sm(style="background: #ffffff; border-radius: 16px; box-shadow: 0 4px 24px rgba(0,0,0,0.03); transition: transform 0.2s ease, box-shadow 0.2s ease;")
+                            div
+                                .d-flex.justify-content-between.align-items-start.mb-3
+                                    // Caja de icono representativo con colores institucionales
+                                    .icon-box.rounded-3.d-flex.align-items-center.justify-content-center(style="width: 42px; height: 42px; background-color: var(--ijersac-bg);")
+                                        i.bi.bi-collection-fill(style="color: var(--ijersac-navy); font-size: 1.2rem;")
 
-    // Modal Institucional para la Creación de Ministerios
+                                    span.badge.bg-light.text-secondary.x-small.border.ls-1.px-2.py-1(style="border-color: #e2e8f0 !important;")= `ID: #0${ministerio.id_ministerio}`
+
+                                h4.fw-bold.mb-2(style="color: var(--ijersac-navy);")= ministerio.nombre
+                                p.text-muted.x-small.mb-4(style="line-height: 1.5;")= ministerio.descripcion
+
+                            .d-flex.justify-content-end.align-items-center.pt-3.border-top(style="border-color: #f1f5f9 !important;")
+                                a.btn.btn-action-manage.btn-sm.fw-semibold.px-3.py-2.rounded-3(href=`/ministries/${ministerio.id_ministerio}`)
+                                    | Gestionar Integrantes
+                                    i.bi.bi-arrow-right.ms-2
+            else
+                .col-12
+                    .card.bento-card.p-5.text-center.border-0.shadow-sm(style="background: #ffffff; border-radius: 16px;")
+                        .card-body.py-4
+                            i.bi.bi-folder-x.display-4.text-black-50.mb-3
+                            h5.fw-bold.text-dark No hay ministerios registrados
+                            p.text-muted.x-small.mx-auto(style="max-width: 400px;") Crea un ministerio usando el botón superior para comenzar a asignar miembros locales y estructurar los equipos.
+
+    //- Modal Institucional para la Creación de Ministerios
     .modal.fade#createMinistryModal(tabindex="-1" aria-labelledby="createMinistryModalLabel" aria-hidden="true")
         .modal-dialog.modal-dialog-centered
-            .modal-content.border-0.shadow-lg(style="border-radius: 16px;")
-                .modal-header.border-0.pb-0
-                    h5.modal-title.fw-bold#createMinistryModalLabel Nuevo Ministerio
+            .modal-content.border-0.shadow-lg(style="border-radius: 16px; background: #ffffff;")
+                .modal-header.border-0.pb-0.pt-4.px-4
+                    h5.modal-title.fw-bold.text-dark#createMinistryModalLabel Nuevo Ministerio Administrativo
                     button.btn-close(type="button" data-bs-dismiss="modal" aria-label="Close")
-                .modal-body.pt-3
+
+                .modal-body.pt-3.px-4.pb-4
+                    //- Subcabecera informativa interna del modal
+                    .d-flex.align-items-center.mb-3.p-2.rounded-3(style="background-color: var(--ijersac-bg); color: var(--ijersac-navy);")
+                        i.bi.bi-info-circle-fill.me-2
+                        span.fw-bold.text-uppercase.small(style="letter-spacing: 0.5px; font-size: 0.75rem;") Registro de Estructuras Litúrgicas
+
                     form(action="/ministries/create" method="POST")
                         .mb-3
-                            label.form-label.x-small.fw-bold(for="nombre") Nombre del Ministerio
-                            input.form-control.form-control-sm#nombre(type="text" name="nombre" value=(valores ? valores.nombre : '') placeholder="Ej: Ministerio de Alabanza" required)
+                            label.form-label.x-small.fw-bold.text-secondary(for="nombre") Nombre del Ministerio
+                            input.form-control.rounded-3#nombre(
+                                type="text" 
+                                name="nombre" 
+                                value=(valores ? valores.nombre : '') 
+                                placeholder="Ej: Ministerio de Alabanza" 
+                                required
+                            )
+
                         .mb-3
-                            label.form-label.x-small.fw-bold(for="descripcion") Descripción Operativa
-                            textarea.form-control.form-control-sm#descripcion(name="descripcion" rows="4" placeholder="Describe brevemente las funciones y responsabilidades de este grupo..." required)= (valores ? valores.descripcion : '')
-                        .d-flex.justify-content-end.gap-2.mt-4
-                            button.btn.btn-light(type="button" data-bs-dismiss="modal") Cancelar
-                            button.btn.btn-action(type="submit") Registrar Ministerio
+                            label.form-label.x-small.fw-bold.text-secondary(for="descripcion") Descripción Operativa
+                            textarea.form-control.rounded-3#descripcion(
+                                name="descripcion" 
+                                rows="4" 
+                                placeholder="Describe brevemente las funciones, responsabilidades y alcances de este grupo dentro de la congregación..." 
+                                required
+                            )= (valores ? valores.descripcion : '')
 
+                        //- Botonera asimétrica interna del modal
+                        .d-flex.justify-content-end.gap-2.mt-4.pt-3.border-top(style="border-color: #f1f5f9;")
+                            button.btn.btn-light.px-4.fw-semibold.rounded-3(type="button" data-bs-dismiss="modal" style="background-color: #f8fafc; border: 1px solid #e2e8f0; color: #64748b;") Cancelar
+                            button.btn.btn-action.px-4.fw-bold.rounded-3.shadow-sm(type="submit") Registrar Ministerio
 
+block scripts
+    style.
+        /* Definición de clases de tamaño tipográfico estricto del sistema */
+        .x-small {
+            font-size: 0.78rem;
+        }
+        .ls-1 {
+            letter-spacing: 0.5px;
+        }
+
+        /* Hover e interacciones en las tarjetas Bento Box */
+        .bento-card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 30px rgba(0,0,0,0.05) !important;
+        }
+
+        /* Estilos personalizados para los botones de acción interna */
+        .btn-action-manage {
+            background-color: var(--ijersac-bg);
+            color: var(--ijersac-navy);
+            border: 1px solid transparent;
+            transition: all 0.2s ease;
+        }
+        .btn-action-manage:hover {
+            background-color: var(--ijersac-navy);
+            color: #ffffff;
+        }

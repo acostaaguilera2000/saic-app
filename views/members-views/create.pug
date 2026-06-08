@@ -1,48 +1,101 @@
 extends ../layout
 
 block content
-    .row.justify-content-center
-        .col-md-8
-            //- Encabezado e Historial de Navegación
-            .d-flex.justify-content-between.align-items-center.mb-3
-                div
-                    h3.fw-bold.text-dark.mb-1 Registrar Nuevo Miembro
-                    p.text-muted.small Formulario de ingreso para el alistamiento de la información básica y eclesiástica.
-                a.btn.btn-sm.btn-light.border.px-3(href="/members")
-                    i.bi.bi-arrow-left.me-1
-                    | Volver 
+    .container-fluid.px-4.py-4
 
+        //- Encabezado estándar global con migajas de pan integradas
+        +formHeader(
+            'Registrar Nuevo Miembro', 
+            '/members', 
+            [
+                { text: 'SAIC', link: '/dashboard', active: false },
+                { text: 'Miembros', link: '/members', active: false },
+                { text: 'Registrar', active: true }
+            ]
+        )
 
-            //- Tarjeta del Formulario
-            .card.card-custom.border-0.shadow-sm
-                .card-body.p-4
+        //- Contenedor de formulario centrado simétricamente estilo bento
+        .row.justify-content-center
+            .col-12.col-lg-10.col-xl-8
+                include ../partials/_messages
+                .card.bento-card.p-4.mb-4.border-0(style="background: #ffffff; border-radius: 16px; box-shadow: 0 4px 24px rgba(0,0,0,0.03);")
+
                     form(action="/members/create" method="POST")
-                        .row.g-3
-                            .col-md-6
-                                label.form-label.text-muted.small.fw-bold(for="nombre") Nombres
-                                input#nombre.form-control(type="text" name="nombre" value=(valores.nombre || '') placeholder="Ej. Juan Carlos" required)
+                        .row.g-4
+
+                            //- Sección: Datos Demográficos e Identificación
+                            .col-12
+                                .d-flex.align-items-center.p-2.rounded-3(style="background-color: var(--ijersac-bg); color: var(--ijersac-navy);")
+                                    i.bi.bi-person-vcard-fill.fs-5.me-2
+                                    span.fw-bold.text-uppercase.small(style="letter-spacing: 0.5px;") Información Personal Básica
 
                             .col-md-6
-                                label.form-label.text-muted.small.fw-bold(for="apellido") Apellidos
-                                input#apellido.form-control(type="text" name="apellido" value=(valores.apellido || '') placeholder="Ej. Pérez Gómez" required)
-
-                            .col-md-12
-                                label.form-label.text-muted.small.fw-bold(for="documento") Documento de Identidad
-                                input#documento.form-control(type="text" name="documento" value=(valores.documento || '') placeholder="Número de C.C" required)
+                                label.form-label.fw-semibold.text-secondary(for="nombre") Nombres
+                                .input-group
+                                    span.input-group-text.border-end-0(style="background-color: var(--ijersac-bg);"): i.bi.bi-person.text-muted
+                                    input#nombre.form-control.border-start-0.rounded-end-3(
+                                        type="text" 
+                                        name="nombre" 
+                                        value=(valores && valores.nombre ? valores.nombre : '') 
+                                        placeholder="Ej. Juan Carlos" 
+                                        required
+                                    )
 
                             .col-md-6
-                                label.form-label.text-muted.small.fw-bold(for="fecha_registro") Fecha de Ingreso/Registro
-                                input#fecha_registro.form-control(type="date" name="fecha_registro" value=(valores.fecha_registro || '') required)
+                                label.form-label.fw-semibold.text-secondary(for="apellido") Apellidos
+                                .input-group
+                                    span.input-group-text.border-end-0(style="background-color: var(--ijersac-bg);"): i.bi.bi-person.text-muted
+                                    input#apellido.form-control.border-start-0.rounded-end-3(
+                                        type="text" 
+                                        name="apellido" 
+                                        value=(valores && valores.apellido ? valores.apellido : '') 
+                                        placeholder="Ej. Pérez Gómez" 
+                                        required
+                                    )
+
+                            .col-12
+                                label.form-label.fw-semibold.text-secondary(for="documento") Documento de Identidad
+                                .input-group
+                                    span.input-group-text.border-end-0(style="background-color: var(--ijersac-bg);"): i.bi.bi-card-text.text-muted
+                                    input#documento.form-control.border-start-0.rounded-end-3(
+                                        type="text" 
+                                        name="documento" 
+                                        value=(valores && valores.documento ? valores.documento : '') 
+                                        placeholder="Número de Cédula de Ciudadanía" 
+                                        required
+                                    )
+
+                            //- Sección: Fechas Cronológicas y Estado Eclesiástico
+                            .col-12.mt-5
+                                .d-flex.align-items-center.p-2.rounded-3(style="background-color: var(--ijersac-bg); color: var(--ijersac-navy);")
+                                    i.bi.bi-calendar-check-fill.fs-5.me-2
+                                    span.fw-bold.text-uppercase.small(style="letter-spacing: 0.5px;") Registro Eclesiástico
 
                             .col-md-6
-                                label.form-label.text-muted.small.fw-bold(for="fecha_bautismo") Fecha de Bautismo (Opcional)
-                                input#fecha_bautismo.form-control(type="date" name="fecha_bautismo" value=(valores.fecha_bautismo || ''))
-                                .form-text.text-muted.small Dejar en blanco si el miembro aún no se ha bautizado.
+                                label.form-label.fw-semibold.text-secondary(for="fecha_registro") Fecha de Ingreso / Registro
+                                .input-group
+                                    span.input-group-text.border-end-0(style="background-color: var(--ijersac-bg);"): i.bi.bi-calendar-plus.text-muted
+                                    input#fecha_registro.form-control.border-start-0.rounded-end-3(
+                                        type="date" 
+                                        name="fecha_registro" 
+                                        value=(valores && valores.fecha_registro ? valores.fecha_registro : '') 
+                                        required
+                                    )
 
-                        .hr.my-4.text-muted.opacity-25
+                            .col-md-6
+                                label.form-label.fw-semibold.text-secondary(for="fecha_bautismo") Fecha de Bautismo
+                                .input-group
+                                    span.input-group-text.border-end-0(style="background-color: var(--ijersac-bg);"): i.bi.bi-droplet.text-muted
+                                    input#fecha_bautismo.form-control.border-start-0.rounded-end-3(
+                                        type="date" 
+                                        name="fecha_bautismo" 
+                                        value=(valores && valores.fecha_bautismo ? valores.fecha_bautismo : '')
+                                    )
+                                small.form-text.text-muted Dejar en blanco si el miembro no se encuentra bautizado.
 
-                        .d-flex.justify-content-end.gap-2
-                            a.btn.btn-light.border.px-4(href="/members") Cancelar
-                            button.btn.btn-action.px-4(type="submit")
+                        //- Botonera de acciones principales corporativas
+                        .d-flex.gap-3.pt-2.mt-5.border-top
+                            a.btn.btn-light.w-25.py-2.fw-bold.rounded-3.text-secondary(href="/members" style="background-color: var(--ijersac-bg); border: none;") Cancelar
+                            button.btn.btn-action.flex-grow-1.py-2.fw-bold.rounded-3.shadow-sm(type="submit")
                                 i.bi.bi-save.me-2
                                 | Guardar Miembro

@@ -1,42 +1,50 @@
 extends ../layout
 
 block content
-  .row.justify-content-center
-    .col-lg-10
-      //- Cabecera con navegación y contexto
-      .d-flex.align-items-center.justify-content-between.mb-4
-        div
-          .d-flex.align-items-center.gap-3
-            img.rounded-circle.shadow-sm(
-              src=`https://ui-avatars.com/api/?name=${userToEdit.username}&background=D4AF37&color=fff&size=48` 
+  .container-fluid.px-4.py-4
+
+    //- 🚀 1. ENCABEZADO ESTÁNDAR GLOBAL (Migajas dinámicas y centrado unificado)
+    +formHeader(
+      'Editar Perfil de Usuario', 
+      '/users', 
+      [
+        { text: 'SAIC', link: '/dashboard', active: false },
+        { text: 'Usuarios', link: '/users', active: false },
+        { text: 'Editar', active: true }
+      ]
+    )
+
+    //- 🚀 2. CONTENIDO DE FORMULARIO CENTRADO MODERNO (Estilo Bento)
+    .row.justify-content-center
+      .col-12.col-lg-10.col-xl-8
+        include ../partials/_messages
+        .card.bento-card.p-4.mb-4.border-0(style="background: #ffffff; border-radius: 16px; box-shadow: 0 4px 24px rgba(0,0,0,0.03);")
+
+          //- Avatar de usuario integrado en la cabecera del Bento box
+          .d-flex.align-items-center.mb-4.p-2.rounded-3(style="background-color: var(--ijersac-bg);")
+            img.rounded-circle.shadow-sm.me-3(
+              src=`https://ui-avatars.com/api/?name=${userToEdit.username}&background=0A192F&color=fff&size=48` 
               alt="Avatar"
             )
             div
-              h2.fw-bold.text-dark.mb-0 Editar Perfil
-              p.text-muted.small.mb-0 Modificando la cuenta de: 
-                strong.text-primary #{userToEdit.username}
-        
-        a.btn.btn-outline-secondary.btn-sm.rounded-pill.px-3(href="/users")
-          i.bi.bi-arrow-left.me-2
-          | Volver
+              h5.fw-bold.text-dark.m-0 Perfil de Acceso
+              p.text-muted.small.m-0 Modificando la cuenta de: 
+                strong(style="color: var(--ijersac-navy);") #{userToEdit.username}
 
-
-      .card.card-custom.border-0.shadow-sm
-        .card-body.p-4.p-md-5
           form(action=`/users/update/${userToEdit.id_usuario}` method="POST")
             .row.g-4
-              //- Sección: Datos de Cuenta
+
+              // Sección: Datos de Cuenta
               .col-12
-                .d-flex.align-items-center.mb-2
-                  i.bi.bi-gear-wide-connected.text-primary.me-2
-                  span.fw-bold.text-uppercase.small.text-muted Configuración de Cuenta
-                hr.mt-0.mb-4
+                .d-flex.align-items-center.p-2.rounded-3(style="background-color: var(--ijersac-bg); color: var(--ijersac-navy);")
+                  i.bi.bi-gear-wide-connected.fs-5.me-2
+                  span.fw-bold.text-uppercase.small(style="letter-spacing: 0.5px;") Configuración de Cuenta
 
               .col-md-6
-                label.form-label.fw-semibold(for="username") Nombre de Usuario
+                label.form-label.fw-semibold.text-secondary(for="username") Nombre de Usuario
                 .input-group
-                  span.input-group-text.bg-light: i.bi.bi-person
-                  input.form-control.bg-light(
+                  span.input-group-text.border-end-0(style="background-color: var(--ijersac-bg);"): i.bi.bi-person.text-muted
+                  input.form-control.border-start-0.rounded-end-3(
                     type="text" 
                     id="username" 
                     name="username" 
@@ -45,10 +53,10 @@ block content
                   )
 
               .col-md-6
-                label.form-label.fw-semibold(for="email") Correo Electrónico
+                label.form-label.fw-semibold.text-secondary(for="email") Correo Electrónico
                 .input-group
-                  span.input-group-text.bg-light: i.bi.bi-envelope
-                  input.form-control.bg-light(
+                  span.input-group-text.border-end-0(style="background-color: var(--ijersac-bg);"): i.bi.bi-envelope.text-muted
+                  input.form-control.border-start-0.rounded-end-3(
                     type="email" 
                     id="email" 
                     name="email" 
@@ -57,61 +65,58 @@ block content
                   )
 
               .col-md-6
-                label.form-label.fw-semibold(for="password") Nueva Contraseña
+                label.form-label.fw-semibold.text-secondary(for="password") Nueva Contraseña
                 .input-group
-                  span.input-group-text.bg-light: i.bi.bi-shield-lock
-                  input.form-control.bg-light(
+                  span.input-group-text.border-end-0(style="background-color: var(--ijersac-bg);"): i.bi.bi-shield-lock.text-muted
+                  input.form-control.border-start-0(
                     type="password" 
                     id="password" 
                     name="password" 
                     placeholder="Dejar en blanco para no cambiar"
                   )
-                  button.btn.btn-outline-secondary.bg-light(type="button" onclick="togglePassword(event)")
-                    i.bi.bi-eye
-                small.text-muted.d-block.mt-1 Solo si deseas actualizar el acceso de seguridad.
+                  button.btn.btn-outline-secondary.border-start-0(type="button" onclick="togglePassword(event)" style="background-color: var(--ijersac-bg);")
+                    i.bi.bi-eye.text-muted
+                small.form-text.text-muted Solo si deseas actualizar el acceso de seguridad.
 
               .col-md-6
-                label.form-label.fw-semibold(for="rol") Nivel de Permisos
+                label.form-label.fw-semibold.text-secondary(for="rol") Nivel de Permisos
                 .input-group
-                  span.input-group-text.bg-light: i.bi.bi-layers
-                  select.form-select.bg-light(id="rol" name="rol" required)
+                  span.input-group-text.border-end-0(style="background-color: var(--ijersac-bg);"): i.bi.bi-layers.text-muted
+                  select.form-select.border-start-0.rounded-end-3(id="rol" name="rol" required)
                     option(value="admin" selected=(userToEdit.rol==="admin")) Administrador
                     option(value="tesorero" selected=(userToEdit.rol==="tesorero")) Tesorero
                     option(value="lider" selected=(userToEdit.rol==="lider")) Líder Ministerial
                     option(value="miembro" selected=(userToEdit.rol==="miembro")) Miembro General
 
-              //- Sección: Miembro Vinculado (Corregida y Dinámica)
+              // Sección: Miembro Vinculado
               .col-12.mt-5
-                .d-flex.align-items-center.mb-2
-                  i.bi.bi-person-vcard.text-primary.me-2
-                  span.fw-bold.text-uppercase.small.text-muted Vinculación de Identidad
-                hr.mt-0.mb-4
+                .d-flex.align-items-center.p-2.rounded-3(style="background-color: var(--ijersac-bg); color: var(--ijersac-navy);")
+                  i.bi.bi-person-vcard.fs-5.me-2
+                  span.fw-bold.text-uppercase.small(style="letter-spacing: 0.5px;") Vinculación de Identidad
 
               .col-12
-                label.form-label.fw-semibold(for="id_miembro") Miembro Asociado
-                .input-group
-                  span.input-group-text.bg-light: i.bi.bi-people
-                  select.form-select.bg-light(id="id_miembro" name="id_miembro")
+                label.form-label.fw-semibold.text-secondary(for="id_miembro") Miembro Asociado
+                .input-group.mb-1
+                  span.input-group-text.border-end-0(style="background-color: var(--ijersac-bg);"): i.bi.bi-people.text-muted
+                  select.form-select.border-start-0.rounded-end-3(id="id_miembro" name="id_miembro")
                     option(value="") Sin asignar (Externo / Cuenta Administrativa)
-                    
-                    //- Si el usuario ya cuenta con un miembro vinculado, pintamos su opción persistida
+
                     if userToEdit.id_miembro && userToEdit.nombre_miembro
                       option(value=userToEdit.id_miembro selected) #{userToEdit.nombre_miembro} #{userToEdit.apellido_miembro} (Miembro Actual)
-                    
-                    //- Cambiado 'miembros' por 'availableMembers' para mapear directo al controlador
+
                     if availableMembers && availableMembers.length > 0
                       each miembro in availableMembers
-                        //- Evitamos duplicidad visual del miembro actual en la lista desplegable
                         if miembro.id_miembro != userToEdit.id_miembro
-                          option(value=miembro.id_miembro)= `${miembro.nombre} ${miembro.apellido} — Doc: ${miembro.documento}`
-                          
-                small.text-muted.d-block.mt-1 
+                          option(value=miembro.id_miembro) = `${miembro.nombre} ${miembro.apellido} — Doc: ${miembro.documento}`
+
+                small.form-text.d-block.mt-1(style="color: var(--ijersac-red); font-weight: 500;")
+                  i.bi.bi-info-circle-fill.me-1
                   | Modifique esta selección únicamente si necesita reasignar o corregir la identidad vinculada a este usuario.
 
-            //- Botones Finales de Acción
-            .d-flex.justify-content-end.gap-3.mt-5
-              a.btn.btn-light.px-4(href="/users") Cancelar
-              button.btn.btn-action.px-5.shadow-sm(type="submit")
+            // BOTONERA DE ACCIÓN CORPORATIVA ASIMÉTRICA
+            .d-flex.gap-3.pt-2.mt-5.border-top
+              a.btn.btn-light.w-25.py-2.fw-bold.rounded-3.text-secondary(href="/users" style="background-color: var(--ijersac-bg); border: none;") Cancelar
+              button.btn.btn-action.flex-grow-1.py-2.fw-bold.rounded-3.shadow-sm(type="submit")
                 i.bi.bi-save.me-2
                 | Guardar Cambios
 

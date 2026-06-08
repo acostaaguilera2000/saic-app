@@ -38,7 +38,7 @@ class MemberController {
             res.redirect("/members");
         } catch (err) {
             if (err.name === "BusinessValidationError") {
-                return res.status(400).render("member-views/create", {
+                return res.status(400).render("members-views/create", {
                     errores: [err.message],
                     valores: req.body
                 });

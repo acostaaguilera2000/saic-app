@@ -52,7 +52,7 @@ html(lang="es")
           a.nav-link(href="/ministries" class=(currentModule==='ministries' ? 'active' : '') )
             i.bi.bi-diagram-3.me-3
             | Ministerios
-          a.nav-link(href="#")
+          a.nav-link(href="/finance" class=(currentModule==='finance' ? 'active' : ''))
             i.bi.bi-wallet2.me-3
             | Finanzas
           a.nav-link(href="/report" class=(currentModule==='report' ? 'active' : ''))
@@ -79,7 +79,7 @@ html(lang="es")
 
       //- Contenido principal
       .content-body
-        include ./partials/_messages
+        include ./partials/breadcrumbs
         block content
 
     //- Nav Móvil Sincronizado

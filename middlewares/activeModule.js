@@ -8,7 +8,8 @@ const activeModuleMiddleware = (req, res, next) => {
         '/service': 'service',
         '/members': 'members',
         '/profile': 'profile',
-        '/ministries': 'ministries'
+        '/ministries': 'ministries',
+        '/finance': 'finance',
     };
 
     // Buscamos si la URL actual empieza con alguna de nuestras claves configuradas
