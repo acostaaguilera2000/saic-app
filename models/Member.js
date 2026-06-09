@@ -174,6 +174,29 @@ class Member {
             throw { status: 500, message: "Error al cambiar el estado del miembro en la base de datos." };
         }
     }
+
+    /**
+     * Obtiene métricas consolidadas de la membresía en un solo query para el dashboard
+     * @static
+     * @async
+     * @returns {Promise<Object>} Totales condicionales de miembros activos e inactivos
+     */
+    static async getDashboardSummary() {
+        try {
+            const query = `
+                SELECT 
+                    COUNT(*) AS total,
+                    COUNT(CASE WHEN activo = 1 THEN 1 END) AS activos,
+                    COUNT(CASE WHEN activo = 0 THEN 1 END) AS inactivos
+                FROM miembro
+            `;
+            const [rows] = await db.query(query);
+            return rows[0] || { total: 0, activos: 0, inactivos: 0 };
+        } catch (error) {
+            console.error("Error en Member.getDashboardSummary:", error);
+            throw { status: 500, message: "Error al compilar métricas de membresía." };
+        }
+    }
 }
 
 export default Member;

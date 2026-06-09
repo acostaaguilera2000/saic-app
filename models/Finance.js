@@ -101,6 +101,32 @@ class Finance {
             throw { status: 500, message: "Error al actualizar el estado de la transacción contable." };
         }
     }
+
+    /**
+     * Obtiene la suma consolidada de donaciones por mes para un año específico (Gráficos)
+     * @static
+     * @async
+     * @param {number} year - Año de análisis (Ej: 2026)
+     * @returns {Promise<Array<Object>>} Listado con las sumas estructuradas de los 12 meses
+     */
+    static async getMonthlyDonationsSumByYear(year) {
+        try {
+            const query = `
+                SELECT 
+                    MONTH(fecha_registro) AS mes,
+                    SUM(monto) AS total_mes
+                FROM donaciones
+                WHERE YEAR(fecha_registro) = ? AND estado = 'Asentada'
+                GROUP BY MONTH(fecha_registro)
+                ORDER BY mes ASC
+            `;
+            const [rows] = await db.query(query, [year]);
+            return rows;
+        } catch (error) {
+            console.error("Error en Finance.getMonthlyDonationsSumByYear:", error);
+            throw { status: 500, message: "Error al compilar el histórico financiero anual." };
+        }
+    }
 }
 
 export default Finance;

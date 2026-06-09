@@ -170,6 +170,34 @@ class ServicePlatform {
             throw { status: 500, message: "Error al compilar los datos para el reporte." };
         }
     }
+
+    /**
+     * Recupera de forma compacta los próximos cultos limitando el total (Uso específico de Dashboard)
+     * @static
+     * @async
+     * @param {number} limit - Cantidad máxima de registros a retornar
+     * @returns {Promise<Array>} Listado limitado de cultos futuros
+     */
+    static async getUpcomingSchedule(limit = 2) {
+        try {
+            const query = `
+                SELECT 
+                    id_culto,
+                    fecha, 
+                    hora, 
+                    tipo_culto
+                FROM culto
+                WHERE fecha >= CURDATE()
+                ORDER BY fecha ASC, hora ASC
+                LIMIT ?
+            `;
+            const [rows] = await db.query(query, [limit]);
+            return rows;
+        } catch (error) {
+            console.error("Error en ServicePlatform.getUpcomingSchedule:", error);
+            throw { status: 500, message: "Error al recuperar la agenda corta del dashboard." };
+        }
+    }
 }
 
 export default ServicePlatform;

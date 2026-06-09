@@ -8,6 +8,8 @@ import helmet from "helmet";
 import morgan from "morgan";
 
 // Importación de rutas y middlewares
+
+import dashboardRoutes from "./routes/dashboardRoutes.js";
 import authRoutes from "./routes/authRoutes.js";
 import userRoutes from "./routes/userRoutes.js";
 import memberRoutes from "./routes/memberRoutes.js";
@@ -17,9 +19,11 @@ import logisticsRoutes from "./routes/logisticsRoutes.js";
 import ministryRoutes from "./routes/ministryRoutes.js";
 import reportRoutes from "./routes/reportRoutes.js";
 import finaceRoutes from "./routes/finaceRoutes.js";
-import error from "./middlewares/error.js";
+
 import { isAuthenticated } from "./middlewares/validate-modules/auth.js";
+import { isRole } from "./middlewares/validate-modules/isRole.js";
 import activeModule from "./middlewares/activeModule.js";
+import error from "./middlewares/error.js";
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -99,18 +103,17 @@ app.get("/", (req, res) => {
 });
 app.use("/auth", authRoutes);
 
-// 5. Rutas privadas
-app.get("/dashboard", isAuthenticated, (req, res) => {
-    res.render("dashboard", { title: "Panel de control" });
-});
-app.use("/users", isAuthenticated, userRoutes);
+// 5. Rutas privadas con roles especificos
+
+app.use("/dashboard", isAuthenticated, dashboardRoutes);
 app.use("/profile", isAuthenticated, profileRoutes);
-app.use("/members", isAuthenticated, memberRoutes);
-app.use("/service", isAuthenticated, servicePlatformRoutes);
-app.use("/logistic", isAuthenticated, logisticsRoutes);
-app.use("/ministries", isAuthenticated, ministryRoutes);
-app.use("/finance", isAuthenticated, finaceRoutes);
-app.use("/report", isAuthenticated, reportRoutes);
+app.use("/users", isAuthenticated, isRole('admin'), userRoutes);
+app.use("/members", isAuthenticated, isRole('admin', 'tesorero', 'lider'), memberRoutes);
+app.use("/service", isAuthenticated, isRole('admin', 'lider'), servicePlatformRoutes);
+app.use("/logistic", isAuthenticated, isRole('admin', 'lider', 'miembro'), logisticsRoutes);
+app.use("/ministries", isAuthenticated, isRole('admin', 'lider'), ministryRoutes);
+app.use("/finance", isAuthenticated, isRole('admin', 'tesorero'), finaceRoutes);
+app.use("/report", isAuthenticated, isRole('admin', 'tesorero', 'lider'), reportRoutes);
 
 // 6. Manejo de errores 
 app.use(error.error404);

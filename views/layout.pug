@@ -17,16 +17,14 @@ html(lang="es")
     link(rel="stylesheet" href="/css/dashboard.css")
 
     //- 4. CONFIGURACIÓN DE SCRIPTS UNIFICADA
-    //- Bootstrap sin defer para asegurar los clics del menú del usuario de forma inmediata
     script(src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js")
     script(src="https://cdn.jsdelivr.net/npm/sweetalert2@11")
 
-    //- Plugins con defer: se ejecutan en orden estricto al terminar de leer el HTML
+    //- Plugins con defer
     script(src="https://cdn.jsdelivr.net/npm/jquery@3.7.1/dist/jquery.min.js" defer)
     script(src="https://cdn.jsdelivr.net/npm/datatables.net@2.0.8/js/dataTables.min.js" defer)
     script(src="https://cdn.jsdelivr.net/npm/datatables.net-bs5@2.0.8/js/dataTables.bootstrap5.min.js" defer)
 
-    //- Bloque para inyectar CSS específico desde las vistas
     block styles
 
   body
@@ -37,27 +35,51 @@ html(lang="es")
         small.opacity-75.text-uppercase Admin Church
       .mt-4
         nav.nav.flex-column
-          a.nav-link(href="/dashboard" class=(title==='Panel de control' ? 'active' : ''))
+          a.nav-link(href="/dashboard" class=(currentModule==='dashboard' ? 'active' : ''))
             i.bi.bi-grid-1x2-fill.me-3
             | Dashboard
-          a.nav-link(href="/users" class=(currentModule==='users' ? 'active' : ''))
-            i.bi.bi-person-gear.me-3
-            | Usuarios
-          a.nav-link(href="/members" class=(currentModule==='members' ? 'active' : ''))
-            i.bi.bi-people-fill.me-3
-            | Miembros
-          a.nav-link(href="/service" class=(currentModule==='service' ? 'active' : '') )
-            i.bi.bi-calendar-event.me-3
-            | Servicios de culto
-          a.nav-link(href="/ministries" class=(currentModule==='ministries' ? 'active' : '') )
-            i.bi.bi-diagram-3.me-3
-            | Ministerios
-          a.nav-link(href="/finance" class=(currentModule==='finance' ? 'active' : ''))
-            i.bi.bi-wallet2.me-3
-            | Finanzas
-          a.nav-link(href="/report" class=(currentModule==='report' ? 'active' : ''))
-            i.bi.bi-bar-chart-line.me-3
-            | Reportes
+          
+          //- Rol: admin
+          if user && user.rol === 'admin'
+            a.nav-link(href="/users" class=(currentModule==='users' ? 'active' : ''))
+              i.bi.bi-person-gear.me-3
+              | Usuarios
+          
+          //-  Roles: admin, tesorero, lider
+          if user && ['admin', 'tesorero', 'lider'].includes(user.rol)
+            a.nav-link(href="/members" class=(currentModule==='members' ? 'active' : ''))
+              i.bi.bi-people-fill.me-3
+              | Miembros
+          
+          //- Roles: admin, lider
+          if user && ['admin', 'lider'].includes(user.rol)
+            a.nav-link(href="/service" class=(currentModule==='service' ? 'active' : ''))
+              i.bi.bi-calendar-event.me-3
+              | Servicios de culto
+          
+          //- Roles: admin, lider, miembro
+          if user && ['admin', 'lider', 'miembro'].includes(user.rol)
+            a.nav-link(href="/logistic" class=(currentModule==='logistic' ? 'active' : ''))
+              i.bi.bi-truck.me-3
+              | Logística
+          
+          //-  Roles: admin, lider
+          if user && ['admin', 'lider'].includes(user.rol)
+            a.nav-link(href="/ministries" class=(currentModule==='ministries' ? 'active' : ''))
+              i.bi.bi-diagram-3.me-3
+              | Ministerios
+          
+          //-  Roles: admin, tesorero
+          if user && ['admin', 'tesorero'].includes(user.rol)
+            a.nav-link(href="/finance" class=(currentModule==='finance' ? 'active' : ''))
+              i.bi.bi-wallet2.me-3
+              | Finanzas
+          
+          //-  Roles: admin, tesorero, lider
+          if user && ['admin', 'tesorero', 'lider'].includes(user.rol)
+            a.nav-link(href="/report" class=(currentModule==='report' ? 'active' : ''))
+              i.bi.bi-bar-chart-line.me-3
+              | Reportes
 
     .main-wrapper
       //- Header
@@ -70,7 +92,7 @@ html(lang="es")
           .d-flex.align-items-center.gap-3(style="cursor: pointer;" data-bs-toggle="dropdown")
             .text-end.d-none.d-sm-block
               p.mb-0.fw-bold.lh-1(style="color: var(--saic-blue);") #{user ? user.username : 'Manuel Acosta'}
-              small.text-muted #{user ? user.rol : 'Super Admin'}
+              small.text-muted.text-uppercase #{user ? user.rol : 'Super Admin'}
             img.rounded-circle.shadow-sm(src=`https://ui-avatars.com/api/?name=${user ? user.username : 'Manuel+Acosta'}&background=162a4a&color=fff` width="45")
           ul.dropdown-menu.dropdown-menu-end.border-0.shadow.mt-3
             li: a.dropdown-item.py-2(href=`/profile` class=(currentModule==='profile' ? 'active' : '')): i.bi.bi-person.me-2 Mi Cuenta
@@ -82,35 +104,72 @@ html(lang="es")
         include ./partials/breadcrumbs
         block content
 
-    //- Nav Móvil Sincronizado
+    //-  Nav Móvil Condicionado y Sincronizado
     nav.mobile-bottom-nav.d-lg-none.py-2
       .d-flex.justify-content-around.align-items-center
-        a.text-white.text-decoration-none.small.text-center(href="/dashboard")
+        //- Dashboard: Visible para todos
+        a.text-white.text-decoration-none.small.text-center(href="/dashboard" class=(currentModule==='dashboard' ? 'active' : ''))
           i.bi.bi-grid-1x2-fill.d-block.fs-4
           | Inicio
-        a.text-white.text-decoration-none.small.text-center(href="/members")
-          i.bi.bi-people-fill.d-block.fs-4
-          | Miembros
-        .dropup
-          a.text-white.text-decoration-none.small.text-center.dropdown-toggle(data-bs-toggle="dropdown" aria-expanded="false")
-            i.bi.bi-plus-circle.d-block.fs-4(style="color: var(--saic-gold);")
-            | Más
-          ul.dropdown-menu.dropdown-menu-end.shadow.border-0.mb-3
-            li: a.dropdown-item(href="/users") 
-              i.bi.bi-person-gear.me-2
-              | Usuarios
-            li: a.dropdown-item(href="/service") 
-              i.bi.bi-calendar-event.me-2
-              | Servicios de culto
-            li: a.dropdown-item(href="#") 
-              i.bi.bi-diagram-3.me-2
-              | Ministerios
-            li: a.dropdown-item(href="#") 
-              i.bi.bi-wallet2.me-2
-              | Finanzas
-            li: hr.dropdown-divider
-            li: a.dropdown-item(href="/report") 
-              i.bi.bi-bar-chart-line.me-2
-              | Reportes
+          
+        //- Miembros: admin, tesorero, lider
+        if user && ['admin', 'tesorero', 'lider'].includes(user.rol)
+          a.text-white.text-decoration-none.small.text-center(href="/members" class=(currentModule==='members' ? 'active' : ''))
+            i.bi.bi-people-fill.d-block.fs-4
+            | Miembros
+          
+        //- Cultos: admin, lider
+        if user && ['admin', 'lider'].includes(user.rol)
+          a.text-white.text-decoration-none.small.text-center(href="/service" class=(currentModule==='service' ? 'active' : ''))
+            i.bi.bi-calendar-event.d-block.fs-4
+            | Cultos
 
-    block scripts
+        //- Finanzas: admin, tesorero
+        if user && ['admin', 'tesorero'].includes(user.rol)
+          a.text-white.text-decoration-none.small.text-center(href="/finance" class=(currentModule==='finance' ? 'active' : ''))
+            i.bi.bi-wallet2.d-block.fs-4
+            | Finanzas
+
+        //- Menú Dropup "Más" para opciones secundarias o condicionales restantes
+        //- Evaluamos si el rol actual tiene acceso a alguna de las opciones ocultas para pre-iluminar el botón
+        - const showUsers = user && user.rol === 'admin'
+        - const showLogistic = user && ['admin', 'lider', 'miembro'].includes(user.rol)
+        - const showMinistries = user && ['admin', 'lider'].includes(user.rol)
+        - const showReports = user && ['admin', 'tesorero', 'lider'].includes(user.rol)
+        - const isMoreActive = ['users', 'ministries', 'report', 'logistic'].includes(currentModule)
+
+        //- El botón "Más" solo se renderiza si el usuario tiene permiso para al menos una sub-opción
+        if showUsers || showLogistic || showMinistries || showReports
+          .dropup
+            a.text-white.text-decoration-none.small.text-center.dropdown-toggle(data-bs-toggle="dropdown" aria-expanded="false" class=(isMoreActive ? 'active' : ''))
+              i.bi.bi-plus-circle.d-block.fs-4
+              | Más
+            ul.dropdown-menu.dropdown-menu-end.shadow.border-0.mb-3
+              
+              if showUsers
+                li
+                  a.dropdown-item.py-2(href="/users" class=(currentModule==='users' ? 'active' : '')) 
+                    i.bi.bi-person-gear.me-2
+                    | Usuarios
+                    
+              if showLogistic
+                li
+                  a.dropdown-item.py-2(href="/logistic" class=(currentModule==='logistic' ? 'active' : '')) 
+                    i.bi.bi-truck.me-2
+                    | Logística
+                    
+              if showMinistries
+                li
+                  a.dropdown-item.py-2(href="/ministries" class=(currentModule==='ministries' ? 'active' : '')) 
+                    i.bi.bi-diagram-3.me-2
+                    | Ministerios
+                    
+              if showReports
+                li
+                  hr.dropdown-divider
+                li
+                  a.dropdown-item.py-2(href="/report" class=(currentModule==='report' ? 'active' : '')) 
+                    i.bi.bi-bar-chart-line.me-2
+                    | Reportes
+
+block scripts

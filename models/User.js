@@ -164,6 +164,34 @@ class User {
             throw { status: 500, message: "Error interno al actualizar los datos del perfil." };
         }
     }
+    
+    /**
+     * Obtiene los últimos usuarios dados de alta en la plataforma web cruzados con sus datos de miembro
+     * @static
+     * @async
+     * @param {number} limit - Cantidad de usuarios a listar
+     * @returns {Promise<Array>} Datos de usuarios recientes y sus comités/ministerios
+     */
+    static async getLatestUsersCreated(limit = 3) {
+        try {
+            const query = `
+                SELECT 
+                    u.id_usuario,
+                    u.username,
+                    CONCAT(m.nombre, ' ', m.apellido) AS nombre_completo,
+                    m.id_miembro
+                FROM usuario u
+                INNER JOIN miembro m ON u.id_miembro = m.id_miembro
+                ORDER BY u.id_usuario DESC
+                LIMIT ?
+            `;
+            const [rows] = await db.query(query, [limit]);
+            return rows;
+        } catch (error) {
+            console.error("Error en User.getLatestUsersCreated:", error);
+            throw { status: 500, message: "Error al recuperar los usuarios de alta reciente." };
+        }
+    }
 }
 
 export default User;

@@ -26,6 +26,10 @@ class LogisticsController {
         }
     }
 
+    static async renderIndex(req, res) {
+        res.render("logistics-views/index");
+    }
+
     /**
      * @param {Object} req
      * @param {Object} res

@@ -14,7 +14,7 @@ block content
       ]
     )
 
-    //- 🚀 2. CONTENIDO DE FORMULARIO CENTRADO MODERNO (Estilo Bento)
+    //- CONTENIDO DE FORMULARIO
     .row.justify-content-center
       .col-12.col-lg-10.col-xl-8
         include ../partials/_messages
@@ -107,7 +107,8 @@ block content
                     if availableMembers && availableMembers.length > 0
                       each miembro in availableMembers
                         if miembro.id_miembro != userToEdit.id_miembro
-                          option(value=miembro.id_miembro) = `${miembro.nombre} ${miembro.apellido} — Doc: ${miembro.documento}`
+                          //- 🛠️ Corrección aplicada aquí usando interpolación limpia nativa de Pug
+                          option(value=miembro.id_miembro) #{miembro.nombre} #{miembro.apellido} — Doc: #{miembro.documento}
 
                 small.form-text.d-block.mt-1(style="color: var(--ijersac-red); font-weight: 500;")
                   i.bi.bi-info-circle-fill.me-1

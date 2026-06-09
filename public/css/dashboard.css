@@ -168,7 +168,7 @@ h6 {
 }
 
 /* ==========================================================================
-   🍱 NUEVO SISTEMA BENTO GRID (MÉTRIQUES & DASHBOARD)
+    NUEVO SISTEMA BENTO GRID (MÉTRIQUES & DASHBOARD)
    ========================================================================== */
 .bento-card {
     background: #ffffff;
@@ -229,38 +229,6 @@ h6 {
    COMPONENTES PREMIUM  BOTONES, UTILIDADES)
    ========================================================================== */
 
-
-/* Botonera Institucional */
-.btn-dark {
-    background: var(--ijersac-navy) !important;
-    border: none !important;
-    padding: 8px 18px;
-    border-radius: 10px;
-    font-weight: 600;
-    transition: var(--transition-smooth);
-}
-
-.btn-dark:hover {
-    background: var(--ijersac-navy-light) !important;
-    box-shadow: 0 8px 16px rgba(10, 25, 47, 0.15);
-    transform: translateY(-1px);
-}
-
-.btn-white {
-    background: #ffffff;
-    color: var(--ijersac-navy);
-    border: 1px solid #e2e8f0;
-    padding: 8px 18px;
-    border-radius: 10px;
-    font-weight: 600;
-    transition: var(--transition-smooth);
-}
-
-.btn-white:hover {
-    background: #f8fafc;
-    border-color: #cbd5e1;
-    color: var(--ijersac-navy);
-}
 
 .btn-xs {
     padding: 2px 6px;
@@ -350,7 +318,7 @@ h6 {
     }
 
     .mobile-bottom-nav a {
-        color: rgba(255, 255, 255, 0.7);
+        color: var(--ijersac-navy-light);
         opacity: 0.8;
         transition: 0.2s;
     }

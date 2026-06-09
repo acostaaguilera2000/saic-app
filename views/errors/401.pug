@@ -1,0 +1,26 @@
+extends ../layout
+
+block content
+    .container-fluid.px-4.py-5
+        .row.justify-content-center.align-items-center(style="min-height: 70vh;")
+            .col-12.col-md-8.col-lg-6.text-center
+                //- Tarjeta Bento de Error
+                .card.bento-card.p-5.border-0.shadow-sm(style="background: #ffffff; border-radius: 16px;")
+
+                    //- Iconografía de Alerta Contenida
+                    .d-inline-flex.align-items-center.justify-content-center.rounded-circle.mb-4(style="width: 80px; height: 80px; background-color: rgba(220, 53, 69, 0.08);")
+                        i.bi.bi-shield-lock-fill.fs-1(style="color: var(--ijersac-red, #dc3545);")
+
+                    h1.fw-bold.text-dark.mb-2 401
+                    h4.fw-semibold.text-secondary.mb-3= title || 'Acceso Restringido'
+
+                    p.text-muted.mb-4= message || 'No tienes los permisos o credenciales necesarias para visualizar este módulo administrativo.'
+
+                    //- Acciones de escape seguras
+                    .d-flex.gap-3.justify-content-center
+                        a.btn.btn-light.px-4.py-2.fw-bold.rounded-3(href="javascript:history.back()" style="background-color: var(--ijersac-bg); border: none;") 
+                            i.bi.bi-arrow-left.me-2
+                            | Volver atrás
+                        a.btn.btn-action.px-4.py-2.fw-bold.rounded-3.shadow-sm(href="/dashboard")
+                            i.bi.bi-grid-1x2-fill.me-2
+                            | Ir al Inicio
