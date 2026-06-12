@@ -2,52 +2,121 @@ doctype html
 html(lang="es")
   head
     meta(charset="UTF-8")
-    meta(name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes")
-    title Acceso | IJERSAC - Sistema SAIC
+    meta(name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover")
+    meta(name="theme-color" content="#0a192f")
 
-    //- Bootstrap 5 CSS
-    link(href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet")
-    //- Google Fonts: Inter
-    link(href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,400;14..32,500;14..32,600;14..32,700&display=swap" rel="stylesheet")
-    //- Font Awesome 6
-    link(rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css")
-    //- CSS Personalizado
+    title Acceso | IJERSAC
+
+    // Precarga de imagen (IMPORTANTE)
+    link(
+      rel="preload"
+      as="image"
+      href="/img/fondo-login.webp"
+    )
+
+    // Bootstrap
+    link(
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+    )
+
+    // Bootstrap Icons
+    link(
+      rel="stylesheet" 
+      href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.0/font/bootstrap-icons.css"
+
+    )
+
+    // CSS propio
     link(rel="stylesheet" href="/css/login.css")
 
   body
-    .login-card
-      //- =======================
-      //- LOGO DE LA MARCA (Identidad IJERSAC)
-      //- =======================
-      .logo-container
-        .logo-marca
-          i.fas.fa-place-of-worship
 
-      h3.brand-title SAIC
-      p.text-muted.small.mb-4 Gestión de iglesia | IJERSAC
+ 
+    main.container-fluid.main-wrapper
 
-      if error
-        .alert.alert-danger.text-center #{error}
+      .row.main-content
 
-      form(action="/auth/login" method="POST")
-        //- Entrada de Correo
-        .input-group-modern
-          input.form-control-modern(type="email" name="email" value=( valores ? valores.email :'') placeholder="Correo electrónico" required)
-          i.fas.fa-envelope
+        // =========================
+        // PANEL IZQUIERDO
+        // =========================
+        section.col-lg-6.left-panel
 
-        //- Entrada de Contraseña
-        .input-group-modern
-          input.form-control-modern(type="password" name="password" placeholder="Contraseña" required)
-          i.fas.fa-lock
+          .brand-container
 
-        button.btn.btn-login(type="submit")
-          i.fas.fa-arrow-right-to-bracket.me-2
-          | Iniciar Sesión
+            .brand-line
 
-      a.forgot-link(href="#")
-        i.fas.fa-key.me-1
-        | ¿No puedes acceder? Recuperar clave
+            h1.brand-title SAIC
 
-    //- Bootstrap JS
-    script(src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js")
+            p.brand-subtitle
+              | Software Administrativo Para Iglesias Cristianas
 
+            .brand-verse
+              | Todo lo que hagan, háganlo de corazón,
+              br
+              | como para el Señor.
+              br
+              br
+              | Colosenses 3:23
+
+
+        // =========================
+        // PANEL DERECHO
+        // =========================
+        section.col-lg-6.right-panel
+
+          .login-box
+
+            h2.login-title Bienvenido
+
+            p.login-subtitle
+              | Inicia sesión para acceder al sistema
+
+
+            // Error backend
+            if error
+              .custom-error
+                i.bi.bi-exclamation-triangle-fill.me-2
+                | #{error}
+
+
+            form(action="/auth/login" method="POST" autocomplete="on")
+
+              // EMAIL
+              .field
+                i.bi.bi-envelope
+
+                input.input-custom(
+                  type="email"
+                  name="email"
+                  value=( valores ? valores.email : '')
+                  placeholder="Correo electrónico"
+                  autocomplete="email"
+                  required
+                )
+
+              // PASSWORD
+              .field
+                i.bi.bi-lock
+
+                input.input-custom(
+                  type="password"
+                  name="password"
+                  placeholder="Contraseña"
+                  autocomplete="current-password"
+                  required
+                )
+
+              button.login-btn(type="submit")
+                i.bi.bi-box-arrow-in-right.me-2
+                | Iniciar sesión
+
+
+              .bottom-links
+                a(href="#") Recuperar contraseña
+                a(href="#") Soporte técnico
+
+
+    script(
+      src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"
+    )

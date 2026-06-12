@@ -1,212 +1,350 @@
-/* ==========================================================================
-   VARIABLES DE TEMATIZACIÓN - IJERSAC
-   Modificamos estos valores para adaptar el login a cualquier institución.
-   ========================================================================== */
 :root {
-    /* 1. Colores de Identidad (Logo e Institución) */
-    --color-primario-dark: #001F3F;
-    /* Azul Profundo */
-    --color-acento-carmesi: #9B1D2C;
-    /* Rojo Carmesí principal */
-    --color-acento-dark: #5E0F1A;
-    /* Rojo Carmesí oscuro para degradados */
+    /* Paleta institucional dashboard */
+    --ijersac-navy: #0a192f;
+    --ijersac-navy-light: #162a4a;
+    --ijersac-red: #8b0000;
+    --ijersac-red-light: #b30000;
+    --ijersac-bg: #f4f7f9;
 
-    /* 2. Colores de Interfaz (Fondos y Superficies) */
-    --bg-gradient-top: #0a192f;
-    /* Azul noche para el fondo body */
-    --bg-gradient-bottom: #162a4a;
-    --card-bg: #F5F7FC;
-    /* Gris claro sutil para la tarjeta */
-    --input-bg: #FFFFFF;
-
-    /* 3. Colores de Texto */
-    --text-title: #0F2A44;
-    /* Azul para títulos */
-    --text-muted: #6C757D;
-    /* Gris para subtítulos */
-    --text-body: #1F2A3E;
-    /* Gris azulado oscuro */
-    --text-white: #FFFFFF;
-    --text-icon-logo: #F2E8E0;
-    /* Gris cálido para el icono */
-
-    /* 4. Bordes y Sombras */
-    --border-light: rgba(220, 200, 200, 0.4);
-    --input-border: #D6DDE6;
-    --shadow-card: 0 25px 45px -12px rgba(0, 0, 0, 0.4);
-    --shadow-button: 0 8px 18px rgba(155, 29, 44, 0.35);
-
-    /* 5. Efectos de Error (Lo que añadimos para el mensaje de error) */
-    --color-error: #8B0000;
-    --error-bg: #fff5f5;
+    /* UI */
+    --glass: rgba(255, 255, 255, .08);
+    --glass-strong: rgba(255, 255, 255, .12);
+    --border: rgba(255, 255, 255, .18);
+    --transition: all .3s ease;
 }
 
-/* RESET & BASE */
 * {
     margin: 0;
     padding: 0;
     box-sizing: border-box;
 }
 
+html,
 body {
-    background: linear-gradient(180deg, var(--bg-gradient-top) 0%, var(--bg-gradient-bottom) 100%);
-    font-family: 'Inter', sans-serif;
+    min-height: 100%;
+}
+
+body {
+    font-family: "Segoe UI", sans-serif;
+
+    /* evita flash blanco antes del CSS */
+    background: var(--ijersac-navy);
+
+}
+
+
+
+/* =====================================
+BACKGROUND
+===================================== */
+
+.main-wrapper {
+
     min-height: 100vh;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    padding: 1.5rem;
     position: relative;
+    overflow: hidden;
+
+    /* color base mientras descarga imagen */
+    background-color: var(--ijersac-navy);
+
+    /* gradiente visible inmediatamente */
+    background-image:
+        linear-gradient(135deg,
+            rgba(139, 0, 0, .82),
+            rgba(10, 25, 47, .92)),
+        url('/img/fondo-login.webp');
+
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+
+    /* ayuda percepción visual */
+    animation: fadeBackground .8s ease;
 }
 
-/* TARJETA PRINCIPAL */
-.login-card {
-    background: var(--card-bg);
-    border-radius: 2rem;
-    box-shadow: var(--shadow-card), 0 8px 18px rgba(0, 0, 0, 0.2);
-    padding: 2.5rem 2rem;
-    width: 100%;
-    max-width: 460px;
-    transition: transform 0.25s ease, box-shadow 0.3s;
-    text-align: center;
-    border: 1px solid var(--border-light);
-    position: relative;
-    z-index: 2;
-}
+/* capa adicional */
 
-.login-card:hover {
-    transform: translateY(-6px);
-    box-shadow: 0 30px 50px -15px rgba(0, 0, 0, 0.45);
-}
-
-/* LOGOTIPO */
-.logo-container {
-    margin-bottom: 1.4rem;
-    display: flex;
-    justify-content: center;
-}
-
-.logo-marca {
-    width: 90px;
-    height: 90px;
-    background: linear-gradient(145deg, var(--color-acento-carmesi), var(--color-acento-dark));
-    border-radius: 32px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    box-shadow: 0 15px 22px -8px rgba(155, 29, 44, 0.4);
-    transition: all 0.2s;
-    border: 2px solid rgba(255, 245, 240, 0.25);
-}
-
-.logo-marca i {
-    font-size: 48px;
-    color: var(--text-icon-logo);
-    filter: drop-shadow(0 2px 5px rgba(0, 0, 0, 0.3));
-}
-
-/* TEXTOS */
-.brand-title {
-    font-weight: 800;
-    font-size: 2.1rem;
-    background: linear-gradient(120deg, var(--text-title), #1A3A5C);
-    -webkit-background-clip: text;
-    background-clip: text;
-    color: transparent;
-    margin-bottom: 0.2rem;
-}
-
-.text-muted {
-    color: var(--text-muted) !important;
-    font-size: 0.85rem;
-}
-
-/* MENSAJES DE ERROR (Dinámico) */
-.alert-danger {
-    background-color: var(--error-bg);
-    border-left: 4px solid var(--color-error);
-    color: var(--color-error);
-    font-weight: 500;
-    margin-bottom: 1.5rem;
-}
-
-/* INPUTS MODERNOS */
-.input-group-modern {
-    position: relative;
-    margin-bottom: 1.6rem;
-}
-
-.form-control-modern {
-    width: 100%;
-    padding: 0.9rem 1rem 0.9rem 3rem;
-    font-size: 1rem;
-    border: 1.5px solid var(--input-border);
-    border-radius: 1.8rem;
-    background-color: var(--input-bg);
-    transition: all 0.25s ease;
-    color: var(--text-body);
-    outline: none;
-}
-
-.form-control-modern:focus {
-    border-color: var(--color-acento-carmesi);
-    box-shadow: 0 0 0 4px rgba(155, 29, 44, 0.2);
-}
-
-.input-group-modern i {
+.main-wrapper::before {
+    content: "";
     position: absolute;
-    left: 1.2rem;
-    top: 50%;
-    transform: translateY(-50%);
-    color: #8F9BB3;
-    font-size: 1.15rem;
-    pointer-events: none;
+    inset: 0;
+
+    background:
+        radial-gradient(circle at top left,
+            rgba(255, 255, 255, .04),
+            transparent 40%);
+
+    z-index: 1;
 }
 
-.form-control-modern:focus+i {
-    color: var(--color-acento-carmesi);
+/* animación suave */
+
+@keyframes fadeBackground {
+    from {
+        opacity: .92;
+    }
+
+    to {
+        opacity: 1;
+    }
 }
 
-/* BOTÓN LOGIN */
-.btn-login {
-    background: linear-gradient(105deg, var(--color-acento-carmesi), var(--color-acento-dark));
-    border: none;
-    padding: 0.85rem 1rem;
-    border-radius: 2.5rem;
+.main-content {
+    position: relative;
+    z-index: 5;
+    min-height: 100vh;
+}
+
+/* =====================================
+LEFT PANEL
+===================================== */
+
+.left-panel {
+    display: flex;
+    align-items: center;
+    padding: 80px;
+    height: 100vh;
+}
+
+.brand-container {
+    max-width: 550px;
+}
+
+.brand-line {
+    width: 75px;
+    height: 5px;
+    background: var(--ijersac-red-light);
+    margin-bottom: 22px;
+}
+
+.brand-title {
+    color: white;
+    font-size: 5rem;
     font-weight: 700;
+    letter-spacing: 2px;
+}
+
+.brand-subtitle {
+    margin-top: 18px;
+    color: rgba(255, 255, 255, .90);
+    font-size: 1.05rem;
+    font-weight: 500;
+}
+
+.brand-verse {
+    margin-top: 40px;
+    padding-left: 20px;
+
+    border-left: 4px solid var(--ijersac-red);
+
+    color: rgba(255, 255, 255, .72);
+    line-height: 1.8;
+    font-size: .95rem;
+}
+
+/* =====================================
+RIGHT PANEL
+===================================== */
+
+.right-panel {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    padding: 40px;
+}
+
+.login-box {
     width: 100%;
-    color: var(--text-white);
-    box-shadow: var(--shadow-button);
-    transition: all 0.25s;
-    margin-bottom: 1.4rem;
+    max-width: 430px;
 }
 
-.btn-login:hover {
-    filter: brightness(1.1);
-    transform: translateY(-2px);
-    box-shadow: 0 12px 24px -6px rgba(128, 24, 40, 0.5);
-}
+/* =====================================
+TEXT
+===================================== */
 
-/* ENLACES Y FOOTER */
-.forgot-link {
-    font-size: 0.85rem;
-    color: #1C4E6F;
-    text-decoration: none;
+.login-title {
+    color: white;
+    font-size: 2.4rem;
     font-weight: 600;
-    transition: color 0.2s;
 }
 
-.forgot-link:hover {
-    color: var(--color-acento-carmesi);
-    text-decoration: underline;
+.login-subtitle {
+    color: rgba(255, 255, 255, .72);
+    margin-bottom: 35px;
 }
 
-.footer-note {
-    font-size: 0.7rem;
-    color: #98A2B3;
-    margin-top: 1.2rem;
-    border-top: 1px solid #E2E8F0;
-    padding-top: 1rem;
+/* =====================================
+ERROR ALERT
+===================================== */
+
+.custom-error {
+
+    background: rgba(179, 0, 0, .18);
+    border: 1px solid rgba(255, 255, 255, .10);
+
+    color: white;
+
+    padding: 14px 16px;
+    border-radius: 14px;
+    margin-bottom: 20px;
+
+    backdrop-filter: blur(10px);
+}
+
+/* =====================================
+INPUTS
+===================================== */
+
+.field {
+    position: relative;
+    margin-bottom: 22px;
+}
+
+.field i {
+    position: absolute;
+    left: 18px;
+    top: 19px;
+
+    color: rgba(255, 255, 255, .65);
+}
+
+.input-custom {
+
     width: 100%;
-    display: block;
+    height: 58px;
+
+    border: none;
+    outline: none;
+
+    border-radius: 14px;
+
+    background: var(--glass);
+    border: 1px solid var(--border);
+
+    color: white;
+
+    padding-left: 48px;
+
+    transition: var(--transition);
+
+    backdrop-filter: blur(12px);
+}
+
+.input-custom::placeholder {
+    color: rgba(255, 255, 255, .45);
+}
+
+.input-custom:focus {
+
+    border-color: var(--ijersac-red-light);
+
+    background: var(--glass-strong);
+
+    box-shadow:
+        0 0 0 3px rgba(179, 0, 0, .18);
+}
+
+/* =====================================
+BUTTON
+===================================== */
+
+.login-btn {
+
+    width: 100%;
+    height: 58px;
+
+    border: none;
+    border-radius: 14px;
+
+    color: white;
+    font-weight: 600;
+
+    background:
+        linear-gradient(90deg,
+            var(--ijersac-red),
+            var(--ijersac-red-light));
+
+    transition: var(--transition);
+}
+
+.login-btn:hover {
+    transform: translateY(-1px);
+}
+
+/* =====================================
+LINKS
+===================================== */
+
+.bottom-links {
+    margin-top: 22px;
+    display: flex;
+    justify-content: space-between;
+}
+
+.bottom-links a {
+    color: rgba(255, 255, 255, .75);
+    text-decoration: none;
+    font-size: .9rem;
+}
+
+.bottom-links a:hover {
+    color: white;
+}
+
+.field i {
+    z-index: 20;
+}
+
+.input-custom {
+    z-index: 5;
+    backdrop-filter: blur(8px);
+}
+
+/* =====================================
+RESPONSIVE
+===================================== */
+
+@media(max-width:992px) {
+
+    .left-panel {
+        height: auto;
+        padding: 50px 30px 15px;
+        justify-content: center;
+        text-align: center;
+    }
+
+    .brand-title {
+        font-size: 3rem;
+    }
+
+    .brand-verse {
+        border: none;
+        padding-left: 0;
+    }
+
+    .right-panel {
+        height: auto;
+        padding: 30px;
+    }
+
+    .main-content {
+        padding-bottom: 40px;
+    }
+}
+
+@media(max-width:576px) {
+
+    .brand-title {
+        font-size: 2.2rem;
+    }
+
+    .login-title {
+        font-size: 2rem;
+    }
+
+    .bottom-links {
+        flex-direction: column;
+        gap: 10px;
+    }
 }
