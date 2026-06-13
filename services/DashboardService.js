@@ -23,7 +23,7 @@ class DashboardService {
                 Member.getDashboardSummary(),
                 Finance.getMonthlyDonationsSumByYear(currentYear),
                 User.getLatestUsersCreated(3),
-                ServicePlatform.getUpcomingSchedule(2)
+                ServicePlatform.getUpcomingSchedule(2) 
             ]);
 
             // Procesamiento de datos del Bloque 1 (Chart.js)
@@ -56,6 +56,77 @@ class DashboardService {
                 status: 500,
                 message: "Error interno al consolidar las métricas de los bloques del tablero."
             };
+        }
+    }
+
+    /**
+     * Recopila el perfil unificado y los turnos litúrgicos de un miembro para su vista Bento Grid
+     * @static
+     * @async
+     * @param {number} userId - ID del usuario en sesión (req.session.user.id_usuario)
+     * @returns {Promise<Object|null>} - Objeto estructurado o null si no existe el vínculo
+     */
+    static async getMemberDashboardSummary(userId) {
+        try {
+            // 1. Llamamos al método en el modelo Member esperando la promesa correctamente
+            const currentMember = await Member.findByUserId(userId);
+
+            // REGLA DE NEGOCIO: Si no hay perfil, devolvemos null para el controlador
+            if (!currentMember) {
+                return null;
+            }
+
+            // 2. Traemos todos sus turnos activos usando el ID del miembro obtenido
+            const scheduleTurns = await ServicePlatform.findActiveTurnsByMemberId(currentMember.id_miembro);
+
+            // 3. Formateamos las fechas y horas de las asignaciones de manera legible para el usuario
+            const formattedAssignments = (scheduleTurns || []).map(turno => {
+                let fechaFormateada = turno.fecha;
+                let horaFormateada = turno.hora;
+
+                // A. Formateo de Fecha (Ej: "2026-07-01T05:00:00.000Z" -> "Mié, 01 jul 2026")
+                if (turno.fecha instanceof Date) {
+                    fechaFormateada = turno.fecha.toLocaleDateString('es-ES', {
+                        weekday: 'short', // "mié."
+                        year: 'numeric',  // "2026"
+                        month: 'short',   // "jul."
+                        day: '2-digit',   // "01"
+                        timeZone: 'UTC'   // Evita desfases por la zona horaria del entorno de ejecución
+                    });
+                    
+                    // Limpieza estética: Remover puntos de abreviación y capitalizar la primera letra
+                    fechaFormateada = fechaFormateada.replace(/\./g, '');
+                    fechaFormateada = fechaFormateada.charAt(0).toUpperCase() + fechaFormateada.slice(1);
+                }
+
+                // B. Formateo de Hora Militar (Ej: "07:00:00" -> "07:00")
+                if (typeof turno.hora === 'string' && turno.hora.includes(':')) {
+                    const [horas, minutos] = turno.hora.split(':');
+                    horaFormateada = `${horas}:${minutos}`;
+                }
+
+                return {
+                    ...turno,
+                    fecha: fechaFormateada,
+                    hora: horaFormateada
+                };
+            });
+
+            // 4. Empaquetamos todo convirtiendo de forma segura el estado activo
+            return {
+                profile: {
+                    nombre: currentMember.nombre,
+                    documento: currentMember.documento,
+                    apellido: currentMember.apellido,
+                    fecha_bautismo:currentMember.fecha_bautismo,
+                    estado: (currentMember.activo == 1 || currentMember.activo === true) ? 'Activo' : 'Inactivo',
+                    ministerio: currentMember.nombre_ministerio || 'Ninguno asignado'
+                },
+                assignments: formattedAssignments // Array inyectado con los strings formateados
+            };
+        } catch (error) {
+            console.error("Error en DashboardService.getMemberDashboardSummary:", error);
+            throw error;
         }
     }
 }

@@ -1,0 +1,26 @@
+extends ../layout
+
+block content
+    .container.py-5
+        .row.justify-content-center.align-items-center(style="min-height: 70vh;")
+            .col-12.col-md-8.col-lg-6.text-center
+                .card.border-0.shadow-sm.p-5(style="background-color: var(--gris-suave); border-top: 5px solid var(--azul-profundo) !important;")
+                    .card-body
+                        //- Icono moderno de reloj o verificación en espera
+                        i.bi.bi-person-clock.display-3.mb-4(style="color: var(--azul-profundo);")
+
+                        h1.fs-3.fw-bold.mb-3(style="color: var(--azul-profundo);") ¡Cuenta en Verificación!
+
+                        p.text-dark.fw-semibold Hola, @#{user.username}.
+                        p.text-muted.small.lh-base
+                            | Tu cuenta de usuario ha sido registrada exitosamente en **SAIC**, sin embargo, un administrador de la iglesia aún debe asociar tus credenciales a tu registro oficial de miembro en la base de datos.
+
+                        .alert.alert-info.border-0.small.text-start.mt-4(style="background-color: rgba(13, 71, 161, 0.08); color: var(--azul-profundo);")
+                            i.bi.bi-info-circle-fill.me-2
+                            | **¿Qué debes hacer?** Por favor, comunícate con el pastor, el líder de secretaría o el administrador del sistema para que completen la vinculación de tu perfil y puedas visualizar tus turnos asignados.
+
+                        hr.text-muted.my-4
+
+                        a.btn.btn-sm.text-white.px-4(href="/logout" style="background-color: var(--azul-profundo);") 
+                            i.bi.bi-box-arrow-left.me-2
+                            | Cerrar Sesión Seguro

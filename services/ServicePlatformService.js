@@ -1,10 +1,11 @@
 import Culto from "../models/ServicePlatform.js";
 
 class ServicePlatformService {
-    
-    static async getAllServices() {
-        return await Culto.listAll();
+
+    static async getAllServices(upcomingOnly = false) {
+        return await Culto.listAll(upcomingOnly);
     }
+
 
     static async getServiceById(id) {
         const culto = await Culto.getById(id);

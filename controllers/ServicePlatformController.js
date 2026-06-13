@@ -4,12 +4,33 @@ import errorHandler from "../middlewares/error.js";
 
 class ServicePlatformController {
 
+    static getHub(req, res) {
+        if (req.session.user.rol === 'miembro') {
+            return res.redirect('/service/schedule');
+        }
+        res.render('service-views/hub', {
+            currentModule: 'service'
+        });
+    }
+
     static async getAllServices(req, res) {
         try {
             const cultos = await ServicePlatformService.getAllServices();
-            res.render("service-views/index", { cultos });
+            return res.render("service-views/index", { cultos });
+
         } catch (err) {
             console.error("Error en ServicePlatformController.getAllServices:", err);
+            errorHandler.error500(req, res, "No se pudo recuperar la agenda de cultos.");
+        }
+    }
+
+    static async getAllSchedule(req, res) {
+        try {
+            const cultos = await ServicePlatformService.getAllServices(true); // lista apartir de la fecha actual
+            return res.render("service-views/schedule", { cultos });
+
+        } catch (err) {
+            console.error("Error en ServicePlatformController.getAllSchedule:", err);
             errorHandler.error500(req, res, "No se pudo recuperar la agenda de cultos.");
         }
     }
@@ -31,7 +52,7 @@ class ServicePlatformController {
                 req.flash('error_msg', req.validationErrors);
 
                 return res.status(400).render("service-views/create", {
-                    valores: req.body, 
+                    valores: req.body,
                     miembros: availableMembers
                 });
             }

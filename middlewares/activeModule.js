@@ -8,6 +8,7 @@ const activeModuleMiddleware = (req, res, next) => {
         '/service': 'service',
         '/members': 'members',
         '/profile': 'profile',
+        '/logistic':'logistic',
         '/ministries': 'ministries',
         '/finance': 'finance',
     };

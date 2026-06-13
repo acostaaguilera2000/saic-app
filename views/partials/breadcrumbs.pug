@@ -13,7 +13,7 @@ mixin generateBreadcrumbs(crumbs)
 mixin formHeader(title, backUrl, crumbs)
     .row.mb-4.justify-content-center
         .col-12.col-lg-10.col-xl-8
-            .d-flex.align-items-center.justify-content-between.pb-3.border-bottom
+            .d-flex.align-items-center.justify-content-between.pb-3.border-bottom.bg-white.rounded.p-3
                 div
                     h2.fw-bold.text-dark.m-0= title
                     if crumbs && crumbs.length > 0

@@ -1,0 +1,191 @@
+extends ../layout
+
+block content
+  //- Estilos embebidos exclusivos para las micro-interacciones y efectos visuales modernos del Bento Grid
+  style.
+    .bento-card {
+      transition: transform 0.25s ease, box-shadow 0.25s ease;
+      border-radius: 20px !important;
+      background-color: #ffffff;
+      border: 1px solid #e2e8f0 !important;
+    }
+    .bento-card:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 12px 30px rgba(0,0,0,0.05) !important;
+    }
+    .timeline-item {
+      border-left: 3px solid var(--rojo-carmesi, #dc3545);
+      background-color: #f8fafc;
+      border-radius: 12px;
+      transition: all 0.2s ease;
+    }
+    .timeline-item:hover {
+      background-color: #ffffff;
+      border-left-width: 5px;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.03);
+    }
+    .pulse-green {
+      animation: pulse-g 2s infinite;
+    }
+    @keyframes pulse-g {
+      0% { box-shadow: 0 0 0 0 rgba(40, 167, 69, 0.4); }
+      70% { box-shadow: 0 0 0 6px rgba(40, 167, 69, 0); }
+      100% { box-shadow: 0 0 0 0 rgba(40, 167, 69, 0); }
+    }
+    .bento-icon-box {
+      width: 42px;
+      height: 42px;
+      border-radius: 10px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    /* Estilo premium para inputs deshabilitados estilo lectura */
+    .form-control-read {
+      background-color: #f8fafc !important;
+      border-color: #e2e8f0 !important;
+      color: #334155 !important;
+      font-weight: 600;
+      border-radius: 10px !important;
+    }
+    .form-label-sm {
+      font-size: 0.72rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      color: #64748b;
+      margin-bottom: 4px;
+    }
+
+  .container-fluid.px-3.px-md-4.py-4
+
+    //- Gestión de alertas y notificaciones del sistema
+    include ../partials/_messages
+
+    //- SECCIÓN PRINCIPAL: FLUJO VERTICAL TIPO PORTAL INSTITUCIONAL
+    .row.g-4
+
+      //- BLOQUE 1: FICHA DE REGISTRO INSTITUCIONAL (ANCHO COMPLETO - SUPERIOR)
+      .col-12
+        .card.bento-card.shadow-sm.p-4
+          .card-body.p-0
+            .d-flex.justify-content-between.align-items-center.mb-3
+              .d-flex.align-items-center.gap-2
+                .bento-icon-box.bg-danger-subtle
+                  i.bi.bi-person-badge-fill.fs-5.text-danger
+                div
+                  h3.fs-5.fw-bold.text-dark.mb-0 Información de Identidad Institucional
+                  small.text-muted Ficha oficial de registro eclesiástico en SAIC
+
+              //- Badge de Estado Estilizado con Efecto de Brillo/Pulso
+              if datos.profile.activo === 1 || datos.profile.estado === 'Activo'
+                span.badge.bg-success.bg-opacity-10.text-success.px-3.py-2.rounded-pill.pulse-green.d-flex.align-items-center.gap-1.fw-bold(style="font-size: 0.78rem;")
+                  span.spinner-grow.spinner-grow-sm.text-success(style="animation-duration: 1.5s; width: 8px; height: 8px;")
+                  | Miembro Activo
+              else
+                span.badge.bg-secondary.bg-opacity-10.text-secondary.px-3.py-2.rounded-pill.d-flex.align-items-center.gap-1(style="font-size: 0.78rem;")
+                  | Inactivo
+
+            hr.text-muted.opacity-25.my-3
+
+            //- Formulario de Solo Lectura con grilla balanceada a lo ancho
+            form(oninput="return false;")
+
+              p.text-muted.small.fw-bold.mb-2(style="font-size: 0.8rem; letter-spacing: 0.3px;") 
+                i.bi.bi-card-list.me-1
+                | Datos Personales
+
+              .row.g-3.mb-4
+                .col-12.col-sm-6.col-md-3
+                  label.form-label.form-label-sm Nombres
+                  input.form-control.form-control-read(type="text" value=datos.profile.nombre disabled)
+
+                .col-12.col-sm-6.col-md-3
+                  label.form-label.form-label-sm Apellidos
+                  input.form-control.form-control-read(type="text" value=datos.profile.apellido disabled)
+
+                .col-12.col-sm-6.col-md-3
+                  label.form-label.form-label-sm Documento de Identidad
+                  input.form-control.form-control-read(type="text" value=(datos.profile.documento || user.username) disabled)
+
+                .col-12.col-sm-6.col-md-3
+                  label.form-label.form-label-sm Correo Electrónico
+                  input.form-control.form-control-read(type="email" value=(user.email || 'No registrado') disabled)
+
+              p.text-muted.small.fw-bold.mb-2(style="font-size: 0.8rem; letter-spacing: 0.3px;") 
+                i.bi.bi-award.me-1
+                | Registro de Servicio y Alta
+
+              .row.g-3
+                .col-12.col-md-6
+                  label.form-label.form-label-sm Ministerios Asignados
+                  .form-control-read.d-flex.flex-wrap.gap-2.align-items-center.p-2(style="min-height: 43px; border: 1px solid #e2e8f0; background-color: #f8fafc; border-radius: 10px;")
+                    - var mCampo = datos.profile.nombre_ministerio || datos.profile.ministerio
+                    if mCampo
+                      - var listaMinisterios = Array.isArray(mCampo) ? mCampo : mCampo.split(',')
+                      each min in listaMinisterios
+                        if min.trim() !== ''
+                          span.badge.bg-primary.bg-opacity-10.text-primary.px-2.py-1.rounded-2.border.border-primary-subtle.d-inline-flex.align-items-center(style="font-size: 0.82rem; font-weight: 600;")
+                            i.bi.bi-bookmark-star.me-1(style="font-size: 0.75rem;")
+                            | #{min.trim()}
+                    else
+                      span.text-muted.small.fst-italic Ninguno asignado
+
+                .col-12.col-md-6
+                  label.form-label.form-label-sm Fecha de Bautismo
+                  - var fBautismo = datos.profile.fecha_bautismo ? new Date(datos.profile.fecha_bautismo).toLocaleDateString('es-ES', {timeZone: 'UTC', day: 'numeric', month: 'long', year: 'numeric'}) : 'No registrada' 
+                  input.form-control.form-control-read(type="text" value=fBautismo disabled)
+
+      //- BLOQUE 2: TURNO DE SERVICIOS (IZQUIERDA - INFERIOR)
+      .col-12.col-md-6
+        .card.bento-card.h-100.shadow-sm.p-4
+          .card-body.p-0
+            .d-flex.align-items-center.gap-2.mb-3
+              .bento-icon-box.bg-primary-subtle
+                i.bi.bi-calendar-week.fs-5.text-primary
+              h3.fs-5.fw-bold.text-dark.mb-0 Mis Próximos Turnos
+
+            if datos.assignments && datos.assignments.length > 0
+              p.text-muted.small.mb-3 Tienes asignaciones agendadas para las próximas actividades.
+
+              .d-flex.flex-column.gap-2.overflow-auto.pe-1(style="max-height: 250px;")
+                each asignacion in datos.assignments
+                  .timeline-item.p-3.border.border-start-0
+                    .d-flex.justify-content-between.align-items-start
+                      div
+                        h5.mb-1.fs-6.fw-bold.text-dark #{asignacion.role_name || asignacion.rol_servicio}
+                        p.mb-0.small.text-muted 
+                          i.bi.bi-layers.me-1
+                          | #{asignacion.tipo_culto}
+                      .text-end
+                        span.badge.bg-dark.bg-opacity-10.text-dark.mb-1.fw-bold(style="font-size: 0.72rem;") #{asignacion.fecha}
+                        div.small.text-muted(style="font-size: 0.75rem;")
+                          i.bi.bi-clock.me-1
+                          | #{asignacion.hora}
+            else
+              .text-center.py-5
+                .bg-light.d-inline-flex.p-3.rounded-circle.mb-2
+                  i.bi.bi-calendar2-check.fs-4.text-success
+                h5.fs-6.fw-bold.text-dark Sin turnos asignados
+                p.text-muted.small.mb-0 No registras responsabilidades pendientes en el altar o logística.
+
+      //- BLOQUE 3: ENLACES RÁPIDOS Y ACCESOS (DERECHA - INFERIOR)
+      .col-12.col-md-6
+        .card.bento-card.h-100.shadow-sm.p-4
+          .card-body.p-0.d-flex.flex-column.justify-content-between.h-100
+            div
+              .d-flex.align-items-center.gap-2.mb-3
+                .bento-icon-box.bg-warning-subtle
+                  i.bi.bi-grid-1x2.fs-5.text-warning
+                h3.fs-5.fw-bold.text-dark.mb-0 Enlaces y Herramientas Rápidas
+              p.text-muted.small.mb-4 Utiliza estos accesos directos para navegar por el cronograma litúrgico global de la congregación o notificar anomalías en los equipos informáticos o de sonido.
+
+            .d-flex.flex-column.gap-2
+              a.btn.btn-light.border.shadow-sm.p-3.rounded-3.fw-semibold.d-flex.align-items-center.justify-content-between(href="/service/schedule")
+                .d-flex.align-items-center.gap-2
+                  i.bi.bi-calendar3.text-danger.fs-5
+                  div.text-start
+                    p.mb-0.text-dark(style="font-size: 0.9rem;") Ver Schedule de Cultos
+                    small.text-muted.fw-normal(style="font-size: 0.75rem;") Consulta el calendario general de actividades.
+                i.bi.bi-arrow-right.text-muted
+

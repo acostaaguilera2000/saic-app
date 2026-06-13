@@ -3,17 +3,6 @@ extends ../layout
 block content
     .container-fluid.px-4.py-4
 
-        //- Encabezado estándar global con migajas de pan integradas (Ecosistema SAIC)
-        +formHeader(
-            `Gestión de Integrantes`, 
-            '/ministries', 
-            [
-                { text: 'SAIC', link: '/dashboard', active: false },
-                { text: 'Ministerios', link: '/ministries', active: false },
-                { text: datos.ministry.nombre, active: true }
-            ]
-        )
-
         //- Gestión de Mensajes y Alertas Globales de Validación / Operación
         include ../partials/_messages
 

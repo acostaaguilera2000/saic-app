@@ -197,6 +197,40 @@ class Member {
             throw { status: 500, message: "Error al compilar métricas de membresía." };
         }
     }
+
+
+    /**
+    * Busca el perfil del miembro y todos sus ministerios asociados agrupados usando el ID de usuario en sesión
+    * @param {number} userId 
+    * @returns {Promise<Object|null>} Datos del miembro con la lista de sus ministerios
+    */
+    static async findByUserId(userId) {
+        try {
+            const query = `
+            SELECT 
+                m.id_miembro, 
+                m.nombre, 
+                m.apellido, 
+                m.documento, 
+                m.activo,
+                m.fecha_bautismo,
+                -- Agrupamos todos los nombres de los ministerios en una sola cadena separada por comas
+                GROUP_CONCAT(min.nombre SEPARATOR ', ') AS nombre_ministerio
+            FROM usuario u
+            INNER JOIN miembro m ON u.id_miembro = m.id_miembro
+            LEFT JOIN miembro_ministerio mm ON m.id_miembro = mm.id_miembro
+            LEFT JOIN ministerio min ON mm.id_ministerio = min.id_ministerio
+            WHERE u.id_usuario = ?
+            GROUP BY m.id_miembro
+        `;
+
+            const [rows] = await db.query(query, [userId]);
+            return rows.length > 0 ? rows[0] : null;
+        } catch (error) {
+            console.error("Error en Member.findByUserId:", error);
+            throw { status: 500, message: "Error al recuperar el perfil por usuario." };
+        }
+    }
 }
 
 export default Member;

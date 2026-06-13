@@ -114,7 +114,7 @@ app.use("/dashboard", isAuthenticated, dashboardRoutes);
 app.use("/profile", isAuthenticated, profileRoutes);
 app.use("/users", isAuthenticated, isRole('admin'), userRoutes);
 app.use("/members", isAuthenticated, isRole('admin', 'tesorero', 'lider'), memberRoutes);
-app.use("/service", isAuthenticated, isRole('admin', 'lider'), servicePlatformRoutes);
+app.use("/service", isAuthenticated, servicePlatformRoutes);
 app.use("/logistic", isAuthenticated, isRole('admin', 'lider', 'miembro'), logisticsRoutes);
 app.use("/ministries", isAuthenticated, isRole('admin', 'lider'), ministryRoutes);
 app.use("/finance", isAuthenticated, isRole('admin', 'tesorero'), finaceRoutes);
