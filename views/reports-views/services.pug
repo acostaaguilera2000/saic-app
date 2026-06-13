@@ -1,217 +1,283 @@
 extends ../layout
 
 block content
-    .container-fluid.px-4.py-4
+  .container-fluid.px-4.py-4
 
-        //-  PANEL CONTROL BENTO COMBINADO (Oculto en Impresión)
-        .row.mb-4.g-3.d-print-none
-            .col-xl-8.col-lg-7
-                .card.border-0.shadow-sm.h-100.p-3(style="background: #ffffff; border-radius: 12px;")
-                    .d-flex.flex-column.flex-sm-row.justify-content-between.align-items-sm-center.gap-3
-                        div
-                            span.badge.bg-soft-primary.text-primary.xx-small.fw-bold.text-uppercase.ls-1 Módulo de Reportes
-                            p.text-muted.small.mb-0  Vista  para distribución física o exportación PDF.
-                        .d-flex.gap-2.shrink-0
-                            button.btn.btn-dark.px-3.py-2.fw-bold.rounded-3.shadow-sm.small-text(type="button" onclick="window.print()")
-                                i.bi.bi-printer.me-2
-                                | Imprimir
-                            a.btn.btn-light.border.px-3.py-2.rounded-3.small-text(href="/service") Volver
+    //-  PANEL CONTROL (Oculto por completo en Impresión)
+    .row.mb-4.g-3.d-print-none
+      .col-xl-8.col-lg-7
+        .card.border-0.shadow-sm.h-100.p-3(style="background: #ffffff; border-radius: 12px; border: 1px solid rgba(15, 23, 42, 0.06) !important;")
+          .d-flex.flex-column.flex-sm-row.justify-content-between.align-items-sm-center.gap-3
+            div
+              span.badge.text-uppercase.xx-small.fw-bold.ls-1(style="background-color: rgba(139, 0, 0, 0.1); color: var(--ijersac-red, #8b0000);") Módulo de Reportes
+              p.text-muted.small.mb-0 Agenda y logística para distribución o PDF.
+            .d-flex.gap-2.shrink-0
+              button.btn.px-3.py-2.fw-bold.rounded-3.shadow-sm.small-text(type="button" onclick="window.print()" style="background-color: var(--ijersac-navy, #0a192f); color: #ffffff; border: none;")
+                i.bi.bi-printer.me-2
+                | Imprimir Reporte
+              a.btn.btn-light.border.px-3.py-2.rounded-3.small-text(href="/service") Volver
 
-            .col-xl-4.col-lg-5
-                .card.border-0.shadow-sm.h-100.p-3(style="background: #ffffff; border-radius: 12px;")
-                    form(method="GET" action="/report/services" class="m-0")
-                        label.form-label.fw-bold.text-secondary.xx-small.text-uppercase.mb-2(for="month") Filtrar Periodo Mensual
-                        .input-group
-                            span.input-group-text.bg-light.border-end-0
-                                i.bi.bi-calendar3.text-muted
-                            select#month.form-select.form-select-md.fw-semibold.text-dark(name="month" onchange="this.form.submit()")
-                                option(value="") -- Todos los meses --
-                                each mes, index in ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre']
-                                    - var val = String(index + 1).padStart(2, '0')
-                                    option(value=val selected=(selectedMonth === val)) #{mes}
+      .col-xl-4.col-lg-5
+        .card.border-0.shadow-sm.h-100.p-3(style="background: #ffffff; border-radius: 12px; border: 1px solid rgba(15, 23, 42, 0.06) !important;")
+          form(method="GET" action="/report/services" class="m-0")
+            label.form-label.fw-bold.text-secondary.xx-small.text-uppercase.mb-2(for="month") Filtrar Periodo Mensual
+            .input-group
+              span.input-group-text.bg-light.border-end-0
+                i.bi.bi-calendar3.text-muted
+              select#month.form-select.form-select-md.fw-semibold.text-dark(name="month" onchange="this.form.submit()")
+                option(value="") -- Todos los meses --
+                each mes, index in ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre']
+                  - var val = String(index + 1).padStart(2, '0')
+                  option(value=val selected=(selectedMonth === val)) #{mes}
 
-        //- Flujo operativo de notificaciones
-        include ../partials/_messages
+    //- Flujo operativo de notificaciones
+    include ../partials/_messages
 
-        //- 🖨️ CONTENEDOR MAESTRO DEL REPORTE IMPRIMIBLE
-        .card.border-0.shadow-sm.card-reporte(style="border-radius: 16px;")
-            .card-body.p-4.p-md-5
+    //- 🖨️ CONTENEDOR ESTILO FACTURA (REPORTE CORPORATIVO PREMIUM)
+    .card.border-0.shadow-sm.card-invoice(style="border-radius: 16px; background-color: #ffffff;")
+      .card-body.p-4.p-sm-5
 
-                //- Encabezado Membrete Oficial Administrativo
-                .row.align-items-end.mb-4.encabezado-reporte
-                    .col-7.text-start
-                        h2.fw-bold.mb-1.titulo-iglesia IGLESIA JESÚS DE NAZARET
-                        span.badge.bg-dark.text-uppercase.px-2.py-1.small-badge Registro Operativo Central
-                    .col-5.text-end
-                        span.d-block.text-uppercase.fw-bold.text-secondary.small-title DOCUMENTO INFORMATIVO
-                        span.d-block.text-muted.x-small Agenda General de Liturgia
-                        span.d-block.text-muted.x-small.fw-mono Emitido: #{new Date().toLocaleDateString('es-CO', { day: '2-digit', month: '2-digit', year: 'numeric' })}
+        //- SECCIÓN 1: CABECERA TIPO FACTURA (Logo / Nombre e Información de Emisión)
+        .row.align-items-start.mb-5
+          .col-12.col-sm-7.text-start.mb-3.mb-sm-0
+            .d-flex.align-items-center.gap-2
+              i.bi.bi-globe2.fs-3(style="color: var(--ijersac-navy, #0a192f);")
+              h2.fw-bold.mb-0.invoice-brand-title SAIC - INTEGRAL
+            p.text-muted.small.mb-0.mt-1 Iglesia Jesús de Nazaret • Coherencia Litúrgica
 
-                .linea-separadora.mb-4
+          .col-12.col-sm-5.text-sm-end
+            h4.fw-bold.text-uppercase.mb-1(style="color: var(--ijersac-navy, #0a192f); font-size: 1.15rem; letter-spacing: -0.3px;") Agenda General
+            span.d-block.text-muted.x-small.fw-mono 
+              span.fw-bold Fecha Emisión: 
+              | #{new Date().toLocaleDateString('es-CO', { day: '2-digit', month: '2-digit', year: 'numeric' })}
+            span.d-block.text-muted.x-small.fw-mono 
+              span.fw-bold Reporte ID: 
+              | #RE-#{new Date().getFullYear()}#{selectedMonth || '00'}
 
-                //- Tabla de Distribución Plana Estricta (6 Columnas)
-                .table-responsive
-                    table.table.align-middle.tabla-institucional.mb-0
-                        thead
-                            tr
-                                th(style="width: 16%;") Fecha / Hora
-                                th(style="width: 14%;") Servicio
-                                th(style="width: 18%;") Dirección
-                                th(style="width: 18%;") Predicación
-                                th(style="width: 18%;") Soporte Técnico
-                                th(style="width: 18%;") Observaciones
-                        tbody
-                            if cronograma && cronograma.length > 0
-                                each item in cronograma
-                                    tr.fila-reporte
+        //- SECCIÓN 2: BLOQUES DE METADATOS EN PARALELO (DE / A / DETALLES)
+        .row.g-3.mb-5.invoice-details-row
+          .col-12.col-sm-4
+            p.text-uppercase.fw-bold.text-secondary.mb-1(style="font-size: 11px; letter-spacing: 0.5px;") De:
+            p.fw-bold.text-dark.mb-0 Administración Central
+            p.text-muted.small.mb-0 IJERSAC Principal
+            p.text-muted.small.mb-0 email: soporte@saic.com
 
-                                        //- Columna 1: Fecha y Hora (UTC Segura)
-                                        td.celda-fecha
-                                            - var f = item.fecha ? new Date(item.fecha).toLocaleDateString('es-ES', {timeZone: 'UTC', weekday: 'long', day: 'numeric', month: 'short'}) : 'No asignada' 
-                                            span.text-uppercase.d-block.fw-bold.txt-institucional #{f}
-                                            if item.hora
-                                                - var [horas, minutos] = item.hora.split(':')
-                                                - var fechaBase = new Date(2000, 0, 1, horas, minutos)
-                                                - var horaFormateada = fechaBase.toLocaleTimeString('es-CO', { hour: 'numeric', minute: '2-digit', hour12: true })
-                                                span.text-muted.x-small.fw-semibold.fw-mono #{horaFormateada}
-                                            else
-                                                span.text-muted.x-small.fw-semibold Por definir
+          .col-12.col-sm-4
+            p.text-uppercase.fw-bold.text-secondary.mb-1(style="font-size: 11px; letter-spacing: 0.5px;") Para:
+            p.fw-bold.text-dark.mb-0 Congregación IJERSAC
+            p.text-muted.small.mb-0 Líderes de ministerio y miembros en general
+           
+          .col-12.col-sm-4.text-sm-end
+            p.text-uppercase.fw-bold.text-secondary.mb-1(style="font-size: 11px; letter-spacing: 0.5px;") Especificaciones:
+            p.mb-0.small.text-dark 
+              span.fw-bold Filtro Mensual: 
+              | #{selectedMonth ? ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'][parseInt(selectedMonth)-1] : 'Año Completo'}
+            p.mb-0.small.text-dark 
+              span.fw-bold Estado: 
+              | Registro Certificado
+            p.mb-0.small.text-dark 
+              span.fw-bold Formato: 
+              | Tablas Desacopladas
 
-                                        //- Columna 2: Tipo de Culto
-                                        td
-                                            span.badge-servicio #{item.tipo_culto}
+        //- ══════════════════════════════════════════════════════════════════
+        //- TABLA 1: CRONOGRAMA DE ALTAR (Dirección y Predicación)
+        //- ══════════════════════════════════════════════════════════════════
+        .d-flex.align-items-center.gap-2.mb-3
+          i.bi.bi-bookmark-star-fill.text-secondary(style="font-size: 1.1rem;")
+          h5.fw-bold.text-uppercase.mb-0(style="font-size: 13px; color: var(--ijersac-navy, #0a192f); letter-spacing: 0.5px;") I. Agenda Litúrgica del Altar
 
-                                        //- Columna 3: Dirección de Culto
-                                        td.texto-assigned
-                                            | #{item.dir_nom ? `${item.dir_nom} ${item.dir_ape}` : item.dirigente_externo || 'Por asignar'}
+        .table-responsive.mb-5
+          table.table.align-middle.invoice-table.mb-0
+            thead
+              tr
+                th(style="width: 20%;") Fecha / Hora
+                th(style="width: 20%;") Servicio
+                th(style="width: 30%;") Dirección
+                th(style="width: 30%;") Predicación
+            tbody
+              if cronograma && cronograma.length > 0
+                each item in cronograma
+                  tr.invoice-row
+                    td.fw-semibold.text-dark
+                      - var f = item.fecha ? new Date(item.fecha).toLocaleDateString('es-ES', {timeZone: 'UTC', weekday: 'short', day: 'numeric', month: 'short'}) : 'No asignada'
+                      span.text-uppercase.d-block(style="font-size: 11.5px; font-weight: 700; color: var(--ijersac-red, #8b0000);") #{f}
+                      if item.hora
+                        - var [horas, minutos] = item.hora.split(':')
+                        - var fechaBase = new Date(2000, 0, 1, horas, minutos)
+                        - var horaFormateada = fechaBase.toLocaleTimeString('es-CO', { hour: 'numeric', minute: '2-digit', hour12: true })
+                        span.text-muted.x-small.fw-mono.d-block #{horaFormateada}
+                    td
+                      span.invoice.text-dark.fw-semibold #{item.tipo_culto}
+                    td.invoice-text-assigned
+                      | #{item.dir_nom ? `${item.dir_nom} ${item.dir_ape}` : item.dirigente_externo || 'Por asignar'}
+                    td.invoice-text-assigned
+                      | #{item.pred_nom ? `${item.pred_nom} ${item.pred_ape}` : item.predicador_externo || 'Por asignar'}
+              else
+                tr
+                  td.text-center.py-4.text-muted.fst-italic(colspan="4") No hay registros litúrgicos.
 
-                                        //- Columna 4: Bloque de Predicación
-                                        td.texto-assigned
-                                            | #{item.pred_nom ? `${item.pred_nom} ${item.pred_ape}` : item.predicador_externo || 'Por asignar'}
+        //- ══════════════════════════════════════════════════════════════════
+        //- TABLA 2: OPERACIÓN Y LOGÍSTICA (Columnas Dedicadas por Responsabilidad)
+        //- ══════════════════════════════════════════════════════════════════
+        .d-flex.align-items-center.gap-2.mb-3.mt-4
+          i.bi.bi-gear-fill.text-secondary(style="font-size: 1.1rem;")
+          h5.fw-bold.text-uppercase.mb-0(style="font-size: 13px; color: var(--ijersac-navy, #0a192f); letter-spacing: 0.5px;") II. Soporte Operativo y Logística
 
-                                        //- Columna 5: Logística Interna y Multimedia
-                                        td.celda-logistica
-                                            if item.son_nom
-                                                div
-                                                    span.subtitulo-rol Sonido: 
-                                                    span.texto-logistica-name #{item.son_nom}
-                                            if item.mul_nom
-                                                div.mt-1
-                                                    span.subtitulo-rol Multi: 
-                                                    span.texto-logistica-name #{item.mul_nom}
-                                            if item.ase_nom
-                                                div.mt-1
-                                                    span.subtitulo-rol Aseo: 
-                                                    span.texto-logistica-name #{item.ase_nom}
+        .table-responsive
+          table.table.align-middle.invoice-table.mb-0
+            thead
+              tr
+                th(style="width: 20%;") Fecha 
+                th(style="width: 18%;") Sonido
+                th(style="width: 18%;") Multimedia
+                th(style="width: 18%;") Aseo
+                th(style="width: 26%;") Observaciones
+            tbody
+              if cronograma && cronograma.length > 0
+                each item in cronograma
+                  tr.invoice-row
+                    //- Reutiliza la fecha de manera sincronizada
+                    td.fw-semibold.text-dark
+                      - var f = item.fecha ? new Date(item.fecha).toLocaleDateString('es-ES', {timeZone: 'UTC', weekday: 'short', day: 'numeric', month: 'short'}) : 'No asignada'
+                      span.text-uppercase.d-block(style="font-size: 11px; font-weight: 700; color: #475569;") #{f}
+                    
+                    //- Columna Sonido
+                    td.invoice-text-assigned
+                      if item.son_nom
+                        span.text-dark #{item.son_nom}
+                      else
+                        span.text-muted.x-small.fst-italic Libre
+                    
+                    //- Columna Multimedia
+                    td.invoice-text-assigned
+                      if item.mul_nom
+                        span.text-dark #{item.mul_nom}
+                      else
+                        span.text-muted.x-small.fst-italic Libre
+                    
+                    //- Columna Aseo
+                    td.invoice-text-assigned
+                      if item.ase_nom
+                        span.text-dark #{item.ase_nom}
+                      else
+                        span.text-muted.x-small.fst-italic Libre
+                    
+                    //- Columna Observaciones Dedicada
+                    td.txt-observacion
+                      if item.observaciones && item.observaciones.trim() !== ""
+                        | #{item.observaciones}
+                      else
+                        span.text-muted.fst-italic Sin novedades.
+              else
+                tr
+                  td.text-center.py-4.text-muted.fst-italic(colspan="5") No hay registros de soporte técnico.
 
-                                        //- Columna 6: Observaciones Dedicadas
-                                        td.txt-observacion
-                                            | #{item.observaciones && item.observaciones.trim() !== "" ? item.observaciones : 'Sin novedades.'}
-                            else
-                                tr
-                                    td.text-center.py-5.text-muted.fst-italic(colspan="6")
-                                        i.bi.bi-calendar-x.display-5.d-block.text-muted.mb-3
-                                        | No se encuentran programaciones registradas para el periodo seleccionado.
-
-                //- Pie de Página Formal Homologado
-                .footer-reporte.text-center.mt-5
-                    p.mb-1.fst-italic.text-secondary.quote-text "Todo lo que hagáis, hacedlo de corazón, como para el Señor y no para los hombres." — Colosenses 3:23
-                    .linea-final.my-3
-                    p.mb-0.text-uppercase.fw-semibold.system-tag SAIC — SISTEMA DE ADMINISTRACIÓN DE IGLESIAS CRISTIANAS
+        //- SECCIÓN 4: PIE DE PÁGINA
+        .invoice-footer.text-center.mt-5.pt-4.border-top
+          p.mb-1.fst-italic.text-secondary(style="font-size: 11px;") "Todo lo que hagáis, hacedlo de corazón, como para el Señor y no para los hombres." — Colosenses 3:23
+          p.mb-0.text-uppercase.fw-bold.mt-2(style="font-size: 10px; letter-spacing: 1px; color: var(--ijersac-navy, #0a192f);") SAIC — SISTEMA DE ADMINISTRACIÓN DE IGLESIAS CRISTIANAS
 
 block scripts
-    style.
-        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap');
+  style.
+    @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap');
 
-        .card-reporte, .tabla-institucional, .encabezado-reporte, .footer-reporte {
-            font-family: 'Inter', sans-serif !important;
-            -webkit-font-smoothing: antialiased;
+    .card-invoice, .invoice-table, .invoice-footer {
+        font-family: 'Inter', sans-serif !important;
+        -webkit-font-smoothing: antialiased;
+    }
+
+    .invoice-brand-title {
+        font-weight: 800 !important;
+        color: var(--ijersac-navy, #0a192f);
+        letter-spacing: -0.5px;
+    }
+
+    .xx-small { font-size: 0.72rem; letter-spacing: 0.5px; }
+    .small-text { font-size: 0.85rem; }
+    .x-small { font-size: 11px; }
+    .fw-mono { font-family: SFMono-Regular, Menlo, Monaco, Consolas, monospace; }
+
+    /* ESTILOS DE LA TABLA ESTILO FACTURA COMERCIAL */
+    .invoice-table thead th {
+        background-color: var(--ijersac-navy, #0a192f) !important;
+        color: #ffffff !important;
+        font-size: 11px;
+        font-weight: 700 !important;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+        padding: 10px 12px !important;
+        border: none !important;
+    }
+
+    .invoice-table tbody td {
+        padding: 12px 12px !important;
+        border-bottom: 1px solid #e2e8f0 !important;
+        font-size: 12.5px;
+        color: #334155;
+    }
+
+    .invoice-table tbody tr.invoice-row:nth-child(even) {
+        background-color: #f8fafc !important;
+    }
+
+    .invoice-badge-culto {
+        background-color: #ffffff;
+        color: #1e293b;
+        padding: 3px 8px;
+        font-size: 10px;
+        font-weight: 700;
+        border: 1px solid #cbd5e1;
+        border-radius: 4px;
+        display: inline-block;
+        text-transform: uppercase;
+        letter-spacing: 0.3px;
+    }
+
+    .invoice-text-assigned {
+        color: #0f172a;
+        font-weight: 600;
+        font-size: 12px;
+    }
+
+    .txt-observacion {
+        font-size: 12px;
+        color: #475569;
+        line-height: 1.4;
+    }
+
+    /* INSTRUCCIONES DE RENDERIZADO PARA IMPRESIÓN Y PDF EXPORT */
+    @media print {
+        * {
+            -webkit-print-color-adjust: exact !important;
+            print-color-adjust: exact !important;
+            color-adjust: exact !important;
         }
-
-        .titulo-iglesia { font-weight: 800 !important; color: #1e293b; letter-spacing: -0.5px; }
-        .small-badge { font-size: 9px !important; letter-spacing: 1px; background-color: #1e293b !important; }
-        .small-title { font-size: 10px; letter-spacing: 1.5px; color: #475569 !important; }
-        .linea-separadora { height: 1px; background-color: #cbd5e1; width: 100%; }
-        .linea-final { height: 1px; background-color: #e2e8f0; width: 150px; margin: 0 auto; }
-        .xx-small { font-size: 0.72rem; letter-spacing: 0.5px; }
-        .small-text { font-size: 0.85rem; }
-        .fw-mono { font-family: SFMono-Regular, Menlo, Monaco, Consolas, monospace; }
-
-        /* Estilo de la Tabla Estructurada */
-        .tabla-institucional thead th {
-            background-color: #1e293b !important;
-            color: #ffffff !important;
-            font-size: 10.5px;
-            font-weight: 700 !important;
-            text-transform: uppercase;
-            letter-spacing: 0.5px;
-            padding: 12px 10px !important;
+        .d-print-none, nav, aside, .sidebar, header, .btn, form {
+            display: none !important;
+        }
+        body {
+            background-color: #ffffff !important;
+            color: #000000 !important;
+            padding: 0 !important;
+            margin: 0 !important;
+        }
+        .card-invoice {
             border: none !important;
+            box-shadow: none !important;
+            padding: 0 !important;
         }
-
-        .tabla-institucional tbody td {
-            padding: 14px 10px !important;
-            border-bottom: 1px solid #e2e8f0 !important;
-            font-size: 12.5px;
+        .card-invoice .card-body {
+            padding: 0 !important;
         }
-
-        .txt-institucional { color: #7f1d1d; font-size: 12px; font-weight: 700; }
-        .badge-servicio { 
-            background-color: #f8fafc; 
-            color: #334155; 
-            padding: 4px 8px; 
-            font-size: 10px; 
-            font-weight: 600;
-            border: 1px solid #e2e8f0;
-            border-radius: 4px;
-            display: inline-block;
-            text-transform: uppercase;
+        .invoice-table thead th {
+            background-color: #0a192f !important;
+            color: #ffffff !important;
         }
-
-        .texto-assigned { color: #0f172a; font-weight: 500; }
-        .subtitulo-rol { font-weight: 700; color: #64748b; font-size: 9.5px; text-transform: uppercase; }
-        .texto-logistica-name { color: #334155; font-weight: 500; }
-        .txt-observacion { font-size: 11.5px; color: #475569; line-height: 1.4; }
-        .quote-text { font-size: 11px; }
-        .system-tag { font-size: 9px; letter-spacing: 1px; color: #94a3b8; }
-
-        /* Control Total sobre Motores de Impresión/PDF */
-        @media print {
-            * {
-                -webkit-print-color-adjust: exact !important;
-                print-color-adjust: exact !important;
-                color-adjust: exact !important;
-            }
-            .d-print-none, nav, aside, .sidebar, header, .btn, form { 
-                display: none !important; 
-            }
-            body { 
-                background-color: #ffffff !important; 
-                color: #000000 !important; 
-                padding: 0 !important;
-                margin: 0 !important;
-            }
-            .card-reporte { 
-                border: none !important; 
-                box-shadow: none !important; 
-                padding: 0 !important; 
-            }
-            .card-reporte .card-body { 
-                padding: 0 !important; 
-            }
-            .tabla-institucional thead th { 
-                background-color: #1e293b !important; 
-                color: #ffffff !important; 
-            }
-            .badge-servicio { 
-                background-color: #f8fafc !important; 
-                border: 1px solid #cbd5e1 !important; 
-            }
-            .txt-institucional { 
-                color: #7f1d1d !important; 
-            }
-            .fila-reporte { 
-                break-inside: avoid !important;
-                page-break-inside: avoid !important; 
-            }
+        .invoice-table tbody tr.invoice-row:nth-child(even) {
+            background-color: #f8fafc !important;
         }
+        .invoice-row {
+            break-inside: avoid !important;
+            page-break-inside: avoid !important;
+        }
+    }
