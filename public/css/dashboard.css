@@ -320,7 +320,7 @@ h1, h2, h3, h4, h5, h6 {
     }
 
     .mobile-bottom-nav a {
-        color: rgba(255, 255, 255, 0.6); /* Corregido contraste para legibilidad en fondo Navy */
+        color: var(--ijersac-navy); 
         transition: 0.2s;
     }
 

@@ -49,9 +49,8 @@ BACKGROUND
 
     /* gradiente visible inmediatamente */
     background-image:
-        linear-gradient(135deg,
-            rgba(139, 0, 0, .82),
-            rgba(10, 25, 47, .92)),
+        linear-gradient(
+        rgba(10, 25, 47, .92)),
         url('/img/fondo-login.webp');
 
     background-size: cover;

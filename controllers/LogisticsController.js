@@ -15,7 +15,7 @@ class LogisticsController {
             // Invocación del servicio para obtener datos del culto y su logística
             const { culto, logistica } = await LogisticsService.getLogisticsData(idCulto);
             const availableMembers = await Member.findAllActive();
-            res.render("logistics-views/manage", { culto, logistica, miembros:availableMembers, errores: [] });
+            res.render("logistics-views/manage", { culto, logistica, miembros: availableMembers, errores: [] });
         } catch (err) {
             if (err.name === "NotFoundError") {
                 req.flash("error_msg", err.message);
@@ -27,7 +27,18 @@ class LogisticsController {
     }
 
     static async renderIndex(req, res) {
-        res.render("logistics-views/index");
+        try {
+            // Invocamos el servicio para traer todo el histórico de soporte
+            const cultosLogistica = await LogisticsService.getFullLogisticsCalendar();
+
+            // Renderizamos pasándole la colección de datos 'cultos'
+            res.render("logistics-views/index", {
+                cultos: cultosLogistica
+            });
+        } catch (err) {
+            console.error("Error en LogisticsController.renderIndex:", err);
+            error.error500(req, res, "No se pudo cargar el calendario de logística.");
+        }
     }
 
     /**

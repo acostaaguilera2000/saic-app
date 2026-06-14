@@ -36,6 +36,13 @@ class LogisticsService {
 
         await Logistica.save(dataLogistica);
     }
+    /**
+     * Obtiene todo el cronograma con la información de soporte integrada
+     * @returns {Promise<Array>}
+     */
+    static async getFullLogisticsCalendar() {
+        return await Logistica.getAllWithCultoData();
+    }
 }
 
 export default LogisticsService;

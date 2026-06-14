@@ -63,6 +63,35 @@ class Logistica {
             throw { status: 500, message: "Error al procesar la información logística en la base de datos." };
         }
     }
+
+   // Obtener todos los cultos con sus datos logísticos (Solo futuros/actuales)
+    static async getAllWithCultoData() {
+        try {
+            const query = `
+                SELECT 
+                    c.id_culto,
+                    c.fecha,
+                    c.hora,
+                    c.tipo_culto,
+                    l.observaciones,
+                    m_son.nombre AS son_nom, m_son.apellido AS son_ape,
+                    m_mul.nombre AS mul_nom, m_mul.apellido AS mul_ape,
+                    m_ase.nombre AS ase_nom, m_ase.apellido AS ase_ape
+                FROM culto c
+                LEFT JOIN logistica_culto l ON c.id_culto = l.id_culto
+                LEFT JOIN miembro m_son ON l.id_sonido = m_son.id_miembro
+                LEFT JOIN miembro m_mul ON l.id_multimedia = m_mul.id_miembro
+                LEFT JOIN miembro m_ase ON l.id_aseo = m_ase.id_miembro
+                WHERE c.fecha >= CURDATE()
+                ORDER BY c.fecha ASC, c.hora ASC
+            `;
+            const [rows] = await db.query(query);
+            return rows;
+        } catch (error) {
+            console.error("Error en Logistica.getAllWithCultoData:", error);
+            throw { status: 500, message: "Error al recuperar el historial logístico general." };
+        }
+    }
 }
 
 export default Logistica;
