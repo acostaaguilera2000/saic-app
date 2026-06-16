@@ -3,15 +3,15 @@ html(lang="es")
   head
     meta(charset="UTF-8")
     meta(name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover")
-    meta(name="theme-color" content="#0a192f")
+    meta(name="theme-color" content="#f8fafc")
 
     title Acceso | IJERSAC
 
-    // Precarga de imagen (IMPORTANTE)
+    // Precarga de la imagen de fondo institucional
     link(
       rel="preload"
       as="image"
-      href="/img/fondo-login.webp"
+      href="/img/fondo-login.jpg"
     )
 
     // Bootstrap
@@ -24,72 +24,42 @@ html(lang="es")
     link(
       rel="stylesheet" 
       href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.0/font/bootstrap-icons.css"
-
     )
 
-    // CSS propio
+    // CSS Propio
     link(rel="stylesheet" href="/css/login.css")
 
   body
 
- 
-    main.container-fluid.main-wrapper
-
-      .row.main-content
-
-        // =========================
-        // PANEL IZQUIERDO
-        // =========================
-        section.col-lg-6.left-panel
-
-          .brand-container
-
-            .brand-line
-
-            h1.brand-title SAIC
-
-            p.brand-subtitle
-              | Software Administrativo Para Iglesias Cristianas
-
-            .brand-verse
-              | Todo lo que hagan, háganlo de corazón,
-              br
-              | como para el Señor.
-              br
-              br
-              | Colosenses 3:23
-
-
-        // =========================
-        // PANEL DERECHO
-        // =========================
-        section.col-lg-6.right-panel
-
+    main.container-fluid.main-wrapper.d-flex.align-items-center.justify-content-center
+      
+      .row.w-100.justify-content-center.m-0
+        
+        // Contenedor único del formulario centrado
+        section.col-11.col-sm-8.col-md-6.col-lg-4.form-container-panel
+          
           .login-box
 
+            .brand-mini-badge IJERSAC
+            
             h2.login-title Bienvenido
-
-            p.login-subtitle
-              | Inicia sesión para acceder al sistema
-
+            p.login-subtitle Inicia sesión para acceder al sistema
 
             // Error backend
             if error
-              .custom-error
+              .text-danger.mb-3
                 i.bi.bi-exclamation-triangle-fill.me-2
                 | #{error}
-
 
             form(action="/auth/login" method="POST" autocomplete="on")
 
               // EMAIL
               .field
                 i.bi.bi-envelope
-
                 input.input-custom(
                   type="email"
                   name="email"
-                  value=( valores ? valores.email : '')
+                  value=(valores ? valores.email : '')
                   placeholder="Correo electrónico"
                   autocomplete="email"
                   required
@@ -98,7 +68,6 @@ html(lang="es")
               // PASSWORD
               .field
                 i.bi.bi-lock
-
                 input.input-custom(
                   type="password"
                   name="password"
@@ -111,11 +80,9 @@ html(lang="es")
                 i.bi.bi-box-arrow-in-right.me-2
                 | Iniciar sesión
 
-
               .bottom-links
                 a(href="#") Recuperar contraseña
                 a(href="#") Soporte técnico
-
 
     script(
       src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"

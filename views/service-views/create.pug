@@ -17,12 +17,10 @@ block content
     //- Estructura de diseño para procesamiento de datos en bloque
     .row.justify-content-center
       .col-12
-
-        form(action="/service/bulk" method="POST")
-
-          //- Gestión de Mensajes y Alertas de Validación Globales
-          include ../partials/_messages
-
+        //- Gestión de Mensajes y Alertas de Validación Globales
+        include ../partials/_messages
+        
+        form(action="/service/create" method="POST")
           //- Caja Bento contenedora de la matriz de datos
           .card.bento-card.p-4.mb-4.border-0(style="background: var(--bg-surface); border-radius: 16px; box-shadow: var(--shadow-bento);")
 

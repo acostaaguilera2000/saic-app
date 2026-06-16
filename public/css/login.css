@@ -1,16 +1,15 @@
 :root {
-    /*  Nueva paleta institucional integrada (Fresco verde & Pizarra) */
-    --ijersac-navy: #0f172a;       /* Gris Pizarra Profundo (Base de contraste premium) */
-    --ijersac-navy-light: #1e293b; /* Pizarra Claro para enfoques */
-    --ijersac-red: #059669;        /* Esmeralda Principal SAIC / CalmMind */
-    --ijersac-red-light: #10b981;  /* Menta Vibrante para líneas de énfasis y focos */
-    --ijersac-bg: #f8fafc;         /* Blanco Neutro de la app */
+    /* --- PALETA FRESCA CON BASE VERDE Y BLANCO --- */
+    --ijersac-red: #059669;        /* Verde Esmeralda Principal */
+    --ijersac-red-light: #10b981;  /* Menta Vibrante para hovers e interacciones */
+    --ijersac-navy: #0f172a;       /* Slate 900: Textos principales de alto contraste */
+    --ijersac-navy-light: #475569; /* Slate 600: Subtítulos, enlaces e iconos en reposo */
+    --ijersac-bg: #f8fafc;         /* Slate 50: Fondo base ultra limpio */
 
-    /* UI Glassmorphism unificado */
-    --glass: rgba(255, 255, 255, .06);
-    --glass-strong: rgba(255, 255, 255, .12);
-    --border: rgba(255, 255, 255, .15);
-    --transition: all .3s cubic-bezier(0.4, 0, 0.2, 1);
+    /* --- ARQUITECTURA DE SUPERFICIES --- */
+    --radius-bento: 20px;          /* Curvatura exacta que te gustó */
+    --radius-interactive: 12px;    /* Inputs y botones */
+    --transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 * {
@@ -21,333 +20,237 @@
 
 html,
 body {
-    min-height: 100%;
+    height: 100%;
+    min-height: 100vh;
+    background-color: var(--ijersac-bg);
 }
 
 body {
-    font-family: "Segoe UI", sans-serif;
-    /* Evita flash blanco antes de que cargue el CSS */
-    background: var(--ijersac-navy);
+    font-family: "Segoe UI", -apple-system, BlinkMacSystemFont, sans-serif;
+    color: var(--ijersac-navy);
+    -webkit-font-smoothing: antialiased;
 }
 
 /* =====================================
-BACKGROUND
+BACKGROUND: GRADIENTE DE ALTA GAMA (MODO CLARO)
 ===================================== */
 
 .main-wrapper {
     min-height: 100vh;
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
     position: relative;
     overflow: hidden;
 
-    /* Color slate base mientras descarga la imagen */
-    background-color: var(--ijersac-navy);
-
-    /* 🟢 Gradiente esmeralda/pizarra oscuro translúcido sobre tu imagen de fondo */
-    background-image:
-        linear-gradient(
-            rgba(15, 23, 42, 0.90), 
-            rgba(5, 150, 105, 0.15)
-        ),
-        url('/img/fondo-login.webp');
-
-    background-size: cover;
-    background-position: center;
-    background-repeat: no-repeat;
-
-    /* Ayuda percepción visual */
-    animation: fadeBackground .8s ease;
+    /* 🟢 Fondo limpio: Transición suave entre el gris limpio y un toque esmeralda institucional sutil */
+    background: linear-gradient(135deg, #f1f5f9 0%, #f8fafc 50%, #e6f4ea 100%);
 }
 
-/* Capa adicional de iluminación orgánica */
-.main-wrapper::before {
+/* Esfera de luz orgánica en la esquina inferior derecha para dar volumen tridimensional */
+.main-wrapper::after {
     content: "";
     position: absolute;
-    inset: 0;
-
-    background:
-        radial-gradient(circle at top left,
-            rgba(16, 185, 129, 0.08),
-            transparent 45%);
-
+    bottom: -10%;
+    right: -10%;
+    width: 40vw;
+    height: 40vw;
+    background: radial-gradient(circle, rgba(16, 185, 129, 0.05) 0%, transparent 70%);
     z-index: 1;
-}
-
-/* Animación suave */
-@keyframes fadeBackground {
-    from {
-        opacity: .92;
-    }
-    to {
-        opacity: 1;
-    }
+    pointer-events: none;
 }
 
 .main-content {
     position: relative;
     z-index: 5;
-    min-height: 100vh;
+    width: 100%;
+    margin: 0;
 }
 
 /* =====================================
-LEFT PANEL
+FORM CONTAINER (TARJETA TIPO BENTO GRID)
 ===================================== */
 
-.left-panel {
-    display: flex;
-    align-items: center;
-    padding: 80px;
-    height: 100vh;
-}
-
-.brand-container {
-    max-width: 550px;
-}
-
-.brand-line {
-    width: 75px;
-    height: 5px;
-    background: var(--ijersac-red-light); /* Resalta en Menta Vibrante */
-    margin-bottom: 22px;
-    border-radius: 50px;
-}
-
-.brand-title {
-    color: white;
-    font-size: 5rem;
-    font-weight: 700;
-    letter-spacing: 2px;
-}
-
-.brand-subtitle {
-    margin-top: 18px;
-    color: rgba(255, 255, 255, .90);
-    font-size: 1.05rem;
-    font-weight: 500;
-}
-
-.brand-verse {
-    margin-top: 40px;
-    padding-left: 20px;
-
-    /* Borde en Esmeralda CalmMind */
-    border-left: 4px solid var(--ijersac-red);
-
-    color: rgba(255, 255, 255, .75);
-    line-height: 1.8;
-    font-size: .95rem;
-}
-
-/* =====================================
-RIGHT PANEL
-===================================== */
-
-.right-panel {
+.form-container-panel {
     display: flex;
     justify-content: center;
     align-items: center;
-    height: 100vh;
-    padding: 40px;
 }
 
 .login-box {
     width: 100%;
-    max-width: 430px;
+    background: #ffffff; /* Blanco puro para máxima separación */
+    border: 1px solid rgba(15, 23, 42, 0.06);
+    border-radius: var(--radius-bento);
+    padding: 45px 40px;
+    
+    /* Sombra milimétrica estilo Bento Box */
+    box-shadow: 
+        0 4px 6px -1px rgba(15, 23, 42, 0.02),
+        0 20px 25px -5px rgba(15, 23, 42, 0.05),
+        0 10px 10px -5px rgba(15, 23, 42, 0.02);
 }
 
-/* =====================================
-TEXT
-===================================== */
+/* Mini badge institucional superior */
+.brand-mini-badge {
+    display: inline-block;
+    background-color: #e6f4ea; /* Verde muy suave */
+    color: var(--ijersac-red);
+    font-size: 0.75rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 1.5px;
+    padding: 6px 14px;
+    border-radius: 9999px;
+    margin-bottom: 24px;
+    border: 1px solid rgba(5, 150, 105, 0.1);
+}
 
 .login-title {
-    color: white;
-    font-size: 2.4rem;
-    font-weight: 600;
+    color: var(--ijersac-navy);
+    font-size: 2.25rem;
+    font-weight: 700;
+    letter-spacing: -0.5px;
+    margin-bottom: 6px;
 }
 
 .login-subtitle {
-    color: rgba(255, 255, 255, .72);
+    color: var(--ijersac-navy-light);
+    font-size: 0.95rem;
     margin-bottom: 35px;
 }
 
 /* =====================================
-ERROR ALERT
-===================================== */
-
-.custom-error {
-    /* Tono carmesí de alerta adaptado para no chocar con el fondo */
-    background: rgba(239, 68, 68, 0.12);
-    border: 1px solid rgba(239, 68, 68, 0.25);
-
-    color: #fca5a5;
-
-    padding: 14px 16px;
-    border-radius: 14px;
-    margin-bottom: 20px;
-
-    backdrop-filter: blur(10px);
-}
-
-/* =====================================
-INPUTS
+INPUTS (CONTRASTE ELEVADO Y LIMPIO)
 ===================================== */
 
 .field {
     position: relative;
-    margin-bottom: 22px;
+    margin-bottom: 20px;
 }
 
 .field i {
     position: absolute;
     left: 18px;
-    top: 19px;
-    color: rgba(255, 255, 255, .65);
+    top: 50%;
+    transform: translateY(-50%);
+    color: var(--ijersac-navy-light);
+    opacity: 0.5;
+    font-size: 1.15rem;
     transition: var(--transition);
+    pointer-events: none;
+    z-index: 10;
 }
 
 .input-custom {
     width: 100%;
-    height: 58px;
-
+    height: 54px;
     border: none;
     outline: none;
-
-    border-radius: 14px;
-
-    background: var(--glass);
-    border: 1px solid var(--border);
-
-    color: white;
-
-    padding-left: 48px;
-
+    border-radius: var(--radius-interactive);
+    
+    /* Superficie gris clara muy suave */
+    background-color: #f1f5f9;
+    border: 1px solid rgba(15, 23, 42, 0.05);
+    
+    color: var(--ijersac-navy);
+    padding-left: 50px;
+    padding-right: 20px;
+    font-size: 0.95rem;
+    font-weight: 500;
     transition: var(--transition);
-
-    backdrop-filter: blur(12px);
 }
 
 .input-custom::placeholder {
-    color: rgba(255, 255, 255, .45);
+    color: #94a3b8;
 }
 
 .input-custom:focus {
-    /* Cambio de foco al verde menta fresco */
-    border-color: var(--ijersac-red-light);
-    background: var(--glass-strong);
-    box-shadow:
-        0 0 0 4px rgba(16, 185, 129, .15);
+    background-color: #ffffff;
+    border-color: var(--ijersac-red);
+    box-shadow: 0 0 0 4px rgba(5, 150, 105, 0.12);
 }
 
-/* Ilumina el ícono cuando el input está activo */
-.input-custom:focus + i, 
-.field input:focus ~ i {
-    color: var(--ijersac-red-light) !important;
+/* Iluminación del ícono en focus */
+.input-custom:focus + i {
+    color: var(--ijersac-red) !important;
+    opacity: 1;
 }
 
 /* =====================================
-BUTTON
+BOTÓN PRINCIPAL (VERDE ESMERALDA)
 ===================================== */
 
 .login-btn {
     width: 100%;
-    height: 58px;
-
+    height: 54px;
     border: none;
-    border-radius: 14px;
-
-    color: white;
+    border-radius: var(--radius-interactive);
+    color: #ffffff;
     font-weight: 600;
-
-    /* Botón con gradiente fluido de Esmeralda a Menta */
-    background:
-        linear-gradient(90deg,
-            var(--ijersac-red),
-            var(--ijersac-red-light));
-
+    font-size: 1rem;
+    background: linear-gradient(90deg, var(--ijersac-red), var(--ijersac-red-light));
     transition: var(--transition);
     cursor: pointer;
-    box-shadow: 0 4px 14px rgba(5, 150, 105, 0.2);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 4px 12px rgba(5, 150, 105, 0.2);
+    margin-top: 26px;
 }
 
 .login-btn:hover {
     transform: translateY(-1px);
-    box-shadow: 0 6px 20px rgba(16, 185, 129, 0.35);
-    /* Inversión sutil de brillo en hover */
-    filter: brightness(1.05);
+    box-shadow: 0 6px 18px rgba(16, 185, 129, 0.35);
+    filter: brightness(1.02);
+}
+
+.login-btn:active {
+    transform: translateY(0);
 }
 
 /* =====================================
-LINKS
+ENLACES INFERIORES
 ===================================== */
 
 .bottom-links {
-    margin-top: 22px;
+    margin-top: 24px;
     display: flex;
     justify-content: space-between;
 }
 
 .bottom-links a {
-    color: rgba(255, 255, 255, .75);
+    color: var(--ijersac-navy-light);
     text-decoration: none;
-    font-size: .9rem;
+    font-size: 0.88rem;
+    font-weight: 500;
     transition: var(--transition);
 }
 
 .bottom-links a:hover {
-    color: var(--ijersac-red-light); /* Enlace ilumina en menta */
+    color: var(--ijersac-red);
     text-decoration: underline;
 }
 
-.field i {
-    z-index: 20;
-}
-
-.input-custom {
-    z-index: 5;
-    backdrop-filter: blur(8px);
-}
-
 /* =====================================
-RESPONSIVE
+RESPONSIVE COHERENTE
 ===================================== */
 
-@media(max-width:992px) {
-    .left-panel {
-        height: auto;
-        padding: 50px 30px 15px;
-        justify-content: center;
-        text-align: center;
+@media (max-width: 575.98px) {
+    .login-box {
+        padding: 35px 24px;
+        box-shadow: 0 10px 20px -5px rgba(15, 23, 42, 0.04);
     }
-
-    .brand-title {
-        font-size: 3rem;
-    }
-
-    .brand-verse {
-        border: none;
-        padding-left: 0;
-    }
-
-    .right-panel {
-        height: auto;
-        padding: 30px;
-    }
-
-    .main-content {
-        padding-bottom: 40px;
-    }
-}
-
-@media(max-width:576px) {
-    .brand-title {
-        font-size: 2.2rem;
-    }
-
+    
     .login-title {
-        font-size: 2rem;
+        font-size: 1.9rem;
     }
 
     .bottom-links {
         flex-direction: column;
-        gap: 10px;
+        gap: 12px;
+        text-align: center;
+        align-items: center;
     }
 }
