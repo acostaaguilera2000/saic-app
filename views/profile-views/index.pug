@@ -3,24 +3,36 @@ extends ../layout
 block content
     .container-fluid.px-4.py-4
 
-        //-  1. CONTENIDO DE FORMULARIO CENTRADO 
+        //- 🚀 ENCABEZADO ESTÁNDAR GLOBAL (Adaptativo y con migajas de pan esmeralda)
+        +formHeader(
+            'Gestión de Mi Cuenta', 
+            '/dashboard', 
+            [
+                { text: 'SAIC', link: '/dashboard', active: false },
+                { text: 'Usuarios', link: '/users', active: false },
+                { text: 'Perfil', active: true }
+            ]
+        )
+
+        //- 1. CONTENIDO DE FORMULARIO CENTRADO 
         .row.justify-content-center
             .col-12.col-lg-10.col-xl-8
                 include ../partials/_messages
 
-                .card.bento-card.p-4.mb-4.border-0(style="background: #ffffff; border-radius: 16px; box-shadow: 0 4px 24px rgba(0,0,0,0.03);")
+                //- Tarjeta Bento Contenedora del Perfil
+                .card.bento-card.p-4.mb-4.border-0(style="background: var(--bg-surface); border-radius: 16px; box-shadow: var(--shadow-bento); border: 1px solid var(--border-subtle) !important;")
 
                     //- Avatar Dinámico Integrado en la Cabecera Bento Box
-                    .d-flex.align-items-center.mb-4.p-3.rounded-3(style="background-color: var(--ijersac-bg);")
+                    .d-flex.align-items-center.mb-4.p-3.rounded-3(style="background-color: var(--bg-app); border: 1px solid var(--border-subtle);")
                         img.rounded-circle.shadow-sm.me-3(
-                            src=`https://ui-avatars.com/api/?name=${user.username}&background=0A192F&color=fff&size=54` 
+                            src=`https://ui-avatars.com/api/?name=${user.username}&background=059669&color=fff&size=54` 
                             alt="Avatar de Usuario"
                         )
                         div
-                            h5.fw-bold.text-dark.m-0 Gestión de Mi Cuenta
-                            p.text-muted.small.m-0 Autenticado como: 
-                                strong(style="color: var(--ijersac-navy);") #{user.username}
-                            span.badge.mt-1.xx-small.text-uppercase.ls-1(style="background-color: var(--ijersac-navy); color: #fff;") #{user.rol}
+                            h5.fw-bold.text-dark.m-0 Perfil de Usuario
+                            p.text-muted.mb-0(style="font-size: 0.78rem;") Autenticado como: 
+                                strong.text-dark #{user.username}
+                            span.badge.mt-1(style="background-color: var(--calm-green-subtle); color: var(--calm-green-primary); font-weight: 700; font-size: 0.72rem; text-transform: uppercase; letter-spacing: 0.5px; padding: 4px 8px; border-radius: 6px;") #{user.rol}
 
                     //- Formulario de Actualización
                     form(action="/profile/update" method="POST")
@@ -28,96 +40,102 @@ block content
 
                             //- Sección: Datos de Identidad Básica
                             .col-12
-                                .d-flex.align-items-center.p-2.rounded-3(style="background-color: var(--ijersac-bg); color: var(--ijersac-navy);")
-                                    i.bi.bi-person-badge.fs-5.me-2
-                                    span.fw-bold.text-uppercase.small(style="letter-spacing: 0.5px;") Información del Perfil
+                                .d-flex.align-items-center.p-2.rounded-3(style="background-color: var(--bg-app); color: var(--text-main); border: 1px solid var(--border-subtle);")
+                                    i.bi.bi-person-badge.fs-5.me-2(style="color: var(--calm-green-primary);")
+                                    span.fw-bold.text-uppercase.small(style="letter-spacing: 0.5px; font-size: 0.75rem;") Información del Perfil
 
                             .col-md-6
-                                label.form-label.fw-semibold.text-secondary(for="email") Correo Electrónico
+                                label.form-label.fw-semibold.text-secondary(for="email" style="font-size: 0.82rem;") Correo Electrónico
                                 .input-group
-                                    span.input-group-text.border-end-0(style="background-color: var(--ijersac-bg);"): i.bi.bi-envelope.text-muted
-                                    input.form-control.border-start-0.bg-light.text-muted.rounded-end-3(
+                                    span.input-group-text.border-end-0(style="background-color: var(--bg-app); border-color: var(--border-subtle);"): i.bi.bi-envelope.text-muted
+                                    input.form-control.border-start-0.text-muted.rounded-end-3(
                                         type="email" 
                                         id="email" 
                                         value=user.email 
                                         disabled
+                                        style="background-color: var(--bg-app) !important; border-color: var(--border-subtle); font-size: 0.88rem;" 
                                     )
-                                small.form-text.text-muted.x-small El correo institucional no es modificable.
+                                small.form-text.text-muted.d-block.mt-1(style="font-size: 0.75rem;") El correo institucional no es modificable.
 
                             .col-md-6
-                                label.form-label.fw-semibold.text-secondary(for="username") Nombre de Usuario
+                                label.form-label.fw-semibold.text-secondary(for="username" style="font-size: 0.82rem;") Nombre de Usuario
                                 .input-group
-                                    span.input-group-text.border-end-0(style="background-color: var(--ijersac-bg);"): i.bi.bi-person.text-muted
+                                    span.input-group-text.border-end-0(style="background-color: var(--bg-app); border-color: var(--border-subtle);"): i.bi.bi-person.text-muted
                                     input.form-control.border-start-0.rounded-end-3(
                                         type="text" 
                                         id="username" 
                                         name="username" 
                                         value=user.username 
                                         required
+                                        style="border-color: var(--border-subtle); font-size: 0.88rem;"
                                     )
-                                small.form-text.text-muted.x-small Nombre visible dentro de la plataforma.
+                                small.form-text.text-muted.d-block.mt-1(style="font-size: 0.75rem;") Nombre visible dentro de la plataforma.
 
                             //- Sección: Seguridad Crítica (Confirmación Obligatoria)
                             .col-12.mt-5
-                                .d-flex.align-items-center.p-2.rounded-3(style="background-color: rgba(220, 53, 69, 0.05); color: #dc3545;")
+                                .d-flex.align-items-center.p-2.rounded-3(style="background-color: rgba(239, 68, 68, 0.05); color: #ef4444; border: 1px solid rgba(239, 68, 68, 0.1);")
                                     i.bi.bi-shield-check.fs-5.me-2
-                                    span.fw-bold.text-uppercase.small(style="letter-spacing: 0.5px;") Confirmación de Identidad Requerida
+                                    span.fw-bold.text-uppercase.small(style="letter-spacing: 0.5px; font-size: 0.75rem;") Confirmación de Identidad Requerida
 
                             .col-12
-                                label.form-label.fw-semibold.text-danger(for="currentPassword") Contraseña Actual
+                                label.form-label.fw-semibold.text-danger(for="currentPassword" style="font-size: 0.82rem;") Contraseña Actual
                                 .input-group
-                                    span.input-group-text.border-end-0(style="background-color: rgba(220, 53, 69, 0.02); border-color: #f1f1f1;"): i.bi.bi-key.text-danger
+                                    span.input-group-text.border-end-0(style="background-color: var(--bg-app); border-color: var(--border-subtle);"): i.bi.bi-key.text-danger
                                     input.form-control.border-start-0(
                                         type="password" 
                                         id="currentPassword" 
                                         name="currentPassword" 
                                         placeholder="Escriba su contraseña actual"
                                         required
+                                        style="border-color: var(--border-subtle); font-size: 0.88rem;"
                                     )
-                                    button.btn.btn-outline-secondary.border-start-0(type="button" onclick="toggleFieldPassword(event, 'currentPassword')" style="background-color: var(--ijersac-bg);")
+                                    button.btn.btn-outline-secondary.border-start-0(type="button" onclick="toggleFieldPassword(event, 'currentPassword')" style="background-color: var(--bg-app); border-color: var(--border-subtle);")
                                         i.bi.bi-eye.text-muted
-                                small.form-text.text-muted.d-block.mt-1
-                                    i.bi.bi-info-circle.me-1
+                                small.form-text.text-muted.d-block.mt-1(style="font-size: 0.75rem;")
+                                    i.bi.bi-info-circle.me-1(style="color: var(--calm-green-primary);")
                                     | Es obligatorio ingresar su contraseña vigente para guardar cualquier cambio.
 
                             //- Sección: Cambio de Credenciales (Opcional)
                             .col-12.mt-5
-                                .d-flex.align-items-center.p-2.rounded-3(style="background-color: var(--ijersac-bg); color: var(--ijersac-navy);")
-                                    i.bi.bi-shield-lock.fs-5.me-2
-                                    span.fw-bold.text-uppercase.small(style="letter-spacing: 0.5px;") Modificar Contraseña (Opcional)
+                                .d-flex.align-items-center.p-2.rounded-3(style="background-color: var(--bg-app); color: var(--text-main); border: 1px solid var(--border-subtle);")
+                                    i.bi.bi-shield-lock.fs-5.me-2(style="color: var(--calm-green-primary);")
+                                    span.fw-bold.text-uppercase.small(style="letter-spacing: 0.5px; font-size: 0.75rem;") Modificar Contraseña (Opcional)
 
                             .col-md-6
-                                label.form-label.fw-semibold.text-secondary(for="newPassword") Nueva Contraseña
+                                label.form-label.fw-semibold.text-secondary(for="newPassword" style="font-size: 0.82rem;") Nueva Contraseña
                                 .input-group
-                                    span.input-group-text.border-end-0(style="background-color: var(--ijersac-bg);"): i.bi.bi-lock.text-muted
+                                    span.input-group-text.border-end-0(style="background-color: var(--bg-app); border-color: var(--border-subtle);"): i.bi.bi-lock.text-muted
                                     input.form-control.border-start-0(
                                         type="password" 
                                         id="newPassword" 
                                         name="newPassword" 
                                         placeholder="Mínimo 6 caracteres"
+                                        style="border-color: var(--border-subtle); font-size: 0.88rem;"
                                     )
-                                    button.btn.btn-outline-secondary.border-start-0(type="button" onclick="toggleFieldPassword(event, 'newPassword')" style="background-color: var(--ijersac-bg);")
+                                    button.btn.btn-outline-secondary.border-start-0(type="button" onclick="toggleFieldPassword(event, 'newPassword')" style="background-color: var(--bg-app); border-color: var(--border-subtle);")
                                         i.bi.bi-eye.text-muted
-                                small.form-text.text-muted.x-small Dejar en blanco si no desea cambiarla.
+                                small.form-text.text-muted.d-block.mt-1(style="font-size: 0.75rem;") Dejar en blanco si no desea cambiarla.
 
                             .col-md-6
-                                label.form-label.fw-semibold.text-secondary(for="confirmPassword") Confirmar Nueva Contraseña
+                                label.form-label.fw-semibold.text-secondary(for="confirmPassword" style="font-size: 0.82rem;") Confirmar Nueva Contraseña
                                 .input-group
-                                    span.input-group-text.border-end-0(style="background-color: var(--ijersac-bg);"): i.bi.bi-lock-check.text-muted
+                                    span.input-group-text.border-end-0(style="background-color: var(--bg-app); border-color: var(--border-subtle);"): i.bi.bi-lock-check.text-muted
                                     input.form-control.border-start-0(
                                         type="password" 
                                         id="confirmPassword" 
                                         name="confirmPassword" 
                                         placeholder="Repita la nueva contraseña"
+                                        style="border-color: var(--border-subtle); font-size: 0.88rem;"
                                     )
-                                    button.btn.btn-outline-secondary.border-start-0(type="button" onclick="toggleFieldPassword(event, 'confirmPassword')" style="background-color: var(--ijersac-bg);")
+                                    button.btn.btn-outline-secondary.border-start-0(type="button" onclick="toggleFieldPassword(event, 'confirmPassword')" style="background-color: var(--bg-app); border-color: var(--border-subtle);")
                                         i.bi.bi-eye.text-muted
-                                small.form-text.text-muted.x-small Ambas contraseñas deben coincidir.
+                                small.form-text.text-muted.d-block.mt-1(style="font-size: 0.75rem;") Ambas contraseñas deben coincidir.
 
-                        //- BOTONERA DE ACCIÓN ASIMÉTRICA
-                        .d-flex.gap-3.pt-2.mt-5.border-top
-                            a.btn.btn-light.w-25.py-2.fw-bold.rounded-3.text-secondary(href="/dashboard" style="background-color: var(--ijersac-bg); border: none;") Cancelar
-                            button.btn.btn-action.flex-grow-1.py-2.fw-bold.rounded-3.shadow-sm(type="submit")
+                        //- 🛠️ BOTONERA DE ACCIÓN SINCRONIZADA CON COMPONENTS.CSS
+                        .d-flex.gap-3.pt-2.mt-5(style="border-top: 1px solid var(--border-subtle);")
+                            a.btn-light-custom.w-25(href="/dashboard") Cancelar
+
+                            button.btn-premium.flex-grow-1(type="submit")
                                 i.bi.bi-save.me-2
                                 | Guardar Cambios
 

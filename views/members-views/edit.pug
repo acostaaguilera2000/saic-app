@@ -3,7 +3,7 @@ extends ../layout
 block content
     .container-fluid.px-4.py-4
 
-        //- Encabezado estándar global con migajas de pan integradas
+        //- Encabezado estándar global mediante mixin institucional con migajas de pan
         +formHeader(
             'Modificar Datos de Miembro', 
             '/members', 
@@ -14,16 +14,16 @@ block content
             ]
         )
 
-        //- Contenedor de formulario centrado simétricamente estilo bento
+        //- Contenedor de formulario centrado estructurado en estilo bento
         .row.justify-content-center
             .col-12.col-lg-10.col-xl-8
 
                 //- Tarjeta principal de edición estilo bento
                 include ../partials/_messages
-                .card.bento-card.p-4.mb-4.border-0(style="background: #ffffff; border-radius: 16px; box-shadow: 0 4px 24px rgba(0,0,0,0.03);")
+                .card.bento-card.p-4.mb-4.border-0(style="background: var(--bg-surface); border-radius: 16px; box-shadow: var(--shadow-bento);")
 
                     //- Bloque de contexto del registro auditado con avatar dinámico
-                    .d-flex.align-items-center.mb-4.p-2.rounded-3(style="background-color: var(--ijersac-bg);")
+                    .d-flex.align-items-center.mb-4.p-2.rounded-3(style="background-color: var(--bg-app);")
                         img.rounded-circle.shadow-sm.me-3(
                             src=`https://ui-avatars.com/api/?name=${miembroToEdit.nombre}+${miembroToEdit.apellido}&background=0A192F&color=fff&size=48` 
                             alt="Avatar"
@@ -31,21 +31,21 @@ block content
                         div
                             h5.fw-bold.text-dark.m-0 Perfil Eclesiástico
                             p.text-muted.small.m-0 Actualizando la información del registro: 
-                                strong(style="color: var(--ijersac-navy);") ##{miembroToEdit.id_miembro}
+                                strong(style="color: var(--calm-green-primary);") ##{miembroToEdit.id_miembro}
 
                     form(action=`/members/update/${miembroToEdit.id_miembro}` method="POST")
                         .row.g-4
 
                             //- Sección: Datos de Identidad Básica
                             .col-12
-                                .d-flex.align-items-center.p-2.rounded-3(style="background-color: var(--ijersac-bg); color: var(--ijersac-navy);")
+                                .d-flex.align-items-center.p-2.rounded-3(style="background-color: var(--calm-green-subtle); color: var(--calm-green-primary);")
                                     i.bi.bi-person-vcard-fill.fs-5.me-2
                                     span.fw-bold.text-uppercase.small(style="letter-spacing: 0.5px;") Datos Personales e Identidad
 
                             .col-md-6
                                 label.form-label.fw-semibold.text-secondary(for="nombre") Nombres
                                 .input-group
-                                    span.input-group-text.border-end-0(style="background-color: var(--ijersac-bg);"): i.bi.bi-person.text-muted
+                                    span.input-group-text.border-end-0(style="background-color: var(--bg-app); border-color: var(--border-subtle);"): i.bi.bi-person.text-muted
                                     input#nombre.form-control.border-start-0.rounded-end-3(
                                         type="text" 
                                         name="nombre" 
@@ -56,7 +56,7 @@ block content
                             .col-md-6
                                 label.form-label.fw-semibold.text-secondary(for="apellido") Apellidos
                                 .input-group
-                                    span.input-group-text.border-end-0(style="background-color: var(--ijersac-bg);"): i.bi.bi-person.text-muted
+                                    span.input-group-text.border-end-0(style="background-color: var(--bg-app); border-color: var(--border-subtle);"): i.bi.bi-person.text-muted
                                     input#apellido.form-control.border-start-0.rounded-end-3(
                                         type="text" 
                                         name="apellido" 
@@ -67,7 +67,7 @@ block content
                             .col-12
                                 label.form-label.fw-semibold.text-secondary(for="documento") Documento de Identidad
                                 .input-group
-                                    span.input-group-text.border-end-0(style="background-color: var(--ijersac-bg);"): i.bi.bi-card-text.text-muted
+                                    span.input-group-text.border-end-0(style="background-color: var(--bg-app); border-color: var(--border-subtle);"): i.bi.bi-card-text.text-muted
                                     input#documento.form-control.border-start-0.rounded-end-3(
                                         type="text" 
                                         name="documento" 
@@ -77,14 +77,14 @@ block content
 
                             //- Sección: Datos Eclesiásticos / Fechas
                             .col-12.mt-5
-                                .d-flex.align-items-center.p-2.rounded-3(style="background-color: var(--ijersac-bg); color: var(--ijersac-navy);")
+                                .d-flex.align-items-center.p-2.rounded-3(style="background-color: var(--calm-green-subtle); color: var(--calm-green-primary);")
                                     i.bi.bi-calendar-check-fill.fs-5.me-2
                                     span.fw-bold.text-uppercase.small(style="letter-spacing: 0.5px;") Fechas de Registro y Sacramentos
 
                             .col-md-6
                                 label.form-label.fw-semibold.text-secondary(for="fecha_registro") Fecha de Ingreso/Registro
                                 .input-group
-                                    span.input-group-text.border-end-0(style="background-color: var(--ijersac-bg);"): i.bi.bi-calendar-event.text-muted
+                                    span.input-group-text.border-end-0(style="background-color: var(--bg-app); border-color: var(--border-subtle);"): i.bi.bi-calendar-event.text-muted
                                     - var dateReg = miembroToEdit.fecha_registro ? new Date(miembroToEdit.fecha_registro).toISOString().split('T')[0] : ''
                                     input#fecha_registro.form-control.border-start-0.rounded-end-3(
                                         type="date" 
@@ -96,7 +96,7 @@ block content
                             .col-md-6
                                 label.form-label.fw-semibold.text-secondary(for="fecha_bautismo") Fecha de Bautismo
                                 .input-group
-                                    span.input-group-text.border-end-0(style="background-color: var(--ijersac-bg);"): i.bi.bi-droplet.text-muted
+                                    span.input-group-text.border-end-0(style="background-color: var(--bg-app); border-color: var(--border-subtle);"): i.bi.bi-droplet.text-muted
                                     - var dateBau = miembroToEdit.fecha_bautismo ? new Date(miembroToEdit.fecha_bautismo).toISOString().split('T')[0] : ''
                                     input#fecha_bautismo.form-control.border-start-0.rounded-end-3(
                                         type="date" 
@@ -105,9 +105,9 @@ block content
                                     )
                                 small.form-text.text-muted Dejar vacío si el miembro no se encuentra bautizado.
 
-                        //- Botonera de acciones principales corporativas
-                        .d-flex.gap-3.pt-2.mt-5.border-top
-                            a.btn.btn-light.w-25.py-2.fw-bold.rounded-3.text-secondary(href="/members" style="background-color: var(--ijersac-bg); border: none;") Cancelar
-                            button.btn.btn-action.flex-grow-1.py-2.fw-bold.rounded-3.shadow-sm(type="submit")
+                        //- Alocación de botones de acción mediante componentes globales del sistema
+                        .d-flex.gap-3.pt-2.mt-5.border-top(style="border-color: var(--border-subtle) !important;")
+                            a.btn-light-custom.w-25(href="/members") Cancelar
+                            button.btn-premium.flex-grow-1(type="submit")
                                 i.bi.bi-save.me-2
                                 | Guardar Cambios

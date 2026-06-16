@@ -1,0 +1,209 @@
+/* ==========================================================================
+   SAIC COMPONENTS - TABLAS INSTITUCIONALES (Estilo Vali Inc / Clean Report)
+   ========================================================================== */
+
+/* Contenedor Bento Envolvente con Aire Perimetral Seguro */
+.table-responsive-custom {
+    width: 100% !important;
+    overflow-x: auto !important;
+    overflow-y: hidden !important;
+    -webkit-overflow-scrolling: touch;
+    border-radius: var(--radius-interactive) !important;
+    border: var(--border-subtle) !important;
+    background-color: var(--bg-surface) !important;
+    box-shadow: var(--shadow-bento) !important;
+    margin-bottom: 24px !important;
+    box-sizing: border-box !important;
+
+    /* 🔥 SOLUCIÓN AL RAS: Esto le da el aire de 24px arriba/abajo y 20px a los lados a TODO el componente */
+    padding: 24px 20px !important;
+}
+
+/* Envoltorio interno inyectado por el plugin */
+.dataTables_wrapper {
+    width: 100% !important;
+    box-sizing: border-box !important;
+    padding: 0 !important;
+    /* Reseteado para que se apoye en el contenedor Bento */
+}
+
+/* Estructura Base de la Tabla */
+.tabla-institucional {
+    width: 100% !important;
+    border-collapse: separate !important;
+    border-spacing: 0 !important;
+    margin: 20px 0 !important;
+    /* Separa limpiamente la tabla del buscador y del pie */
+    table-layout: auto !important;
+    background-color: var(--bg-surface) !important;
+}
+
+/* --------------------------------------------------------------------------
+   1. CABECERA DE LA TABLA (Fuerza de Color Navy Institucional)
+   -------------------------------------------------------------------------- */
+.tabla-institucional thead th {
+    background-color: #0a192f !important;
+    /* Navy estricto si var() falla temporalmente */
+    color: #ffffff !important;
+    font-size: 11px !important;
+    font-weight: 700 !important;
+    text-transform: uppercase !important;
+    letter-spacing: 0.8px !important;
+    padding: 16px 20px !important;
+    border: none !important;
+    vertical-align: middle !important;
+}
+
+/* Redondear esquinas superiores de la cabecera */
+.tabla-institucional thead tr:first-child th:first-child {
+    border-top-left-radius: 8px !important;
+}
+
+.tabla-institucional thead tr:first-child th:last-child {
+    border-top-right-radius: 8px !important;
+}
+
+/* --------------------------------------------------------------------------
+   2. CUERPO DE LA TABLA (Celdas Limpias)
+   -------------------------------------------------------------------------- */
+.tabla-institucional tbody td {
+    padding: 16px 20px !important;
+    color: #475569 !important;
+    /* Color gris suave legible */
+    font-size: 0.88rem !important;
+    font-weight: 500 !important;
+    border-bottom: 1px solid rgba(15, 23, 42, 0.06) !important;
+    border-top: none !important;
+    vertical-align: middle !important;
+    transition: all 0.2s ease !important;
+}
+
+.tabla-institucional tbody tr:last-child td {
+    border-bottom: none !important;
+}
+
+/* Filas Cebras y Efecto Hover */
+.tabla-institucional tbody tr:nth-child(even) {
+    background-color: rgba(248, 250, 252, 0.8) !important;
+}
+
+.tabla-institucional tbody tr:hover {
+    background-color: rgba(10, 25, 47, 0.02) !important;
+}
+
+/* --------------------------------------------------------------------------
+   3. ELEMENTOS PERIMETRALES (Filtros, Buscador y Textos de DataTables)
+   -------------------------------------------------------------------------- */
+.dataTables_wrapper .dataTables_length,
+.dataTables_wrapper .dataTables_filter {
+    font-size: 0.85rem !important;
+    font-weight: 500 !important;
+    color: #475569 !important;
+    margin-bottom: 10px !important;
+}
+
+/* Inputs de búsqueda y selects */
+.dataTables_wrapper .dataTables_filter input,
+.dataTables_wrapper .dataTables_length select {
+    background-color: #ffffff !important;
+    border: 1px solid #e2e8f0 !important;
+    border-radius: 6px !important;
+    padding: 6px 12px !important;
+    outline: none !important;
+    color: #0f172a !important;
+}
+
+.dataTables_wrapper .dataTables_info {
+    font-size: 0.85rem !important;
+    font-weight: 500 !important;
+    color: #64748b !important;
+    padding-top: 16px !important;
+}
+
+/* --------------------------------------------------------------------------
+   4. CONTROL ABSOLUTO DE LA PAGINACIÓN (Fijado anti-azul para caracteres < >)
+   -------------------------------------------------------------------------- */
+.dataTables_wrapper .dataTables_paginate {
+    padding-top: 14px !important;
+    display: inline-flex !important;
+    gap: 4px !important;
+}
+
+/* Estilo para CUALQUIER botón de paginación en el Footer */
+.dataTables_wrapper .dataTables_paginate .paginate_button {
+    background: #ffffff !important;
+    border: 1px solid #e2e8f0 !important;
+    border-radius: 6px !important;
+    color: #475569 !important;
+    font-size: 0.82rem !important;
+    font-weight: 600 !important;
+    padding: 6px 14px !important;
+    cursor: pointer !important;
+    margin: 0 !important;
+    transition: all 0.2s ease !important;
+}
+
+/* Hover general */
+.dataTables_wrapper .dataTables_paginate .paginate_button:hover {
+    background: #ecfdf5 !important;
+    /* Menta sutil */
+    border-color: #a7f3d0 !important;
+    color: #059669 !important;
+}
+
+/* ==========================================================================
+   SAIC - CONTROL ABSOLUTO DE LA PAGINACIÓN (Fondo Menta Blindado)
+   ========================================================================== */
+
+/* 🔥 ELIMINACIÓN RADICAL DEL AZÚL EN EL FONDO DE LOS NÚMEROS (1, 2, 3...) */
+.dataTables_wrapper .dataTables_paginate .paginate_button.current,
+.dataTables_wrapper .dataTables_paginate .paginate_button.current:hover,
+.dataTables_wrapper .dataTables_paginate .paginate_button.current:focus,
+.dataTables_wrapper .dataTables_paginate .paginate_button.current:active,
+.dataTables_wrapper .dataTables_paginate span .paginate_button.current,
+.page-item.active .page-link {
+    background-color: var(--calm-green-primary) !important;
+    /* Tu verde esmeralda */
+    background: var(--calm-green-primary) !important;
+    /* Rompe degradados nativos */
+    background-image: none !important;
+    /* Aniquila cualquier gradiente azul */
+    border-color: var(--calm-green-primary) !important;
+    border: 1px solid var(--calm-green-primary) !important;
+    color: #ffffff !important;
+    /* Texto blanco puro */
+    box-shadow: 0 4px 10px rgba(16, 185, 129, 0.2) !important;
+}
+
+/* Forzar que el texto del número activo se mantenga blanco pase lo que pase */
+.dataTables_wrapper .dataTables_paginate span .paginate_button.current a,
+.page-item.active .page-link a {
+    color: #ffffff !important;
+}
+
+/* Botones Deshabilitados (< o > cuando no hay más páginas) */
+.dataTables_wrapper .dataTables_paginate .paginate_button.disabled,
+.dataTables_wrapper .dataTables_paginate .paginate_button.disabled:hover {
+    background: #f8fafc !important;
+    border-color: #f1f5f9 !important;
+    color: #cbd5e1 !important;
+    cursor: not-allowed !important;
+    opacity: 0.6 !important;
+}
+
+/* Flechas de ordenamiento en cabeceras */
+table.dataTable thead th.sorting::after,
+table.dataTable thead th.sorting_asc::after,
+table.dataTable thead th.sorting_desc::after {
+    color: #ffffff !important;
+    opacity: 0.6 !important;
+}
+
+/* --------------------------------------------------------------------------
+   5. RESPONSIVE MEDIA QUERY
+   -------------------------------------------------------------------------- */
+@media (min-width: 992px) {
+    .table-responsive-custom {
+        overflow-x: hidden !important;
+    }
+}

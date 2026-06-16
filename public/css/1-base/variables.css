@@ -1,0 +1,58 @@
+/* ==========================================================================
+   SAIC CORE - DESIGN TOKENS (Paleta Fresh Mint / CalmMind Edition)
+   ========================================================================== */
+:root {
+    /* --- PALETA FRESCA CON BASE VERDE Y BLANCO --- */
+    --calm-green-primary: #059669;    /* Verde Esmeralda: Para botones principales y enlaces activos */
+    --calm-green-light: #10b981;      /* Verde Esmeralda Brillante: Hovers e interacciones */
+    --calm-green-subtle: #ecfdf5;     /* Fondo Menta Suave: Badges y contenedores internos */
+    
+    --ijersac-navy: #0f172a;           /* Slate 900: Reemplaza el Navy por un Gris Oscuro Premium para textos */
+    --ijersac-navy-light: #1e293b;     /* Slate 800: Subtítulos e iconos secundarios */
+
+    /* --- SUPERFICIES Y FONDOS --- */
+    --bg-app: #f8fafc;                 /* Slate 50: Fondo base ultra limpio */
+    --bg-surface: #ffffff;             /* Blanco Puro: Tarjetas Bento y Sidebar */
+
+    /* --- JERARQUÍA TIPOGRÁFICA --- */
+    --text-main: #0f172a;              /* Texto principal de alto contraste */
+    --text-muted: #475569;             /* Slate 600: Párrafos y etiquetas */
+    --text-disabled: #94a3b8;          /* Slate 400: Metadatos y fechas */
+
+    /* --- ARQUITECTURA DE ESQUINAS Y BORDES --- */
+    --radius-bento: 16px;              /* Curvatura exacta CalmMind */
+    --radius-interactive: 12px;        /* Esquinas de botones y entradas de texto */
+    --radius-pill: 9999px;             /* Estado de Badges */
+    
+    /* --- BORDES Y SOMBRAS MILIMÉTRICAS --- */
+    --border-subtle: 1px solid rgba(15, 23, 42, 0.05);
+    --bento-border: 1px solid rgba(15, 23, 42, 0.06);
+    --bento-shadow-sm: 0 4px 6px -1px rgba(5, 150, 105, 0.02), 0 2px 4px -1px rgba(0, 0, 0, 0.01);
+    --bento-shadow-md: 0 12px 24px -4px rgba(15, 23, 42, 0.04), 0 8px 12px -6px rgba(15, 23, 42, 0.02);
+    
+    --transition-premium: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* ==========================================================================
+   SAIC GLOBAL FOCUS - REDISEÑO DE ENFOQUES PREMIUM (CalmMind UI)
+   ========================================================================== */
+
+/* Limpia el outline azul nativo y lo reemplaza por un halo esmeralda sutil */
+input:focus,
+select:focus,
+textarea:focus,
+button:focus,
+.btn:focus,
+a:focus {
+    outline: none !important;
+    box-shadow: 0 0 0 3px rgba(16, 185, 129, 0.15) !important; /* Halo Menta translúcido */
+    border-color: var(--calm-green-primary) !important;
+}
+
+/* Excepción de accesibilidad: si se navega con teclado, mantiene un estilo limpio */
+input:focus-visible,
+button:focus-visible,
+a:focus-visible {
+    outline: 2px solid var(--calm-green-primary) !important;
+    outline-offset: 2px;
+}

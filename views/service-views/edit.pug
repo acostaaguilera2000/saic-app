@@ -1,99 +1,99 @@
 extends ../layout
 
 block content
-    .container-fluid.px-4.py-4
+  .container-fluid.px-4.py-4
 
-        //- Encabezado estándar global con migajas de pan integradas
-        +formHeader(
-            `Editar Culto #${cultoToEdit.id_culto}`, 
-            '/service', 
-            [
-                { text: 'SAIC', link: '/dashboard', active: false },
-                { text: 'Cultos', link: '/service', active: false },
-                { text: 'Editar Culto', active: true }
-            ]
-        )
+    //- Encabezado estándar global con inyección dinámica del ID del registro
+    +formHeader(
+      `Editar Culto #${cultoToEdit.id_culto}`, 
+      '/service', 
+      [
+        { text: 'SAIC', link: '/dashboard', active: false },
+        { text: 'Cultos', link: '/service', active: false },
+        { text: 'Editar Culto', active: true }
+      ]
+    )
 
-        //- Contenedor de formulario centrado simétricamente estilo bento
-        .row.justify-content-center
-            .col-12.col-lg-10.col-xl-8
+    //- Contenedor de formulario centrado simétricamente estilo bento
+    .row.justify-content-center
+      .col-12.col-lg-10.col-xl-8
 
-                //- Integración del partial global para el tratamiento dinámico de mensajes y errores
-                include ../partials/_messages
+        //- Integración del partial global para el tratamiento dinámico de mensajes y errores
+        include ../partials/_messages
 
-                //- Tarjeta principal de edición estilo Bento Box
-                .card.bento-card.p-4.mb-4.border-0(style="background: #ffffff; border-radius: 16px; box-shadow: 0 4px 24px rgba(0,0,0,0.03);")
+        //- Tarjeta principal de edición estilo Bento Box
+        .card.bento-card.p-4.mb-4.border-0(style="background: var(--bg-surface); border-radius: 16px; box-shadow: var(--shadow-bento);")
 
-                    form(action=`/service/update/${cultoToEdit.id_culto}` method="POST")
-                        .row.g-4
+          form(action=`/service/update/${cultoToEdit.id_culto}` method="POST")
+            .row.g-4
 
-                            //- Datos generales de agenda
-                            .col-md-3
-                                label.form-label.fw-semibold.text-secondary(for="fecha") Fecha del Culto
-                                - var dateValue = cultoToEdit.fecha ? new Date(cultoToEdit.fecha).toISOString().split('T')[0] : ''
-                                input#fecha.form-control.rounded-3(type="date" name="fecha" value=dateValue required)
+              //- Datos generales de agenda
+              .col-md-3
+                label.form-label.fw-semibold.text-secondary(for="fecha") Fecha del Culto
+                - var dateValue = cultoToEdit.fecha ? new Date(cultoToEdit.fecha).toISOString().split('T')[0] : ''
+                input#fecha.form-control.rounded-3(type="date" name="fecha" value=dateValue required style="border-color: var(--border-subtle);")
 
-                            .col-md-3
-                                label.form-label.fw-semibold.text-secondary(for="hora") Hora
-                                input#hora.form-control.rounded-3(type="time" name="hora" value=cultoToEdit.hora required)
+              .col-md-3
+                label.form-label.fw-semibold.text-secondary(for="hora") Hora
+                input#hora.form-control.rounded-3(type="time" name="hora" value=cultoToEdit.hora required style="border-color: var(--border-subtle);")
 
-                            .col-md-6
-                                label.form-label.fw-semibold.text-secondary(for="tipo_culto") Tipo de Culto
-                                select#tipo_culto.form-select.rounded-3(name="tipo_culto" required)
-                                    option(value="Culto General" selected=(cultoToEdit.tipo_culto === "Culto General")) Culto General
-                                    option(value="Culto de Jóvenes" selected=(cultoToEdit.tipo_culto === "Culto de Jóvenes")) Culto de Jóvenes
-                                    option(value="Culto de Damas" selected=(cultoToEdit.tipo_culto === "Culto de Damas")) Culto de Damas
-                                    option(value="Culto de Caballeros" selected=(cultoToEdit.tipo_culto === "Culto de Caballeros")) Culto de Caballeros
-                                    option(value="Escuela Bíblica Dominical" selected=(cultoToEdit.tipo_culto === "Escuela Bíblica Dominical")) Escuela Bíblica Dominical
-                                    option(value="Culto de Oración" selected=(cultoToEdit.tipo_culto === "Culto de Oración")) Culto de Oración
+              .col-md-6
+                label.form-label.fw-semibold.text-secondary(for="tipo_culto") Tipo de Culto
+                select#tipo_culto.form-select.rounded-3(name="tipo_culto" required style="border-color: var(--border-subtle);")
+                  option(value="Culto General" selected=(cultoToEdit.tipo_culto === "Culto General")) Culto General
+                  option(value="Culto de Jóvenes" selected=(cultoToEdit.tipo_culto === "Culto de Jóvenes")) Culto de Jóvenes
+                  option(value="Culto de Damas" selected=(cultoToEdit.tipo_culto === "Culto de Damas")) Culto de Damas
+                  option(value="Culto de Caballeros" selected=(cultoToEdit.tipo_culto === "Culto de Caballeros")) Culto de Caballeros
+                  option(value="Escuela Bíblica Dominical" selected=(cultoToEdit.tipo_culto === "Escuela Bíblica Dominical")) Escuela Bíblica Dominical
+                  option(value="Culto de Oración" selected=(cultoToEdit.tipo_culto === "Culto de Oración")) Culto de Oración
 
-                            //- Sección: Línea de Dirección
-                            .col-12.mt-5
-                                .d-flex.align-items-center.p-2.rounded-3(style="background-color: var(--ijersac-bg); color: var(--ijersac-navy);")
-                                    i.bi.bi-person-lines-fill.fs-5.me-2
-                                    span.fw-bold.text-uppercase.small(style="letter-spacing: 0.5px;") Línea de Dirección (Altar)
+              //- Sección: Línea de Dirección
+              .col-12.mt-5
+                .d-flex.align-items-center.p-2.rounded-3(style="background-color: var(--calm-green-subtle); color: var(--calm-green-primary);")
+                  i.bi.bi-person-lines-fill.fs-5.me-2
+                  span.fw-bold.text-uppercase.small(style="letter-spacing: 0.5px;") Línea de Dirección (Altar)
 
-                            .col-md-6
-                                label.form-label.fw-semibold.text-secondary(for="id_dirigente") Dirigente Local
-                                .input-group
-                                    span.input-group-text.border-end-0(style="background-color: var(--ijersac-bg);"): i.bi.bi-person-badge.text-muted
-                                    select#id_dirigente.form-select.border-start-0.rounded-end-3(name="id_dirigente")
-                                        option(value="") -- Seleccione un Miembro Interno --
-                                        if miembros && miembros.length
-                                            each m in miembros
-                                                option(value=m.id_miembro selected=(cultoToEdit.id_dirigente == m.id_miembro))= `${m.nombre} ${m.apellido}`
+              .col-md-6
+                label.form-label.fw-semibold.text-secondary(for="id_dirigente") Dirigente Local
+                .input-group
+                  span.input-group-text.border-end-0(style="background-color: var(--bg-app); border-color: var(--border-subtle);"): i.bi.bi-person-badge.text-muted
+                  select#id_dirigente.form-select.border-start-0.rounded-end-3(name="id_dirigente" style="border-color: var(--border-subtle);")
+                    option(value="") -- Seleccione un Miembro Interno --
+                    if miembros && miembros.length
+                      each m in miembros
+                        option(value=m.id_miembro selected=(cultoToEdit.id_dirigente == m.id_miembro))= `${m.nombre} ${m.apellido}`
 
-                            .col-md-6
-                                label.form-label.fw-semibold.text-secondary(for="dirigente_externo") O Dirigente Invitado (Externo)
-                                .input-group
-                                    span.input-group-text.border-end-0(style="background-color: var(--ijersac-bg);"): i.bi.bi-person-plus.text-muted
-                                    input#dirigente_externo.form-control.border-start-0.rounded-end-3(type="text" name="dirigente_externo" value=cultoToEdit.dirigente_externo placeholder="Nombre del ministro invitado")
+              .col-md-6
+                label.form-label.fw-semibold.text-secondary(for="dirigente_externo") O Dirigente Invitado (Externo)
+                .input-group
+                  span.input-group-text.border-end-0(style="background-color: var(--bg-app); border-color: var(--border-subtle);"): i.bi.bi-person-plus.text-muted
+                  input#dirigente_externo.form-control.border-start-0.rounded-end-3(type="text" name="dirigente_externo" value=cultoToEdit.dirigente_externo placeholder="Nombre del ministro invitado" style="border-color: var(--border-subtle);")
 
-                            //- Sección: Palabra Central
-                            .col-12.mt-5
-                                .d-flex.align-items-center.p-2.rounded-3(style="background-color: var(--ijersac-bg); color: var(--ijersac-navy);")
-                                    i.bi.bi-book-half.fs-5.me-2
-                                    span.fw-bold.text-uppercase.small(style="letter-spacing: 0.5px;") Palabra Central (Predicación)
+              //- Sección: Palabra Central
+              .col-12.mt-5
+                .d-flex.align-items-center.p-2.rounded-3(style="background-color: var(--calm-green-subtle); color: var(--calm-green-primary);")
+                  i.bi.bi-book-half.fs-5.me-2
+                  span.fw-bold.text-uppercase.small(style="letter-spacing: 0.5px;") Palabra Central (Predicación)
 
-                            .col-md-6
-                                label.form-label.fw-semibold.text-secondary(for="id_predicador") Predicador Local
-                                .input-group
-                                    span.input-group-text.border-end-0(style="background-color: var(--ijersac-bg);"): i.bi.bi-person-badge.text-muted
-                                    select#id_predicador.form-select.border-start-0.rounded-end-3(name="id_predicador")
-                                        option(value="") -- Seleccione un Miembro Interno --
-                                        if miembros && miembros.length
-                                            each m in miembros
-                                                option(value=m.id_miembro selected=(cultoToEdit.id_predicador == m.id_miembro))= `${m.nombre} ${m.apellido}`
+              .col-md-6
+                label.form-label.fw-semibold.text-secondary(for="id_predicador") Predicador Local
+                .input-group
+                  span.input-group-text.border-end-0(style="background-color: var(--bg-app); border-color: var(--border-subtle);"): i.bi.bi-person-badge.text-muted
+                  select#id_predicador.form-select.border-start-0.rounded-end-3(name="id_predicador" style="border-color: var(--border-subtle);")
+                    option(value="") -- Seleccione un Miembro Interno --
+                    if miembros && miembros.length
+                      each m in miembros
+                        option(value=m.id_miembro selected=(cultoToEdit.id_predicador == m.id_miembro))= `${m.nombre} ${m.apellido}`
 
-                            .col-md-6
-                                label.form-label.fw-semibold.text-secondary(for="predicador_externo") O Predicador Invitado (Externo)
-                                .input-group
-                                    span.input-group-text.border-end-0(style="background-color: var(--ijersac-bg);"): i.bi.bi-person-plus.text-muted
-                                    input#predicador_externo.form-control.border-start-0.rounded-end-3(type="text" name="predicador_externo" value=cultoToEdit.predicador_externo placeholder="Nombre del ministro invitado")
+              .col-md-6
+                label.form-label.fw-semibold.text-secondary(for="predicador_externo") O Predicador Invitado (Externo)
+                .input-group
+                  span.input-group-text.border-end-0(style="background-color: var(--bg-app); border-color: var(--border-subtle);"): i.bi.bi-person-plus.text-muted
+                  input#predicador_externo.form-control.border-start-0.rounded-end-3(type="text" name="predicador_externo" value=cultoToEdit.predicador_externo placeholder="Nombre del ministro invitado" style="border-color: var(--border-subtle);")
 
-                        //- Botonera de acciones principales corporativas
-                        .d-flex.gap-3.pt-2.mt-5.border-top
-                            a.btn.btn-light.w-25.py-2.fw-bold.rounded-3.text-secondary(href="/service" style="background-color: var(--ijersac-bg); border: none;") Cancelar
-                            button.btn.btn-action.flex-grow-1.py-2.fw-bold.rounded-3.shadow-sm(type="submit")
-                                i.bi.bi-arrow-repeat.me-2
-                                | Actualizar Parámetros del Culto
+            //- Botonera de acciones principales corporativas estandarizadas
+            .d-flex.gap-3.pt-2.mt-5.border-top(style="border-color: var(--border-subtle) !important;")
+              a.btn-light-custom.w-25(href="/service") Cancelar
+              button.btn-premium.flex-grow-1(type="submit")
+                i.bi.bi-arrow-repeat.me-2
+                | Actualizar Parámetros del Culto

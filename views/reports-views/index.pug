@@ -1,108 +1,118 @@
 extends ../layout
 
 block content
-    .row.justify-content-center
-        .col-xl-10
-            //- Encabezado del Módulo
-            .d-flex.flex-column.flex-md-row.justify-content-between.align-items-start.align-items-md-center.gap-3.mb-4.p-4.rounded-4(style="background: #ffffff; box-shadow: 0 4px 24px rgba(0,0,0,0.02);")
-                div
-                    h3.fw-bold.text-dark.mb-1 Módulo de Reportes y Análisis
-                    p.text-muted.small Seleccione el tipo de reporte institucional, filtrar o exportar a formato PDF.
-                .bg-light.p-2.rounded.border.d-none.d-md-block
-                    i.bi.bi-shield-check.text-success.me-1
-                    span.text-secondary.small Acceso Autorizado
+   
 
-            //- Estructura Bento Grid de Reportes
-            .row.g-4
+        //- Contenedor para el Bento Grid centrado y estético
+        .row.justify-content-center.mt-5
+            .col-xl-10
+                include ../partials/_messages
 
-                //- Tarjeta Principal (Destacada): Reporte de Servicios (Activo)
-                .col-md-7.col-lg-8
-                    .card.border-0.shadow-sm.h-100.bento-card.bento-active
-                        .card-body.p-4.d-flex.flex-column.justify-content-between
-                            div
-                                .d-flex.justify-content-between.align-items-start.mb-3
-                                    .bento-icon-wrapper.bg-dark.text-white
-                                        i.bi.bi-calendar3.fs-4
-                                    span.badge.bg-success.bg-opacity-10.text-success.px-2.py-1.small Operativo
+                //- Estructura Bento Grid de Reportes
+                .row.g-4
 
-                                h4.fw-bold.text-dark.mb-2 Agenda General de Servicios
-                                p.text-secondary.small.mb-4
-                                    | Acceda al cronograma oficializado de cultos. Permite realizar filtrados cronológicos por meses de la distribución de ministerios en altar, directores, predicadores y asignaciones del soporte logístico (sonido, multimedia y aseo). Completamente optimizado para impresión institucional.
+                    //- Tarjeta Principal (Destacada): Reporte de Servicios (Activo)
+                    .col-md-7.col-lg-8
+                        .card.border-0.h-100.bento-card.bento-active(style="background: var(--bg-surface); box-shadow: var(--shadow-bento); border: 1px solid var(--border-subtle) !important;")
+                            .card-body.p-4.d-flex.flex-column.justify-content-between
+                                div
+                                    .d-flex.justify-content-between.align-items-start.mb-3
+                                        //- Icono con fondo institucional esmeralda translúcido
+                                        .bento-icon-wrapper.bento-icon-active
+                                            i.bi.bi-calendar3.fs-4
+                                        span.badge.badge-status.badge-status-sonido Operativo
 
-                            .pt-3.border-top.d-flex.justify-content-between.align-items-center
-                                span.text-muted.x-small Última actividad: Hoy
-                                a.btn.btn-dark.btn-sm.px-4.shadow-sm(href="/report/services")
-                                    | Ingresar al Reporte
-                                    i.bi.bi-arrow-right.ms-2
+                                    h4.fw-bold.text-dark.mb-2 Agenda General de Servicios
+                                    p.text-secondary.small.mb-4
+                                        | Acceda al cronograma oficializado de cultos. Permite realizar filtrados cronológicos por meses de la distribución de ministerios en altar, directores, predicadores y asignaciones del soporte logístico (sonido, multimedia y aseo). Completamente optimizado para impresión institucional.
 
-                //- Tarjeta Secundaria (Placeholder): Reporte de Miembros (Próximamente)
-                .col-md-5.col-lg-4
-                    .card.border-0.shadow-sm.h-100.bento-card.bento-disabled.bg-light.bg-opacity-50
-                        .card-body.p-4.d-flex.flex-column.justify-content-between
-                            div
-                                .d-flex.justify-content-between.align-items-start.mb-3
-                                    .bento-icon-wrapper.bg-secondary.bg-opacity-10.text-secondary
-                                        i.bi.bi-people.fs-4
-                                    span.badge.bg-secondary.bg-opacity-10.text-secondary.px-2.py-1.small Próximamente
+                                .pt-3.d-flex.justify-content-between.align-items-center(style="border-top: 1px solid var(--border-subtle);")
+                                    span.text-muted.x-small Última actividad: Hoy
+                                    //- Sincronizado con .btn-premium de components.css
+                                    a.btn.btn-premium.btn-sm.px-4(href="/report/services")
+                                        | Ingresar al Reporte
+                                        i.bi.bi-arrow-right.ms-2
 
-                                h5.fw-bold.text-muted.mb-2 Padrón de Miembros
-                                p.text-muted.x-small.mb-0
-                                    | Módulo analítico en desarrollo para la segmentación de la membresía activa, estadísticas de crecimiento mensual, listado de miembros bautizados y administración de altas/bajas institucionales.
+                    //- Tarjeta Secundaria (Placeholder): Reporte de Miembros (Próximamente)
+                    .col-md-5.col-lg-4
+                        .card.border-0.h-100.bento-card.bento-disabled
+                            .card-body.p-4.d-flex.flex-column.justify-content-between
+                                div
+                                    .d-flex.justify-content-between.align-items-start.mb-3
+                                        .bento-icon-wrapper.bento-icon-locked
+                                            i.bi.bi-people.fs-4
+                                        span.badge.badge-status.badge-status-aseo Próximamente
 
-                            .pt-3.text-start
-                                span.text-muted.x-small.fst-italic Bloque en fase de diseño estructural
+                                    h5.fw-bold.text-muted.mb-2 Padrón de Miembros
+                                    p.text-muted.x-small.mb-0
+                                        | Módulo analítico en desarrollo para la segmentación de la membresía activa, estadísticas de crecimiento mensual, listado de miembros bautizados y administración de altas/bajas institucionales.
 
-                //- Fila Inferior del Bento Grid: Tarjeta de Métricas Rápidas o Auditoría (Próximamente)
-                .col-md-4
-                    .card.border-0.shadow-sm.h-100.bento-card.bento-disabled.bg-light.bg-opacity-50
-                        .card-body.p-4
-                            .d-flex.align-items-center.gap-3.mb-2
-                                i.bi.bi-graph-up.text-muted.fs-5
-                                h6.fw-bold.text-muted.mb-0 Estadísticas de Asistencia
-                            p.text-muted.x-small.mb-0 Monitoreo de quórum diario y asistencia consolidada por comités.
+                                .pt-3.text-start(style="border-top: 1px dashed var(--border-subtle);")
+                                    span.text-muted.x-small.fst-italic Bloque en fase de diseño estructural
 
-                .col-md-8
-                    .card.border-0.shadow-sm.h-100.bento-card.bento-disabled.bg-light.bg-opacity-50
-                        .card-body.p-4.d-flex.align-items-center.justify-content-between
-                            div
+                    //- Fila Inferior del Bento Grid: Tarjeta de Métricas Rápidas o Auditoría (Próximamente)
+                    .col-md-4
+                        .card.border-0.h-100.bento-card.bento-disabled
+                            .card-body.p-4
                                 .d-flex.align-items-center.gap-3.mb-2
-                                    i.bi.bi-cash-coin.text-muted.fs-5
-                                    h6.fw-bold.text-muted.mb-0 Balance Financiero y Tesorería
-                                p.text-muted.x-small.mb-0 Reportes consolidados de ingresos, egresos ordinarios y fondos especiales para proyectos de la organización.
-                            i.bi.bi-lock.text-muted.fs-4.me-2
+                                    i.bi.bi-graph-up.text-muted.fs-5
+                                    h6.fw-bold.text-muted.mb-0 Estadísticas de Asistencia
+                                p.text-muted.x-small.mb-0 Monitoreo de quórum diario y asistencia consolidada por comités.
+
+                    //- Tarjeta de Balance Financiero (Próximamente)
+                    .col-md-8
+                        .card.border-0.h-100.bento-card.bento-disabled
+                            .card-body.p-4.d-flex.flex-column.justify-content-between
+                                .d-flex.align-items-center.justify-content-between
+                                    div
+                                        .d-flex.align-items-center.gap-3.mb-2
+                                            i.bi.bi-cash-coin.text-muted.fs-5
+                                            h6.fw-bold.text-muted.mb-0 Balance Financiero y Tesorería
+                                        p.text-muted.x-small.mb-0 Reportes consolidados de ingresos, egresos ordinarios y fondos especiales para proyectos de la organización.
+                                    i.bi.bi-lock.text-muted.fs-4.me-2
 
 block scripts
     style.
-        /* 🍱 Estilos del Concepto Bento Grid */
+        /* ==========================================================================
+            SAIC COMPONENTS - BENTO GRID EXTENSION
+            ========================================================================== */
         .bento-card {
             transition: transform 0.25s cubic-bezier(0.4, 0, 0.2, 1), box-shadow 0.25s ease;
-            border-radius: 16px !important; /* Bordes suaves característicos de Bento */
+            border-radius: 16px !important;
+            background: var(--bg-surface);
         }
 
         /* Comportamiento de las tarjetas activas */
         .bento-active:hover {
             transform: translateY(-4px);
-            box-shadow: 0 10px 20px rgba(15, 23, 42, 0.08) !important;
+            box-shadow: 0 10px 24px rgba(5, 150, 105, 0.08) !important;
         }
 
-        /* Comportamiento de los bloques bloqueados o en desarrollo */
+        /* Comportamiento adaptativo de bloques en desarrollo */
         .bento-disabled {
-            border: 1px dashed #cbd5e1 !important;
+            border: 1px dashed var(--border-subtle) !important;
+            background-color: var(--bg-app) !important;
             opacity: 0.75;
         }
 
-        /* Contenedores de Iconos */
+        /* Envoltura de Iconos con paleta SAIC */
         .bento-icon-wrapper {
             width: 44px;
             height: 44px;
-            display: flex;
+            display: inline-flex;
             align-items: center;
             justify-content: center;
             border-radius: 12px;
         }
 
-        .letter-spacing-1 {
-            letter-spacing: 0.5px;
+        .bento-icon-active {
+            color: var(--calm-green-primary) !important;
+            background-color: var(--calm-green-subtle) !important;
+        }
+
+        .bento-icon-locked {
+            color: var(--text-muted) !important;
+            background-color: rgba(15, 23, 42, 0.05) !important;
         }
 
         .x-small {

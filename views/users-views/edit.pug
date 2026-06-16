@@ -3,7 +3,7 @@ extends ../layout
 block content
   .container-fluid.px-4.py-4
 
-    //- 🚀 1. ENCABEZADO ESTÁNDAR GLOBAL (Migajas dinámicas y centrado unificado)
+    //- Encabezado estandarizado global mediante mixin institucional
     +formHeader(
       'Editar Perfil de Usuario', 
       '/users', 
@@ -14,14 +14,14 @@ block content
       ]
     )
 
-    //- CONTENIDO DE FORMULARIO
+    //- Contenedor de formulario centrado estructurado en estilo bento
     .row.justify-content-center
       .col-12.col-lg-10.col-xl-8
         include ../partials/_messages
-        .card.bento-card.p-4.mb-4.border-0(style="background: #ffffff; border-radius: 16px; box-shadow: 0 4px 24px rgba(0,0,0,0.03);")
+        .card.bento-card.p-4.mb-4.border-0(style="background: var(--bg-surface); border-radius: 16px; box-shadow: var(--shadow-bento);")
 
-          //- Avatar de usuario integrado en la cabecera del Bento box
-          .d-flex.align-items-center.mb-4.p-2.rounded-3(style="background-color: var(--ijersac-bg);")
+          //- Bloque superior de identidad: Integración de avatar dinámico
+          .d-flex.align-items-center.mb-4.p-2.rounded-3(style="background-color: var(--calm-green-subtle);")
             img.rounded-circle.shadow-sm.me-3(
               src=`https://ui-avatars.com/api/?name=${userToEdit.username}&background=0A192F&color=fff&size=48` 
               alt="Avatar"
@@ -29,21 +29,21 @@ block content
             div
               h5.fw-bold.text-dark.m-0 Perfil de Acceso
               p.text-muted.small.m-0 Modificando la cuenta de: 
-                strong(style="color: var(--ijersac-navy);") #{userToEdit.username}
+                strong(style="color: var(--calm-green-primary);") #{userToEdit.username}
 
           form(action=`/users/update/${userToEdit.id_usuario}` method="POST")
             .row.g-4
 
-              // Sección: Datos de Cuenta
+              //- Sección: Datos de configuración de la cuenta
               .col-12
-                .d-flex.align-items-center.p-2.rounded-3(style="background-color: var(--ijersac-bg); color: var(--ijersac-navy);")
+                .d-flex.align-items-center.p-2.rounded-3(style="background-color: var(--calm-green-subtle); color: var(--calm-green-primary);")
                   i.bi.bi-gear-wide-connected.fs-5.me-2
                   span.fw-bold.text-uppercase.small(style="letter-spacing: 0.5px;") Configuración de Cuenta
 
               .col-md-6
                 label.form-label.fw-semibold.text-secondary(for="username") Nombre de Usuario
                 .input-group
-                  span.input-group-text.border-end-0(style="background-color: var(--ijersac-bg);"): i.bi.bi-person.text-muted
+                  span.input-group-text.border-end-0(style="background-color: var(--bg-app); border-color: var(--border-subtle);"): i.bi.bi-person.text-muted
                   input.form-control.border-start-0.rounded-end-3(
                     type="text" 
                     id="username" 
@@ -55,7 +55,7 @@ block content
               .col-md-6
                 label.form-label.fw-semibold.text-secondary(for="email") Correo Electrónico
                 .input-group
-                  span.input-group-text.border-end-0(style="background-color: var(--ijersac-bg);"): i.bi.bi-envelope.text-muted
+                  span.input-group-text.border-end-0(style="background-color: var(--bg-app); border-color: var(--border-subtle);"): i.bi.bi-envelope.text-muted
                   input.form-control.border-start-0.rounded-end-3(
                     type="email" 
                     id="email" 
@@ -67,37 +67,37 @@ block content
               .col-md-6
                 label.form-label.fw-semibold.text-secondary(for="password") Nueva Contraseña
                 .input-group
-                  span.input-group-text.border-end-0(style="background-color: var(--ijersac-bg);"): i.bi.bi-shield-lock.text-muted
+                  span.input-group-text.border-end-0(style="background-color: var(--bg-app); border-color: var(--border-subtle);"): i.bi.bi-shield-lock.text-muted
                   input.form-control.border-start-0(
                     type="password" 
                     id="password" 
                     name="password" 
                     placeholder="Dejar en blanco para no cambiar"
                   )
-                  button.btn.btn-outline-secondary.border-start-0(type="button" onclick="togglePassword(event)" style="background-color: var(--ijersac-bg);")
+                  button.btn.btn-outline-secondary.border-start-0(type="button" onclick="togglePassword(event)" style="background-color: var(--bg-app); border-color: var(--border-subtle);")
                     i.bi.bi-eye.text-muted
                 small.form-text.text-muted Solo si deseas actualizar el acceso de seguridad.
 
               .col-md-6
                 label.form-label.fw-semibold.text-secondary(for="rol") Nivel de Permisos
                 .input-group
-                  span.input-group-text.border-end-0(style="background-color: var(--ijersac-bg);"): i.bi.bi-layers.text-muted
+                  span.input-group-text.border-end-0(style="background-color: var(--bg-app); border-color: var(--border-subtle);"): i.bi.bi-layers.text-muted
                   select.form-select.border-start-0.rounded-end-3(id="rol" name="rol" required)
                     option(value="admin" selected=(userToEdit.rol==="admin")) Administrador
                     option(value="tesorero" selected=(userToEdit.rol==="tesorero")) Tesorero
                     option(value="lider" selected=(userToEdit.rol==="lider")) Líder Ministerial
                     option(value="miembro" selected=(userToEdit.rol==="miembro")) Miembro General
 
-              // Sección: Miembro Vinculado
+              //- Sección: Vinculación de identidad federada de miembros
               .col-12.mt-5
-                .d-flex.align-items-center.p-2.rounded-3(style="background-color: var(--ijersac-bg); color: var(--ijersac-navy);")
+                .d-flex.align-items-center.p-2.rounded-3(style="background-color: var(--calm-green-subtle); color: var(--calm-green-primary);")
                   i.bi.bi-person-vcard.fs-5.me-2
                   span.fw-bold.text-uppercase.small(style="letter-spacing: 0.5px;") Vinculación de Identidad
 
               .col-12
                 label.form-label.fw-semibold.text-secondary(for="id_miembro") Miembro Asociado
                 .input-group.mb-1
-                  span.input-group-text.border-end-0(style="background-color: var(--ijersac-bg);"): i.bi.bi-people.text-muted
+                  span.input-group-text.border-end-0(style="background-color: var(--bg-app); border-color: var(--border-subtle);"): i.bi.bi-people.text-muted
                   select.form-select.border-start-0.rounded-end-3(id="id_miembro" name="id_miembro")
                     option(value="") Sin asignar (Externo / Cuenta Administrativa)
 
@@ -107,17 +107,16 @@ block content
                     if availableMembers && availableMembers.length > 0
                       each miembro in availableMembers
                         if miembro.id_miembro != userToEdit.id_miembro
-                          //- 🛠️ Corrección aplicada aquí usando interpolación limpia nativa de Pug
                           option(value=miembro.id_miembro) #{miembro.nombre} #{miembro.apellido} — Doc: #{miembro.documento}
 
-                small.form-text.d-block.mt-1(style="color: var(--ijersac-red); font-weight: 500;")
+                small.form-text.d-block.mt-1(style="color: var(--ijersac-red-light); font-weight: 500;")
                   i.bi.bi-info-circle-fill.me-1
                   | Modifique esta selección únicamente si necesita reasignar o corregir la identidad vinculada a este usuario.
 
-            // BOTONERA DE ACCIÓN CORPORATIVA ASIMÉTRICA
-            .d-flex.gap-3.pt-2.mt-5.border-top
-              a.btn.btn-light.w-25.py-2.fw-bold.rounded-3.text-secondary(href="/users" style="background-color: var(--ijersac-bg); border: none;") Cancelar
-              button.btn.btn-action.flex-grow-1.py-2.fw-bold.rounded-3.shadow-sm(type="submit")
+            //- Alocación de botones de acción mediante componentes globales del sistema
+            .d-flex.gap-3.pt-2.mt-5.border-top(style="border-color: var(--border-subtle) !important;")
+              a.btn-light-custom.w-25(href="/users") Cancelar
+              button.btn-premium.flex-grow-1(type="submit")
                 i.bi.bi-save.me-2
                 | Guardar Cambios
 

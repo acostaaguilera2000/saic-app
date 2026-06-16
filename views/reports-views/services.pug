@@ -3,28 +3,29 @@ extends ../layout
 block content
   .container-fluid.px-4.py-4
 
-    //-  PANEL CONTROL (Oculto por completo en Impresión)
+    //-  PANEL DE CONTROL DE FILTROS Y ACCIÓN (Oculto por completo en Impresión)
     .row.mb-4.g-3.d-print-none
       .col-xl-8.col-lg-7
-        .card.border-0.shadow-sm.h-100.p-3(style="background: #ffffff; border-radius: 12px; border: 1px solid rgba(15, 23, 42, 0.06) !important;")
+        .card.border-0.bento-card.h-100.p-3(style="background: var(--bg-surface); border: 1px solid var(--border-subtle) !important; box-shadow: var(--shadow-bento);")
           .d-flex.flex-column.flex-sm-row.justify-content-between.align-items-sm-center.gap-3
             div
-              span.badge.text-uppercase.xx-small.fw-bold.ls-1(style="background-color: rgba(139, 0, 0, 0.1); color: var(--ijersac-red, #8b0000);") Módulo de Reportes
-              p.text-muted.small.mb-0 Agenda y logística para distribución o PDF.
+              span.badge.badge-status.badge-status-sonido Módulo de Reportes
+              p.text-muted.small.mb-0.mt-1 Agenda para distribución física o exportación a PDF.
             .d-flex.gap-2.shrink-0
-              button.btn.px-3.py-2.fw-bold.rounded-3.shadow-sm.small-text(type="button" onclick="window.print()" style="background-color: var(--ijersac-navy, #0a192f); color: #ffffff; border: none;")
+              //- Utiliza .btn-premium adaptado
+              button.btn-premium.btn-sm.px-3(type="button" onclick="window.print()")
                 i.bi.bi-printer.me-2
                 | Imprimir Reporte
-              a.btn.btn-light.border.px-3.py-2.rounded-3.small-text(href="/service") Volver
-
+              a.btn-light-custom.btn-sm.px-3(href="/report") Volver
+      
       .col-xl-4.col-lg-5
-        .card.border-0.shadow-sm.h-100.p-3(style="background: #ffffff; border-radius: 12px; border: 1px solid rgba(15, 23, 42, 0.06) !important;")
+        .card.border-0.bento-card.h-100.p-3(style="background: var(--bg-surface); border: 1px solid var(--border-subtle) !important; box-shadow: var(--shadow-bento);")
           form(method="GET" action="/report/services" class="m-0")
-            label.form-label.fw-bold.text-secondary.xx-small.text-uppercase.mb-2(for="month") Filtrar Periodo Mensual
+            label.form-label.fw-semibold.text-secondary.mb-2(for="month" style="font-size: 0.75rem; uppercase; letter-spacing: 0.5px;") Filtrar Periodo Mensual
             .input-group
-              span.input-group-text.bg-light.border-end-0
+              span.input-group-text.border-end-0(style="background-color: var(--bg-app); border-color: var(--border-subtle);")
                 i.bi.bi-calendar3.text-muted
-              select#month.form-select.form-select-md.fw-semibold.text-dark(name="month" onchange="this.form.submit()")
+              select#month.form-select.fw-semibold.text-dark(name="month" onchange="this.form.submit()" style="border-color: var(--border-subtle); font-size: 0.88rem;")
                 option(value="") -- Todos los meses --
                 each mes, index in ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre']
                   - var val = String(index + 1).padStart(2, '0')
@@ -33,27 +34,26 @@ block content
     //- Flujo operativo de notificaciones
     include ../partials/_messages
 
-    //- 🖨️ CONTENEDOR ESTILO FACTURA (REPORTE CORPORATIVO PREMIUM)
-    .card.border-0.shadow-sm.card-invoice(style="border-radius: 16px; background-color: #ffffff;")
+    //- 🖨️ CONTENEDOR ESTILO FACTURA (REPORTE CORPORATIVO PREMIUM ESMEALDA)
+    .card.border-0.card-invoice(style="border-radius: 16px; background-color: var(--bg-surface); box-shadow: var(--shadow-bento); border: 1px solid var(--border-subtle) !important;")
       .card-body.p-4.p-sm-5
-
-        //- SECCIÓN 1: CABECERA TIPO FACTURA (Logo / Nombre e Información de Emisión)
+        
+        //- SECCIÓN 1: CABECERA TIPO FACTURA (Logo / Nombre institucional)
         .row.align-items-start.mb-5
           .col-12.col-sm-7.text-start.mb-3.mb-sm-0
             .d-flex.align-items-center.gap-2
-              i.bi.bi-globe2.fs-3(style="color: var(--ijersac-navy, #0a192f);")
+              i.bi.bi-globe2.fs-3(style="color: var(--calm-green-primary);")
               h2.fw-bold.mb-0.invoice-brand-title SAIC - INTEGRAL
             p.text-muted.small.mb-0.mt-1 Iglesia Jesús de Nazaret • Coherencia Litúrgica
-
           .col-12.col-sm-5.text-sm-end
-            h4.fw-bold.text-uppercase.mb-1(style="color: var(--ijersac-navy, #0a192f); font-size: 1.15rem; letter-spacing: -0.3px;") Agenda General
-            span.d-block.text-muted.x-small.fw-mono 
+            h4.fw-bold.text-uppercase.mb-1(style="color: var(--calm-green-primary); font-size: 1.15rem; letter-spacing: -0.3px;") Agenda General
+            span.d-block.text-muted.fw-mono(style="font-size: 11px;") 
               span.fw-bold Fecha Emisión: 
               | #{new Date().toLocaleDateString('es-CO', { day: '2-digit', month: '2-digit', year: 'numeric' })}
-            span.d-block.text-muted.x-small.fw-mono 
+            span.d-block.text-muted.fw-mono(style="font-size: 11px;") 
               span.fw-bold Reporte ID: 
               | #RE-#{new Date().getFullYear()}#{selectedMonth || '00'}
-
+        
         //- SECCIÓN 2: BLOQUES DE METADATOS EN PARALELO (DE / A / DETALLES)
         .row.g-3.mb-5.invoice-details-row
           .col-12.col-sm-4
@@ -61,12 +61,10 @@ block content
             p.fw-bold.text-dark.mb-0 Administración Central
             p.text-muted.small.mb-0 IJERSAC Principal
             p.text-muted.small.mb-0 email: soporte@saic.com
-
           .col-12.col-sm-4
             p.text-uppercase.fw-bold.text-secondary.mb-1(style="font-size: 11px; letter-spacing: 0.5px;") Para:
             p.fw-bold.text-dark.mb-0 Congregación IJERSAC
             p.text-muted.small.mb-0 Líderes de ministerio y miembros en general
-           
           .col-12.col-sm-4.text-sm-end
             p.text-uppercase.fw-bold.text-secondary.mb-1(style="font-size: 11px; letter-spacing: 0.5px;") Especificaciones:
             p.mb-0.small.text-dark 
@@ -83,9 +81,8 @@ block content
         //- TABLA 1: CRONOGRAMA DE ALTAR (Dirección y Predicación)
         //- ══════════════════════════════════════════════════════════════════
         .d-flex.align-items-center.gap-2.mb-3
-          i.bi.bi-bookmark-star-fill.text-secondary(style="font-size: 1.1rem;")
-          h5.fw-bold.text-uppercase.mb-0(style="font-size: 13px; color: var(--ijersac-navy, #0a192f); letter-spacing: 0.5px;") I. Agenda Litúrgica del Altar
-
+          i.bi.bi-bookmark-star-fill(style="font-size: 1.1rem; color: var(--calm-green-primary);")
+          h5.fw-bold.text-uppercase.mb-0(style="font-size: 13px; color: var(--text-main); letter-spacing: 0.5px;") I. Agenda Litúrgica del Altar
         .table-responsive.mb-5
           table.table.align-middle.invoice-table.mb-0
             thead
@@ -100,7 +97,7 @@ block content
                   tr.invoice-row
                     td.fw-semibold.text-dark
                       - var f = item.fecha ? new Date(item.fecha).toLocaleDateString('es-ES', {timeZone: 'UTC', weekday: 'short', day: 'numeric', month: 'short'}) : 'No asignada'
-                      span.text-uppercase.d-block(style="font-size: 11.5px; font-weight: 700; color: var(--ijersac-red, #8b0000);") #{f}
+                      span.text-uppercase.d-block(style="font-size: 11.5px; font-weight: 700; color: var(--calm-green-primary);") #{f}
                       if item.hora
                         - var [horas, minutos] = item.hora.split(':')
                         - var fechaBase = new Date(2000, 0, 1, horas, minutos)
@@ -120,9 +117,8 @@ block content
         //- TABLA 2: OPERACIÓN Y LOGÍSTICA (Columnas Dedicadas por Responsabilidad)
         //- ══════════════════════════════════════════════════════════════════
         .d-flex.align-items-center.gap-2.mb-3.mt-4
-          i.bi.bi-gear-fill.text-secondary(style="font-size: 1.1rem;")
-          h5.fw-bold.text-uppercase.mb-0(style="font-size: 13px; color: var(--ijersac-navy, #0a192f); letter-spacing: 0.5px;") II. Soporte Operativo y Logística
-
+          i.bi.bi-gear-fill(style="font-size: 1.1rem; color: var(--calm-green-primary);")
+          h5.fw-bold.text-uppercase.mb-0(style="font-size: 13px; color: var(--text-main); letter-spacing: 0.5px;") II. Soporte Operativo y Logística
         .table-responsive
           table.table.align-middle.invoice-table.mb-0
             thead
@@ -136,33 +132,28 @@ block content
               if cronograma && cronograma.length > 0
                 each item in cronograma
                   tr.invoice-row
-                    //- Reutiliza la fecha de manera sincronizada
                     td.fw-semibold.text-dark
                       - var f = item.fecha ? new Date(item.fecha).toLocaleDateString('es-ES', {timeZone: 'UTC', weekday: 'short', day: 'numeric', month: 'short'}) : 'No asignada'
-                      span.text-uppercase.d-block(style="font-size: 11px; font-weight: 700; color: #475569;") #{f}
+                      span.text-uppercase.d-block(style="font-size: 11px; font-weight: 700; color: var(--text-muted);") #{f}
                     
-                    //- Columna Sonido
                     td.invoice-text-assigned
                       if item.son_nom
                         span.text-dark #{item.son_nom}
                       else
                         span.text-muted.x-small.fst-italic Libre
                     
-                    //- Columna Multimedia
                     td.invoice-text-assigned
                       if item.mul_nom
                         span.text-dark #{item.mul_nom}
                       else
                         span.text-muted.x-small.fst-italic Libre
                     
-                    //- Columna Aseo
                     td.invoice-text-assigned
                       if item.ase_nom
                         span.text-dark #{item.ase_nom}
                       else
                         span.text-muted.x-small.fst-italic Libre
                     
-                    //- Columna Observaciones Dedicada
                     td.txt-observacion
                       if item.observaciones && item.observaciones.trim() !== ""
                         | #{item.observaciones}
@@ -172,34 +163,30 @@ block content
                 tr
                   td.text-center.py-4.text-muted.fst-italic(colspan="5") No hay registros de soporte técnico.
 
-        //- SECCIÓN 4: PIE DE PÁGINA
-        .invoice-footer.text-center.mt-5.pt-4.border-top
+        //- SECCIÓN 4: PIE DE PÁGINA CORPORATIVO
+        .invoice-footer.text-center.mt-5.pt-4(style="border-top: 1px solid var(--border-subtle);")
           p.mb-1.fst-italic.text-secondary(style="font-size: 11px;") "Todo lo que hagáis, hacedlo de corazón, como para el Señor y no para los hombres." — Colosenses 3:23
-          p.mb-0.text-uppercase.fw-bold.mt-2(style="font-size: 10px; letter-spacing: 1px; color: var(--ijersac-navy, #0a192f);") SAIC — SISTEMA DE ADMINISTRACIÓN DE IGLESIAS CRISTIANAS
+          p.mb-0.text-uppercase.fw-bold.mt-2(style="font-size: 10px; letter-spacing: 1px; color: var(--calm-green-primary);") SAIC — SISTEMA DE ADMINISTRACIÓN DE IGLESIAS CRISTIANAS
 
 block scripts
   style.
     @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap');
-
+    
     .card-invoice, .invoice-table, .invoice-footer {
         font-family: 'Inter', sans-serif !important;
         -webkit-font-smoothing: antialiased;
     }
-
     .invoice-brand-title {
         font-weight: 800 !important;
-        color: var(--ijersac-navy, #0a192f);
+        color: var(--text-main, #0f172a);
         letter-spacing: -0.5px;
     }
-
-    .xx-small { font-size: 0.72rem; letter-spacing: 0.5px; }
-    .small-text { font-size: 0.85rem; }
     .x-small { font-size: 11px; }
     .fw-mono { font-family: SFMono-Regular, Menlo, Monaco, Consolas, monospace; }
-
-    /* ESTILOS DE LA TABLA ESTILO FACTURA COMERCIAL */
+    
+    /* 📊 ENTORNO DE TABLA ESTILO INVOICE */
     .invoice-table thead th {
-        background-color: var(--ijersac-navy, #0a192f) !important;
+        background-color: var(--calm-green-primary, #059669) !important;
         color: #ffffff !important;
         font-size: 11px;
         font-weight: 700 !important;
@@ -208,74 +195,91 @@ block scripts
         padding: 10px 12px !important;
         border: none !important;
     }
-
     .invoice-table tbody td {
         padding: 12px 12px !important;
-        border-bottom: 1px solid #e2e8f0 !important;
+        border-bottom: 1px solid var(--border-subtle, #cbd5e1) !important;
         font-size: 12.5px;
-        color: #334155;
+        color: var(--text-main, #334155);
     }
-
     .invoice-table tbody tr.invoice-row:nth-child(even) {
-        background-color: #f8fafc !important;
+        background-color: var(--bg-app, #f8fafc) !important;
     }
-
-    .invoice-badge-culto {
-        background-color: #ffffff;
-        color: #1e293b;
-        padding: 3px 8px;
-        font-size: 10px;
-        font-weight: 700;
-        border: 1px solid #cbd5e1;
-        border-radius: 4px;
-        display: inline-block;
-        text-transform: uppercase;
-        letter-spacing: 0.3px;
-    }
-
     .invoice-text-assigned {
         color: #0f172a;
         font-weight: 600;
         font-size: 12px;
     }
-
     .txt-observacion {
         font-size: 12px;
-        color: #475569;
+        color: var(--text-muted);
         line-height: 1.4;
     }
-
-    /* INSTRUCCIONES DE RENDERIZADO PARA IMPRESIÓN Y PDF EXPORT */
+    
+    /* 🖨️ CONTROLADOR NATIVO DE IMPRESIÓN SÓLIDA CORREGIDO */
     @media print {
         * {
             -webkit-print-color-adjust: exact !important;
             print-color-adjust: exact !important;
             color-adjust: exact !important;
         }
-        .d-print-none, nav, aside, .sidebar, header, .btn, form {
+        
+        /* Ocultar elementos de interfaz de pantalla */
+        .d-print-none, nav, aside, .sidebar, header, .btn, form, .saic-form-header {
             display: none !important;
         }
+        
+        /* Forzar márgenes físicos en la hoja de papel */
+        @page {
+            margin: 15mm 12mm 15mm 12mm !important;
+        }
+        
         body {
             background-color: #ffffff !important;
             color: #000000 !important;
             padding: 0 !important;
             margin: 0 !important;
         }
+        
+        /* Evitar el colapso del Grid de Bootstrap en papel */
+        .invoice-details-row {
+            display: flex !important;
+            flex-direction: row !important;
+            justify-content: space-between !important;
+            width: 100% !important;
+            margin-bottom: 2.5rem !important;
+        }
+        
+        /* Forzar anchos estables para los bloques informativos (Evita el amontonamiento) */
+        .invoice-details-row > div {
+            width: 31% !important;
+            float: left !important;
+            word-wrap: break-word !important;
+        }
+        
+        .invoice-details-row .text-sm-end {
+            text-align: right !important;
+        }
+        
         .card-invoice {
             border: none !important;
             box-shadow: none !important;
             padding: 0 !important;
+            background: transparent !important;
         }
+        
         .card-invoice .card-body {
             padding: 0 !important;
         }
+        
         .invoice-table thead th {
-            background-color: #0a192f !important;
+            background-color: #059669 !important;
             color: #ffffff !important;
         }
+        
         .invoice-table tbody tr.invoice-row:nth-child(even) {
             background-color: #f8fafc !important;
         }
+        
         .invoice-row {
             break-inside: avoid !important;
             page-break-inside: avoid !important;

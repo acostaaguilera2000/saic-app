@@ -1,0 +1,167 @@
+/* ==========================================================================
+   SAIC COMPONENTS - INTERFAZ INTEGRADA (Botones, Acciones y Badges)
+   Filosofía: Fresh White & Emerald / Estética CalmMind Básica
+   ========================================================================== */
+
+/* --------------------------------------------------------------------------
+   1. BOTONES DE ACCIÓN PRINCIPALES (UI Sólida e Interactiva)
+   -------------------------------------------------------------------------- */
+.btn-premium {
+    background-color: var(--calm-green-primary) !important;
+    color: #ffffff !important;
+    border: none !important;
+    padding: 10px 18px;
+    font-size: 0.88rem;
+    font-weight: 600;
+    border-radius: var(--radius-interactive);
+    transition: var(--transition-premium);
+    box-shadow: 0 4px 12px rgba(5, 150, 105, 0.15);
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+}
+
+.btn-premium:hover {
+    background-color: var(--calm-green-light) !important;
+    transform: translateY(-1px);
+    box-shadow: 0 6px 16px rgba(5, 150, 105, 0.25);
+}
+
+/* Botón secundario estilizado para cancelaciones o retornos */
+.btn-light-custom {
+    background-color: var(--bg-app) !important;
+    color: var(--text-muted) !important;
+    border: var(--border-subtle) !important;
+    padding: 10px 18px;
+    font-size: 0.88rem;
+    font-weight: 600;
+    border-radius: var(--radius-interactive);
+    transition: var(--transition-premium);
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    text-decoration: none !important;
+}
+
+.btn-light-custom:hover {
+    background-color: rgba(15, 23, 42, 0.05) !important;
+    color: var(--text-main) !important;
+    transform: translateY(-1px);
+}
+
+/* --------------------------------------------------------------------------
+   2. ACCIONES EN TABLAS (Micro-Botones de Control de Filas)
+   -------------------------------------------------------------------------- */
+.btn-table-action-edit,
+.btn-table-action-delete {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 32px;
+    height: 32px;
+    border-radius: 8px; /* Cuvatura Bento */
+    font-size: 0.95rem;
+    cursor: pointer;
+    transition: var(--transition-premium);
+    text-decoration: none !important;
+    border: none;
+}
+
+/* Modificador de Edición: Menta Translúcido a Esmeralda Sólido */
+.btn-table-action-edit {
+    color: var(--calm-green-primary) !important;
+    background-color: var(--calm-green-subtle) !important;
+}
+
+.btn-table-action-edit:hover {
+    background-color: var(--calm-green-primary) !important;
+    color: #ffffff !important;
+    transform: translateY(-1px);
+    box-shadow: 0 4px 10px rgba(5, 150, 105, 0.15);
+}
+
+/* Modificador de Eliminación: Rojo Coral Translúcido a Sólido Destructivo */
+.btn-table-action-delete {
+    background-color: rgba(239, 68, 68, 0.05) !important;
+    color: #ef4444 !important;
+}
+
+.btn-table-action-delete:hover {
+    background-color: #ef4444 !important;
+    color: #ffffff !important;
+    transform: translateY(-1px);
+    box-shadow: 0 4px 10px rgba(239, 68, 68, 0.15);
+}
+
+/* --------------------------------------------------------------------------
+   3. BADGES DE ESTADO (Translucidez CalmMind y Roles)
+   -------------------------------------------------------------------------- */
+.badge-status {
+    padding: 6px 12px;
+    font-size: 11px;
+    font-weight: 700;
+    border-radius: var(--radius-pill);
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    line-height: 1;
+}
+
+/* Variantes de Módulos / Estados Operativos */
+.badge-status-sonido {
+    background-color: var(--calm-green-subtle) !important;
+    color: var(--calm-green-primary) !important;
+}
+
+.badge-status-aseo {
+    background-color: #f1f5f9 !important;
+    color: #475569 !important;
+}
+
+.badge-status-multimedia {
+    background-color: #fef2f2 !important;
+    color: #ef4444 !important;
+}
+
+/* Variantes para Roles Globales (Sincronizado con la vista de Usuarios) */
+.badge-status-admin {
+    background-color: #e8f0fe !important;
+    color: #1a73e8 !important;
+    border: 1px solid #c2e7ff !important;
+}
+
+.badge-status-externo {
+    background-color: #fff3e0 !important;
+    color: #ef6c00 !important;
+    border: 1px solid #ffe0b2 !important;
+}
+
+
+/* ==========================================================================
+   SAIC COMPONENTS - ADAPTACIÓN DE PALETA EN BREADCRUMBS
+   ========================================================================== */
+
+/* Enlaces de rutas previas (Gris tenue e interactivo) */
+.saic-breadcrumb-nav .breadcrumb-item a {
+    color: var(--text-muted, #64748b) !important;
+    transition: var(--transition-premium, all 0.2s ease) !important;
+}
+
+/* Efecto al pasar el cursor sobre las rutas previas (Verde Esmeralda) */
+.saic-breadcrumb-nav .breadcrumb-item a:hover {
+    color: var(--calm-green-primary, #059669) !important;
+}
+
+/* Texto o enlace del estado activo/actual (Verde Esmeralda Sólido) */
+.saic-breadcrumb-nav .breadcrumb-item.active {
+    color: var(--calm-green-primary, #059669) !important;
+    font-weight: 700 !important;
+}
+
+/* Ajuste opcional para pintar también las barras diagonales (/) de separación */
+.saic-breadcrumb-nav .breadcrumb-item + .breadcrumb-item::before {
+    color: var(--border-subtle, #cbd5e1) !important;
+}

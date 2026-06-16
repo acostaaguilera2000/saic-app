@@ -1,145 +1,104 @@
 extends ../layout
 
 block styles
-  link(rel="stylesheet" href="/css/tablas-institucionales.css")
+
 
 block content
   //- Contenedor raíz adaptado al estándar de grilla expandida de SAIC
   .container-fluid.px-4.py-4
 
-    //- Encabezado de Página Institucional (Estilo Bento Box Superior)
-    .d-flex.flex-column.flex-md-row.justify-content-between.align-items-start.align-items-md-center.gap-3.mb-4.p-4.rounded-4(style="background: #ffffff; box-shadow: 0 4px 24px rgba(0,0,0,0.02);")
+    //- Encabezado de Página Institucional (Estilo Bento Box Superior de CalmMind)
+    .d-flex.flex-column.flex-md-row.justify-content-between.align-items-start.align-items-md-center.gap-3.mb-4.p-4.rounded-4(style="background: var(--bg-surface); border: var(--border-subtle);")
       div
-        h2.fw-bold.text-dark.mb-1 Gestión de Usuarios
+        h2.fw-bold.text-main.mb-1 Gestión de Usuarios
         p.text-muted.small.mb-0 Administra el acceso, las credenciales y los roles del personal administrativo.
 
-      a.btn.btn-action.shadow-sm.px-4.py-2.fw-semibold.rounded-3(href="/users/create")
+      a.btn.btn-primary.btn-premium(href="/users/create")
         i.bi.bi-person-plus-fill.me-2
         | Nuevo Usuario
 
     //- Gestión de Mensajes y Alertas Globales 
     include ../partials/_messages
 
-    //- Contenedor Principal de la Tabla (Card Bento unificada sin desbordamiento)
-    .card.bento-card.border-0.shadow-sm.overflow-hidden(style="background: #ffffff; border-radius: 16px; box-shadow: 0 4px 24px rgba(0,0,0,0.03);")
-      .card-body.p-4
-        .table-responsive
-          table.table.table-hover.align-middle.mb-0.tabla-institucional#tabla-user
-            thead
+    //- Contenedor Principal de la Tabla (Card Bento unificada usando tables.css)
+    .table-responsive-custom
+     
+      table.table.table-hover.align-middle.mb-0.tabla-institucional#tabla-user
+        thead
+          tr
+            th.ps-4.py-3(style="width: 80px;") ID
+            th.py-3 USUARIO
+            th.py-3 EMAIL
+            th.py-3 ROL
+            th.py-3 MIEMBRO ASOCIADO
+            th.pe-4.py-3.text-end ACCIONES
+
+        tbody
+          if usuarios && usuarios.length > 0
+            each usuario in usuarios
               tr
-                th.ps-4.py-3(style="width: 80px; background-color: var(--ijersac-bg); color: var(--ijersac-navy);") ID
-                th.py-3(style="background-color: var(--ijersac-bg); color: var(--ijersac-navy);") USUARIO
-                th.py-3(style="background-color: var(--ijersac-bg); color: var(--ijersac-navy);") EMAIL
-                th.py-3(style="background-color: var(--ijersac-bg); color: var(--ijersac-navy);") ROL
-                th.py-3(style="background-color: var(--ijersac-bg); color: var(--ijersac-navy);") MIEMBRO ASOCIADO
-                th.pe-4.py-3.text-end(style="background-color: var(--ijersac-bg); color: var(--ijersac-navy);") ACCIONES
+                //- ID del usuario utilizando tokens heredados
+                td.ps-4
+                  span.fw-bold.text-main ##{usuario.id_usuario}
 
-            tbody
-              if usuarios && usuarios.length > 0
-                each usuario in usuarios
-                  tr
-                    td.ps-4
-                      span.id-badge.fw-bold(style="color: var(--ijersac-navy);") ##{usuario.id_usuario}
+                //- Bloque del perfil / avatar del usuario
+                td
+                  .d-flex.align-items-center
+                    img.rounded-circle.me-3(
+                      src=`https://ui-avatars.com/api/?name=${usuario.username || 'User'}&background=0a192f&color=fff&size=40&font-size=0.35&bold=true` 
+                      width="38" 
+                      height="38"
+                      alt="Avatar"
+                      style="border: 2px solid var(--bg-app);"
+                    )
+                    div
+                      span.d-block.fw-bold.text-main(style="font-size: 0.92rem;") #{usuario.username}
 
-                    td
-                      .d-flex.align-items-center
-                        img.rounded-circle.me-3.avatar-usuario(
-                          src=`https://ui-avatars.com/api/?name=${usuario.username || 'User'}&background=0a192f&color=fff&size=40&font-size=0.35&bold=true` 
-                          width="38" 
-                          height="38"
-                          alt="Avatar"
-                        )
-                        div
-                          span.nombre-usuario.d-block.fw-bold #{usuario.username}
+                //- Email
+                td
+                  span.small.text-muted.fw-medium #{usuario.email}
 
-                    td
-                      span.small.text-secondary.fw-medium #{usuario.email}
+                //- Roles de Acceso con Badges de tu components.css / variables.css
+                td
+                  if usuario.rol === 'admin'
+                    span.badge-status.badge-status-success
+                      i.bi.bi-shield-check.me-1
+                      | ADMIN
+                  else
+                    span.badge-status(style="background-color: var(--bg-app); color: var(--text-muted); border: var(--border-subtle);")
+                      i.bi.bi-person-badge.me-1
+                      | #{usuario.rol.toUpperCase()}
 
-                    td
-                      if usuario.rol === 'admin'
-                        span.badge.badge-admin.px-3.py-2.fw-semibold
-                          i.bi.bi-shield-check.me-1
-                          | ADMIN
-                      else
-                        span.badge.badge-user.px-3.py-2.fw-semibold
-                          i.bi.bi-person-badge.me-1
-                          | #{usuario.rol.toUpperCase()}
+                //- Miembro Asociado (Lógica externa preservada)
+                td
+                  if usuario.nombre && usuario.apellido
+                    span.text-muted.small.fw-medium #{usuario.nombre} #{usuario.apellido}
+                  else
+                    span.badge-status(style="background-color: rgba(245, 158, 11, 0.06); color: #d97706; border: 1px solid rgba(245, 158, 11, 0.15);")
+                      i.bi.bi-globe.me-1
+                      | Externo
 
-                    td
-                      if usuario.nombre && usuario.apellido
-                        span.text-dark.small.fw-medium #{usuario.nombre} #{usuario.apellido}
-                      else
-                        span.badge.badge-externo.px-3.py-2.fw-semibold
-                          i.bi.bi-globe.me-1
-                          | Externo
+                //- Botones de acción unificados con components.css
+                td.pe-4.text-end
+                  .d-flex.justify-content-end.gap-2
+                    a.btn-table-action-edit(
+                      href=`/users/update/${usuario.id_usuario}`
+                      title="Editar Usuario"
+                    )
+                      i.bi.bi-pencil-square
 
-                    td.pe-4.text-end
-                      .d-flex.justify-content-end.gap-2
-                        a.btn.btn-sm.btn-accion-editar.rounded-3(
-                          href=`/users/update/${usuario.id_usuario}`
-                          title="Editar Usuario"
-                        )
-                          i.bi.bi-pencil-square
-
-                        button.btn.btn-sm.btn-accion-eliminar.rounded-3(
-                          type="button" 
-                          title="Eliminar Usuario"
-                          onclick=`confirmarEliminacion('${usuario.id_usuario}', '${usuario.username}')`
-                        )
-                          i.bi.bi-trash
-              else
-                tr
-                  td.text-center.py-5.text-muted(colspan="6") 
-                    i.bi.bi-person-x.d-block.fs-2.mb-2.text-black-50
-                    | No hay usuarios registrados en el sistema.
+                    button.btn-table-action-delete(
+                      type="button" 
+                      title="Eliminar Usuario"
+                      onclick=`confirmarEliminacion('${usuario.id_usuario}', '${usuario.username}')`
+                    )
+                      i.bi.bi-trash
+          else
+            tr
+              td.text-center.py-5.text-muted(colspan="6") 
+                i.bi.bi-person-x.d-block.display-6.text-disabled.mb-3
+                span No hay usuarios registrados en el sistema.
 
 block scripts
-  style.
-    /* Avatares y Nombres */
-    .nombre-usuario {
-      color: var(--ijersac-navy-light);
-      font-size: 0.92rem;
-    }
-    .avatar-usuario {
-      border: 2px solid #eef2f5;
-    }
-
-    /* Badges de Roles Especializados en Tonos Pastel */
-    .badge-admin {
-      background-color: #e8f0fe !important;
-      color: #1a73e8 !important;
-      border: 1px solid #c2e7ff !important;
-      font-size: 11px;
-    }
-    .badge-user {
-      background-color: #eef2f5 !important;
-      color: var(--ijersac-navy-light) !important;
-      border: 1px solid #ccd7e4 !important;
-      font-size: 11px;
-    }
-    .badge-externo {
-      background-color: #fff3e0 !important;
-      color: #ef6c00 !important;
-      border: 1px solid #ffe0b2 !important;
-      font-size: 11px;
-    }
-
-    .btn-accion-editar {
-      background-color: #f8fafc;
-      color: var(--ijersac-navy-light);
-      border: 1px solid #e2e8f0;
-      transition: all 0.2s ease;
-    }
-    
-    .btn-accion-eliminar {
-      background-color: #fff1f2;
-      color: #f43f5e;
-      border: 1px solid #ffe4e6;
-      transition: all 0.2s ease;
-    }
-    .btn-accion-eliminar:hover {
-      background-color: #f43f5e;
-      color: #ffffff;
-    }
-
+  //- El script local se remueve por completo ya que las reglas ahora se manejan por clases globales
   script(src="/js/modules/user.js")

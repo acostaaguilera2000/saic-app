@@ -1,64 +1,50 @@
 extends ../layout
 
-block styles
-    style.
-        .menu-card {
-            background: #ffffff;
-            border: 1px solid #e2e8f0;
-            border-radius: 20px;
-            transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
-            cursor: pointer;
-            text-decoration: none !important;
-        }
-        .menu-card:hover {
-            transform: translateY(-5px);
-            border-color: #dc3545;
-            box-shadow: 0 12px 30px rgba(0, 0, 0, 0.04) !important;
-        }
-        .icon-container {
-            width: 55px;
-            height: 55px;
-            border-radius: 14px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-        }
-
 block content
     .container-fluid.px-3.px-md-4.py-4
 
-        //- Encabezado del Módulo
-        .mb-4.p-4.rounded-4(style="background: #ffffff; box-shadow: 0 4px 24px rgba(0,0,0,0.02);")
+        //- Encabezado del Módulo (Estilo Bento Box Superior de SAIC)
+        .mb-4.p-4.rounded-4(style="background: var(--bg-surface); box-shadow: var(--shadow-bento);")
             h2.fw-bold.text-dark.mb-1 Módulo de Servicios de Culto
             p.text-muted.small.mb-0 Elige la herramienta de trabajo que necesitas utilizar en este momento.
 
-        //- Grilla de Opciones en Tarjetas Inteligentes
+        //- Grilla de Opciones en Tarjetas Inteligentes (Bento Cards)
         .row.g-4
 
-            //- TARJETA 1: GESTIÓN (Tu index original de DataTables)
+            //- TARJETA 1: GESTIÓN (Panel de Control - Tablas / DataTables)
             if user && ['admin', 'lider'].includes(user.rol)
                 .col-12.col-md-6
-                    a.card.menu-card.h-100.p-4.shadow-sm(href="/service")
+                    a.card.bento-card.h-100.p-4.text-decoration-none(
+                        href="/service"
+                        style="background: var(--bg-surface); border: 1px solid var(--border-subtle); border-radius: 16px; box-shadow: var(--shadow-bento); transition: transform 0.2s ease, border-color 0.2s ease;" 
+                        onmouseover="this.style.borderColor='var(--calm-green-primary)'; this.style.transform='translateY(-3px)';" 
+                        onmouseout="this.style.borderColor='var(--border-subtle)'; this.style.transform='none';"
+                    )
                         .d-flex.align-items-start.gap-3
-                            .icon-container.bg-danger-subtle
-                                i.bi.bi-table.fs-3.text-danger
+                            .icon-container.p-3.rounded-3.d-flex.align-items-center.justify-content-center(style="background-color: var(--calm-green-subtle); width: 56px; height: 56px;")
+                                i.bi.bi-table.fs-3(style="color: var(--calm-green-primary);")
                             .flex-grow-1
                                 h5.fw-bold.text-dark.mb-1 Panel de Control e Historial
                                 p.text-muted.small.mb-0 Accede al listado institucional en tablas, registra nuevos cultos, modifica asignaciones y genera reportes ministeriales.
-                                span.btn.btn-sm.btn-light.mt-3.rounded-2.fw-semibold 
+                                span.btn.btn-sm.mt-3.rounded-3.fw-semibold(style="background-color: var(--bg-app); color: var(--text-primary); border: 1px solid var(--border-subtle);")
                                     | Abrir Tablas
-                                    i.bi.bi-arrow-right.ms-2
+                                    i.bi.bi-arrow-right.ms-2(style="color: var(--calm-green-primary);")
 
-            //- TARJETA 2: CRONOGRAMA INTERACTIVO (Modales/Calendario)
+            //- TARJETA 2: CRONOGRAMA INTERACTIVO (Modales / Vista Calendario)
             if user && ['admin', 'lider', 'miembro'].includes(user.rol)
                 .col-12.col-md-6
-                    a.card.menu-card.h-100.p-4.shadow-sm(href="/service/schedule")
+                    a.card.bento-card.h-100.p-4.text-decoration-none(
+                        href="/service/schedule"
+                        style="background: var(--bg-surface); border: 1px solid var(--border-subtle); border-radius: 16px; box-shadow: var(--shadow-bento); transition: transform 0.2s ease, border-color 0.2s ease;" 
+                        onmouseover="this.style.borderColor='var(--calm-green-primary)'; this.style.transform='translateY(-3px)';" 
+                        onmouseout="this.style.borderColor='var(--border-subtle)'; this.style.transform='none';"
+                    )
                         .d-flex.align-items-start.gap-3
-                            .icon-container.bg-primary-subtle
-                                i.bi.bi-calendar3.fs-3.text-primary
+                            .icon-container.p-3.rounded-3.d-flex.align-items-center.justify-content-center(style="background-color: var(--calm-green-subtle); width: 56px; height: 56px;")
+                                i.bi.bi-calendar3.fs-3(style="color: var(--calm-green-primary);")
                             .flex-grow-1
                                 h5.fw-bold.text-dark.mb-1 Calendario e Itinerario de Miembros
                                 p.text-muted.small.mb-0 Explora de forma interactiva la agenda cronológica de cultos, consulta horarios y visualiza tus turnos mediante el buscador por mes.
-                                span.btn.btn-sm.btn-light.mt-3.rounded-2.fw-semibold 
+                                span.btn.btn-sm.mt-3.rounded-3.fw-semibold(style="background-color: var(--bg-app); color: var(--text-primary); border: 1px solid var(--border-subtle);")
                                     | Ver Calendario
-                                    i.bi.bi-arrow-right.ms-2
+                                    i.bi.bi-arrow-right.ms-2(style="color: var(--calm-green-primary);")

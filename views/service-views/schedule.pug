@@ -1,194 +1,174 @@
 extends ../layout
 
 block styles
-    link(rel="stylesheet" href="/css/tablas-institucionales.css")
-    style.
-        /* --- DISEÑO DE MATRIZ DE CALENDARIO (SAIC BENTO CALENDAR) --- */
-        .calendar-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(130px, 1fr));
-            gap: 12px;
-        }
-
-        .calendar-day-btn {
-            background: #ffffff;
-            border: 1px solid #e2e8f0;
-            border-radius: 16px;
-            min-height: 125px;
-            transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            padding: 12px;
-            position: relative;
-        }
-
-        .calendar-day-btn:hover {
-            border-color: #dc3545 !important;
-            transform: translateY(-3px);
-            box-shadow: 0 10px 20px rgba(220, 53, 69, 0.06) !important;
-        }
-
-        /* Indicador visual de que el día tiene un culto asignado */
-        .culto-indicator {
-            width: 6px;
-            height: 6px;
-            background-color: #dc3545;
-            border-radius: 50%;
-            position: absolute;
-            bottom: 10px;
-        }
-
-        .txt-carmesi { color: #dc3545; }
-
-        .x-small-label {
-            font-size: 0.72rem;
-            text-transform: uppercase;
-            font-weight: 700;
-            letter-spacing: 0.5px;
-            color: #94a3b8;
-        }
-
-        .month-label {
-            font-size: 0.75rem;
-            font-weight: 700;
-            color: #64748b;
-            letter-spacing: 0.5px;
-        }
+  link(rel="stylesheet" href="/css/tablas-institucionales.css")
+  //- Nota: Las reglas de .calendar-grid y .calendar-day-btn se recomiendan mover a tablas-institucionales.css 
+  //- para mantener este archivo 100% libre de etiquetas <style>.
+  style.
+    .calendar-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(130px, 1fr));
+        gap: 12px;
+    }
+    .calendar-day-btn {
+        background: var(--bg-surface);
+        border: 1px solid var(--border-subtle);
+        border-radius: 16px;
+        min-height: 125px;
+        transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        padding: 12px;
+        position: relative;
+    }
+    .calendar-day-btn:hover {
+        border-color: var(--calm-green-primary) !important;
+        transform: translateY(-3px);
+        box-shadow: var(--shadow-bento) !important;
+    }
+    .culto-indicator {
+        width: 6px;
+        height: 6px;
+        background-color: var(--calm-green-primary);
+        border-radius: 50%;
+        position: absolute;
+        bottom: 10px;
+    }
 
 block content
-    .container-fluid.px-3.px-md-4.py-4
+  .container-fluid.px-3.px-md-4.py-4
 
-        //- Encabezado Estilo Banner Superior (Diseño Calendario Interactivo)
-        .d-flex.flex-column.flex-md-row.justify-content-between.align-items-start.align-items-md-center.gap-3.mb-4.p-4.rounded-4(style="background: #ffffff; box-shadow: 0 4px 24px rgba(0,0,0,0.02);")
-            div
-                h2.fw-bold.text-dark.mb-1 Calendario de Actividades
-                p.text-muted.small.mb-0 Selecciona un día marcado en la cuadrícula para inspeccionar las asignaciones y horarios.
+    //- Encabezado Estilo Banner Superior (Diseño Bento Box Superior de SAIC)
+    .d-flex.flex-column.flex-md-row.justify-content-between.align-items-start.align-items-md-center.gap-3.mb-4.p-4.rounded-4(style="background: var(--bg-surface); box-shadow: var(--shadow-bento);")
+      div
+        h2.fw-bold.text-dark.mb-1 Calendario de Actividades
+        p.text-muted.small.mb-0 Selecciona un día marcado en la cuadrícula para inspeccionar las asignaciones y horarios.
 
-           
-        if cultos && cultos.length > 0
-            //- BARRA DE FILTRADO POR MES
-            .card.border-0.shadow-sm.mb-4.p-3(style="border-radius: 14px; background: #ffffff;")
-                .row.g-3.align-items-center
-                    .col-12.col-md-6
-                        label.form-label.small.fw-bold.text-muted
-                            i.bi.bi-calendar-range.me-1
-                            | Filtrar por Mes:
-                        select#filter-month-select.form-select.form-select-sm.rounded-3
-                            option(value="todos" selected) --- Ver Todos los Servicios ---
-                            option(value="0") Enero
-                            option(value="1") Febrero
-                            option(value="2") Marzo
-                            option(value="3") Abril
-                            option(value="4") Mayo
-                            option(value="5") Junio
-                            option(value="6") Julio
-                            option(value="7") Agosto
-                            option(value="8") Septiembre
-                            option(value="9") Octubre
-                            option(value="10") Noviembre
-                            option(value="11") Diciembre
+    if cultos && cultos.length > 0
+      //- BARRA DE FILTRADO POR MES (Integrada al ecosistema)
+      .card.border-0.shadow-sm.mb-4.p-3(style="border-radius: 14px; background: var(--bg-surface);")
+        .row.g-3.align-items-center
+          .col-12.col-md-6
+            label.form-label.small.fw-bold.text-muted
+              i.bi.bi-calendar-range.me-1
+              | Filtrar por Mes:
+            select#filter-month-select.form-select.form-select-sm.rounded-3(style="border-color: var(--border-subtle);")
+              option(value="todos" selected) --- Ver Todos los Servicios ---
+              option(value="0") Enero
+              option(value="1") Febrero
+              option(value="2") Marzo
+              option(value="3") Abril
+              option(value="4") Mayo
+              option(value="5") Junio
+              option(value="6") Julio
+              option(value="7") Agosto
+              option(value="8") Septiembre
+              option(value="9") Octubre
+              option(value="10") Noviembre
+              option(value="11") Diciembre
 
-                    .col-12.col-md-6.text-md-end.mt-md-4
-                        span#counter-badge.badge.bg-light.text-dark.border.p-2.rounded-3 
-                            i.bi.bi-info-circle.me-1.text-primary
-                            span#total-services-count #{cultos.length}
-                            |  cultos en agenda
+          .col-12.col-md-6.text-md-end.mt-md-4
+            span#counter-badge.badge.bg-light.text-dark.border.p-2.rounded-3(style="border-color: var(--border-subtle) !important; background-color: var(--bg-app) !important; color: var(--text-primary) !important;") 
+              i.bi.bi-info-circle.me-1(style="color: var(--calm-green-primary);")
+              span#total-services-count.fw-bold.me-1 #{cultos.length}
+              | cultos en agenda
 
-            //- CUADRÍCULA DE CALENDARIO ESTILO BENTO
-            .calendar-grid
-                each culto in cultos
-                    - var mesNumero = culto.fecha ? new Date(culto.fecha).getUTCMonth() : ''
-                    - var diaNumero = culto.fecha ? new Date(culto.fecha).getUTCDate() : ''
-                    - var diaNombre = culto.fecha ? new Date(culto.fecha).toLocaleDateString('es-ES', {timeZone: 'UTC', weekday: 'short'}) : '' 
-                    - var mesNombre = culto.fecha ? new Date(culto.fecha).toLocaleDateString('es-ES', {timeZone: 'UTC', month: 'short'}) : '' 
+      //- CUADRÍCULA DE CALENDARIO ESTILO BENTO
+      .calendar-grid
+        each culto in cultos
+          - var mesNumero = culto.fecha ? new Date(culto.fecha).getUTCMonth() : ''
+          - var diaNumero = culto.fecha ? new Date(culto.fecha).getUTCDate() : ''
+          - var diaNombre = culto.fecha ? new Date(culto.fecha).toLocaleDateString('es-ES', {timeZone: 'UTC', weekday: 'short'}) : '' 
+          - var mesNombre = culto.fecha ? new Date(culto.fecha).toLocaleDateString('es-ES', {timeZone: 'UTC', month: 'short'}) : '' 
 
-                    //- Botón que activa el Modal específico
-                    button.calendar-day-btn.btn.shadow-sm.service-row-item(
-                        type="button"
-                        data-bs-toggle="modal"
-                        data-bs-target=`#modal-culto-${culto.id_culto}`
-                        data-month=mesNumero
-                    )
-                        span.text-uppercase.fw-bold.text-muted.small.mb-0 #{diaNombre}
-                        span.text-uppercase.month-label.txt-carmesi.mb-1 #{mesNombre.replace('.', '')}
-                        span.display-6.fw-black.text-dark.m-0.lh-1.fw-bold #{diaNumero}
-                        span.culto-indicator
+          //- Botón adaptado a las variables interactivas del sistema
+          button.calendar-day-btn.btn.shadow-sm.service-row-item(
+            type="button"
+            data-bs-toggle="modal"
+            data-bs-target=`#modal-culto-${culto.id_culto}`
+            data-month=mesNumero
+          )
+            span.text-uppercase.fw-bold.text-muted.small.mb-0(style="font-size: 0.72rem; letter-spacing: 0.5px;") #{diaNombre}
+            span.text-uppercase.fw-bold.mb-1(style="font-size: 0.75rem; color: var(--calm-green-primary); letter-spacing: 0.5px;") #{mesNombre.replace('.', '')}
+            span.display-6.text-dark.m-0.lh-1.fw-bold #{diaNumero}
+            span.culto-indicator
 
-            //- RENDERIZACIÓN DINÁMICA DE MODALES DE INFORMACIÓN
-            each culto in cultos
-                .modal.fade(
-                    id=`modal-culto-${culto.id_culto}`
-                    tabindex="-1"
-                    aria-labelledby=`label-${culto.id_culto}`
-                    aria-hidden="true"
-                )
-                    .modal-dialog.modal-dialog-centered
-                        .modal-content.border-0.shadow(style="border-radius: 20px;")
+      //- RENDERIZACIÓN DINÁMICA DE MODALES DE INFORMACIÓN
+      each culto in cultos
+        .modal.fade(
+          id=`modal-culto-${culto.id_culto}`
+          tabindex="-1"
+          aria-labelledby=`label-${culto.id_culto}`
+          aria-hidden="true"
+        )
+          .modal-dialog.modal-dialog-centered
+            .modal-content.border-0.shadow(style="border-radius: 20px; background-color: var(--bg-surface);")
 
-                            //- Cabecera del Modal
-                            .modal-header.border-0.pb-0.pt-4.px-4
-                                div
-                                    span.badge.bg-light.text-danger.border.text-uppercase.fw-bold.mb-2 #{culto.tipo_culto}
-                                    h5.modal-title.fw-bold.text-dark(id=`label-${culto.id_culto}`) Detalle de Asignación Logística
-                                button.btn-close(type="button" data-bs-dismiss="modal" aria-label="Close")
+              //- Cabecera del Modal Estilizada
+              .modal-header.border-0.pb-0.pt-4.px-4
+                div
+                  span.badge.text-uppercase.px-3.py-2.fw-bold.mb-2(style="background-color: var(--bg-app) !important; color: var(--text-primary) !important; border: 1px solid var(--border-subtle) !important; font-size: 11px;") #{culto.tipo_culto}
+                  h5.modal-title.fw-bold.text-dark(id=`label-${culto.id_culto}`) Detalle de Asignación Logística
+                button.btn-close(type="button" data-bs-dismiss="modal" aria-label="Close")
 
-                            //- Cuerpo del Modal (Información estilizada)
-                            .modal-body.p-4
-                                .d-flex.flex-column.gap-3
+              //- Cuerpo del Modal (Adaptado al estándar limpio de SAIC)
+              .modal-body.p-4
+                .d-flex.flex-column.gap-3
 
-                                    //- Fila: Fecha y Hora
-                                    .d-flex.align-items-center.gap-3.p-3.bg-light.rounded-3
-                                        i.bi.bi-calendar3.fs-4.text-danger
-                                        div
-                                            span.d-block.x-small-label Fecha y Horario
-                                            - var fLong = culto.fecha ? new Date(culto.fecha).toLocaleDateString('es-ES', {timeZone: 'UTC', weekday: 'long', day: 'numeric', month: 'long'}) : 'No asignada' 
-                                            span.small.text-dark.fw-bold.text-capitalize #{fLong}
-                                            if culto.hora
-                                                - var [horas, minutos] = culto.hora.split(':')
-                                                - var fechaBase = new Date(2000, 0, 1, horas, minutos)
-                                                - var horaFormateada = fechaBase.toLocaleTimeString('es-CO', { hour: 'numeric', minute: '2-digit', hour12: true })
-                                                span.text-muted.small.d-block 
-                                                    i.bi.bi-clock.me-1
-                                                    | #{horaFormateada}
+                  //- Fila: Fecha y Hora
+                  .d-flex.align-items-center.gap-3.p-3.rounded-3(style="background-color: var(--bg-app); border: 1px solid var(--border-subtle);")
+                    i.bi.bi-calendar3.fs-4(style="color: var(--calm-green-primary);")
+                    div
+                      span.d-block.text-muted.text-uppercase.fw-bold(style="font-size: 0.72rem; letter-spacing: 0.5px;") Fecha y Horario
+                      - var fLong = culto.fecha ? new Date(culto.fecha).toLocaleDateString('es-ES', {timeZone: 'UTC', weekday: 'long', day: 'numeric', month: 'long'}) : 'No asignada' 
+                      span.small.text-dark.fw-bold.text-capitalize #{fLong}
+                      if culto.hora
+                        - var [horas, minutos] = culto.hora.split(':')
+                        - var fechaBase = new Date(2000, 0, 1, horas, minutos)
+                        - var horaFormateada = fechaBase.toLocaleTimeString('es-CO', { hour: 'numeric', minute: '2-digit', hour12: true })
+                        span.text-muted.small.d-block.mt-1 
+                          i.bi.bi-clock.me-1
+                          | #{horaFormateada}
 
-                                    //- Fila: Dirigente
-                                    .d-flex.align-items-center.gap-3.p-3.bg-light.rounded-3
-                                        i.bi.bi-person-badge.fs-4.text-secondary
-                                        div
-                                            span.d-block.x-small-label Hermano Dirigente
-                                            if culto.id_dirigente
-                                                span.small.text-dark.fw-bold #{culto.nombre_dirigente} #{culto.apellido_dirigente}
-                                            else if culto.dirigente_externo
-                                                span.small.text-dark.fw-bold #{culto.dirigente_externo} 
-                                                span.badge.bg-white.text-muted.ms-1.small(style="font-size: 10px; border: 1px solid #e2e8f0;") Invitado
-                                            else
-                                                span.small.text-muted.fst-italic Por asignar
+                  //- Fila: Dirigente
+                  .d-flex.align-items-center.gap-3.p-3.rounded-3(style="background-color: var(--bg-app); border: 1px solid var(--border-subtle);")
+                    i.bi.bi-person-badge.fs-4.text-secondary
+                    div
+                      span.d-block.text-muted.text-uppercase.fw-bold(style="font-size: 0.72rem; letter-spacing: 0.5px;") Hermano Dirigente
+                      if culto.id_dirigente
+                        span.small.text-dark.fw-bold #{culto.nombre_dirigente} #{culto.apellido_dirigente}
+                      else if culto.dirigente_externo
+                        span.small.text-dark.fw-bold #{culto.dirigente_externo} 
+                        span.badge.bg-white.text-muted.ms-1.small(style="font-size: 10px; border: 1px solid var(--border-subtle); background-color: var(--bg-surface) !important;") Invitado
+                      else
+                        span.small.text-muted.fst-italic Por asignar
 
-                                    //- Fila: Predicador
-                                    .d-flex.align-items-center.gap-3.p-3.bg-light.rounded-3
-                                        i.bi.bi-person-check.fs-4.text-success
-                                        div
-                                            span.d-block.x-small-label Oficial Predicador
-                                            if culto.id_predicador
-                                                span.small.text-dark.fw-bold #{culto.nombre_predicador} #{culto.apellido_predicador}
-                                            else if culto.predicador_externo
-                                                span.small.text-dark.fw-bold #{culto.predicador_externo} 
-                                                span.badge.bg-white.text-muted.ms-1.small(style="font-size: 10px; border: 1px solid #e2e8f0;") Invitado
-                                            else
-                                                span.small.text-muted.fst-italic Por asignar
+                  //- Fila: Predicador
+                  .d-flex.align-items-center.gap-3.p-3.rounded-3(style="background-color: var(--bg-app); border: 1px solid var(--border-subtle);")
+                    i.bi.bi-person-check.fs-4(style="color: var(--calm-green-primary);")
+                    div
+                      span.d-block.text-muted.text-uppercase.fw-bold(style="font-size: 0.72rem; letter-spacing: 0.5px;") Oficial Predicador
+                      if culto.id_predicador
+                        span.small.text-dark.fw-bold #{culto.nombre_predicador} #{culto.apellido_predicador}
+                      else if culto.predicador_externo
+                        span.small.text-dark.fw-bold #{culto.predicador_externo} 
+                        span.badge.bg-white.text-muted.ms-1.small(style="font-size: 10px; border: 1px solid var(--border-subtle); background-color: var(--bg-surface) !important;") Invitado
+                      else
+                        span.small.text-muted.fst-italic Por asignar
 
-                            //- Pie del Modal
-                            .modal-footer.border-0.pt-0.pb-4.px-4
-                                button.btn.btn-secondary.w-100.rounded-3.fw-semibold(type="button" data-bs-dismiss="modal") Entendido
+              //- Pie del Modal
+              .modal-footer.border-0.pt-0.pb-4.px-4
+                button.btn.btn-premium.w-100.rounded-3.fw-semibold(type="button" data-bs-dismiss="modal" style="background-color: var(--bg-app); color: var(--text-primary); border: 1px solid var(--border-subtle);") Entendido
 
-        else
-            .card.border-0.shadow-sm.text-center.py-5.px-4(style="background: #ffffff; border-radius: 16px;")
-                .card-body
-                    i.bi.bi-calendar-x.d-block.fs-1.mb-3.text-black-50
-                    h5.fw-bold.text-dark No hay actividades publicadas
-                    p.text-muted.small.mb-0 No se registran eventos ni cultos activos para consulta en este momento.
+    else
+      //- Estado vacío unificado
+      .card.border-0.shadow-sm.text-center.py-5.px-4(style="background: var(--bg-surface); border-radius: 16px; box-shadow: var(--shadow-bento);")
+        .card-body
+          i.bi.bi-calendar-x.d-block.fs-1.mb-3.text-black-50
+          h5.fw-bold.text-dark No hay actividades publicadas
+          p.text-muted.small.mb-0 No se registran eventos ni cultos activos para consulta en este momento.
 
 block scripts
-    script(src="/js/modules/cronograma.js")
+  script(src="/js/modules/cronograma.js")

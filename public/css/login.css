@@ -1,16 +1,16 @@
 :root {
-    /* Paleta institucional dashboard */
-    --ijersac-navy: #0a192f;
-    --ijersac-navy-light: #162a4a;
-    --ijersac-red: #8b0000;
-    --ijersac-red-light: #b30000;
-    --ijersac-bg: #f4f7f9;
+    /*  Nueva paleta institucional integrada (Fresco verde & Pizarra) */
+    --ijersac-navy: #0f172a;       /* Gris Pizarra Profundo (Base de contraste premium) */
+    --ijersac-navy-light: #1e293b; /* Pizarra Claro para enfoques */
+    --ijersac-red: #059669;        /* Esmeralda Principal SAIC / CalmMind */
+    --ijersac-red-light: #10b981;  /* Menta Vibrante para líneas de énfasis y focos */
+    --ijersac-bg: #f8fafc;         /* Blanco Neutro de la app */
 
-    /* UI */
-    --glass: rgba(255, 255, 255, .08);
+    /* UI Glassmorphism unificado */
+    --glass: rgba(255, 255, 255, .06);
     --glass-strong: rgba(255, 255, 255, .12);
-    --border: rgba(255, 255, 255, .18);
-    --transition: all .3s ease;
+    --border: rgba(255, 255, 255, .15);
+    --transition: all .3s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 * {
@@ -26,43 +26,39 @@ body {
 
 body {
     font-family: "Segoe UI", sans-serif;
-
-    /* evita flash blanco antes del CSS */
+    /* Evita flash blanco antes de que cargue el CSS */
     background: var(--ijersac-navy);
-
 }
-
-
 
 /* =====================================
 BACKGROUND
 ===================================== */
 
 .main-wrapper {
-
     min-height: 100vh;
     position: relative;
     overflow: hidden;
 
-    /* color base mientras descarga imagen */
+    /* Color slate base mientras descarga la imagen */
     background-color: var(--ijersac-navy);
 
-    /* gradiente visible inmediatamente */
+    /* 🟢 Gradiente esmeralda/pizarra oscuro translúcido sobre tu imagen de fondo */
     background-image:
         linear-gradient(
-        rgba(10, 25, 47, .92)),
+            rgba(15, 23, 42, 0.90), 
+            rgba(5, 150, 105, 0.15)
+        ),
         url('/img/fondo-login.webp');
 
     background-size: cover;
     background-position: center;
     background-repeat: no-repeat;
 
-    /* ayuda percepción visual */
+    /* Ayuda percepción visual */
     animation: fadeBackground .8s ease;
 }
 
-/* capa adicional */
-
+/* Capa adicional de iluminación orgánica */
 .main-wrapper::before {
     content: "";
     position: absolute;
@@ -70,19 +66,17 @@ BACKGROUND
 
     background:
         radial-gradient(circle at top left,
-            rgba(255, 255, 255, .04),
-            transparent 40%);
+            rgba(16, 185, 129, 0.08),
+            transparent 45%);
 
     z-index: 1;
 }
 
-/* animación suave */
-
+/* Animación suave */
 @keyframes fadeBackground {
     from {
         opacity: .92;
     }
-
     to {
         opacity: 1;
     }
@@ -112,8 +106,9 @@ LEFT PANEL
 .brand-line {
     width: 75px;
     height: 5px;
-    background: var(--ijersac-red-light);
+    background: var(--ijersac-red-light); /* Resalta en Menta Vibrante */
     margin-bottom: 22px;
+    border-radius: 50px;
 }
 
 .brand-title {
@@ -134,9 +129,10 @@ LEFT PANEL
     margin-top: 40px;
     padding-left: 20px;
 
+    /* Borde en Esmeralda CalmMind */
     border-left: 4px solid var(--ijersac-red);
 
-    color: rgba(255, 255, 255, .72);
+    color: rgba(255, 255, 255, .75);
     line-height: 1.8;
     font-size: .95rem;
 }
@@ -178,11 +174,11 @@ ERROR ALERT
 ===================================== */
 
 .custom-error {
+    /* Tono carmesí de alerta adaptado para no chocar con el fondo */
+    background: rgba(239, 68, 68, 0.12);
+    border: 1px solid rgba(239, 68, 68, 0.25);
 
-    background: rgba(179, 0, 0, .18);
-    border: 1px solid rgba(255, 255, 255, .10);
-
-    color: white;
+    color: #fca5a5;
 
     padding: 14px 16px;
     border-radius: 14px;
@@ -204,12 +200,11 @@ INPUTS
     position: absolute;
     left: 18px;
     top: 19px;
-
     color: rgba(255, 255, 255, .65);
+    transition: var(--transition);
 }
 
 .input-custom {
-
     width: 100%;
     height: 58px;
 
@@ -235,13 +230,17 @@ INPUTS
 }
 
 .input-custom:focus {
-
+    /* Cambio de foco al verde menta fresco */
     border-color: var(--ijersac-red-light);
-
     background: var(--glass-strong);
-
     box-shadow:
-        0 0 0 3px rgba(179, 0, 0, .18);
+        0 0 0 4px rgba(16, 185, 129, .15);
+}
+
+/* Ilumina el ícono cuando el input está activo */
+.input-custom:focus + i, 
+.field input:focus ~ i {
+    color: var(--ijersac-red-light) !important;
 }
 
 /* =====================================
@@ -249,7 +248,6 @@ BUTTON
 ===================================== */
 
 .login-btn {
-
     width: 100%;
     height: 58px;
 
@@ -259,16 +257,22 @@ BUTTON
     color: white;
     font-weight: 600;
 
+    /* Botón con gradiente fluido de Esmeralda a Menta */
     background:
         linear-gradient(90deg,
             var(--ijersac-red),
             var(--ijersac-red-light));
 
     transition: var(--transition);
+    cursor: pointer;
+    box-shadow: 0 4px 14px rgba(5, 150, 105, 0.2);
 }
 
 .login-btn:hover {
     transform: translateY(-1px);
+    box-shadow: 0 6px 20px rgba(16, 185, 129, 0.35);
+    /* Inversión sutil de brillo en hover */
+    filter: brightness(1.05);
 }
 
 /* =====================================
@@ -285,10 +289,12 @@ LINKS
     color: rgba(255, 255, 255, .75);
     text-decoration: none;
     font-size: .9rem;
+    transition: var(--transition);
 }
 
 .bottom-links a:hover {
-    color: white;
+    color: var(--ijersac-red-light); /* Enlace ilumina en menta */
+    text-decoration: underline;
 }
 
 .field i {
@@ -305,7 +311,6 @@ RESPONSIVE
 ===================================== */
 
 @media(max-width:992px) {
-
     .left-panel {
         height: auto;
         padding: 50px 30px 15px;
@@ -333,7 +338,6 @@ RESPONSIVE
 }
 
 @media(max-width:576px) {
-
     .brand-title {
         font-size: 2.2rem;
     }

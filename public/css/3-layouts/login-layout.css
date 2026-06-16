@@ -1,0 +1,332 @@
+/* ==========================================================================
+   SAIC LAYOUT - REDISEÑO DE LOGIN CENTRALIZADO SIN SCROLL (Estilo CalmMind)
+   ========================================================================== */
+
+/* 1. Reset e Inyección del Fondo Base bloqueando scrolls indeseados */
+body {
+    background-color: var(--bg-app, #f8fafc) !important;
+    font-family: 'Inter', sans-serif;
+    min-height: 100vh;
+    margin: 0;
+    overflow: hidden; /* Corta cualquier deformación global en escritorio */
+    position: relative;
+}
+
+/* 2. Envoltorio General (Ajustado a 100vh exactos para fijar la UI) */
+.main-wrapper {
+    height: 100vh;
+    width: 100%;
+    padding: 20px;
+    box-sizing: border-box;
+    position: relative;
+    z-index: 1;
+}
+
+/* 🌟 CONTENEDOR Y BURBUJAS PARA GENERAR MESH GRADIENT DINÁMICO */
+.mesh-bg-container {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+    z-index: -1; /* Se sitúa por detrás del login */
+    background: radial-gradient(circle at 50% 50%, rgba(248, 250, 252, 1) 0%, rgba(241, 245, 249, 1) 100%);
+}
+
+.mesh-blob {
+    position: absolute;
+    border-radius: 50%;
+    filter: blur(80px);
+    opacity: 0.55;
+    mix-blend-mode: multiply;
+    animation: floatingMesh 20s infinite alternate ease-in-out;
+}
+
+.blob-1 {
+    top: -10%;
+    left: -10%;
+    width: 500px;
+    height: 500px;
+    background-color: rgba(16, 185, 129, 0.15); /* Esmeralda */
+    animation-delay: 0s;
+}
+
+.blob-2 {
+    bottom: -15%;
+    right: -5%;
+    width: 600px;
+    height: 600px;
+    background-color: rgba(5, 150, 105, 0.12); /* Calm Green Subtle */
+    animation-delay: 4s;
+}
+
+.blob-3 {
+    top: 30%;
+    left: 45%;
+    width: 400px;
+    height: 400px;
+    background-color: rgba(209, 250, 229, 0.7); /* Menta Ultra Suave */
+    animation-delay: 2s;
+}
+
+@keyframes floatingMesh {
+    0% { transform: translate(0px, 0px) scale(1); }
+    50% { transform: translate(40px, -60px) scale(1.15); }
+    100% { transform: translate(-20px, 20px) scale(0.9); }
+}
+
+/* 3. La Tarjeta Contenedora Centralizada con Glassmorphism Real */
+.auth-container {
+    background-color: rgba(255, 255, 255, 0.82) !important;
+    backdrop-filter: blur(20px) saturate(120%);
+    -webkit-backdrop-filter: blur(20px) saturate(120%);
+    
+    width: 100%;
+    max-width: 1000px;
+    height: 580px; /* Garantiza encaje óptico perfecto en laptops de 13" */
+    max-height: 90vh;
+    border-radius: 24px;
+    
+    /* Borde blanco cristalizado hiper sutil */
+    border: 1px solid rgba(255, 255, 255, 0.7) !important;
+    box-shadow: 0 40px 100px rgba(15, 23, 42, 0.05), 0 1px 3px rgba(0, 0, 0, 0.01);
+    overflow: hidden;
+}
+
+/* Configuración de Altura Interna Sincronizada con el Row Principal */
+.auth-left-panel,
+.auth-right-panel {
+    padding: 50px 60px;
+    height: 100%;
+}
+
+/* ==========================================================================
+   PANEL IZQUIERDO: Identidad Eclesiástica / Menta Premium
+   ========================================================================== */
+.auth-left-panel {
+    background: linear-gradient(135deg, rgba(16, 185, 129, 0.02) 0%, rgba(255, 255, 255, 0.4) 100%);
+    border-right: 1px solid rgba(15, 23, 42, 0.04);
+}
+
+.auth-brand-content {
+    max-width: 400px;
+    margin: 0 auto;
+}
+
+.brand-line {
+    width: 45px;
+    height: 5px;
+    background: var(--calm-green-primary, #059669);
+    border-radius: var(--radius-pill, 50px);
+    margin-bottom: 24px;
+}
+
+.brand-title {
+    font-size: 3.5rem;
+    font-weight: 850;
+    letter-spacing: -2px;
+    margin: 0;
+    line-height: 1;
+    color: var(--text-main, #0f172a);
+}
+
+.brand-subtitle {
+    font-size: 1.05rem;
+    color: var(--text-muted, #475569);
+    margin-top: 14px;
+    margin-bottom: 0;
+    font-weight: 550;
+    line-height: 1.4;
+}
+
+.brand-verse {
+    margin-top: 36px;
+    font-style: italic;
+    color: var(--text-muted, #475569);
+    background-color: rgba(5, 150, 105, 0.03);
+    border-left: 3px solid var(--calm-green-primary, #059669);
+    border-radius: 0 12px 12px 0;
+    padding: 16px 20px;
+    margin-bottom: 0;
+}
+
+.brand-verse p {
+    margin-bottom: 6px;
+    line-height: 1.5;
+    font-size: 0.92rem;
+}
+
+.brand-verse cite {
+    font-size: 0.75rem;
+    font-style: normal;
+    font-weight: 700;
+    letter-spacing: 0.5px;
+    color: var(--text-disabled, #94a3b8);
+}
+
+/* ==========================================================================
+   PANEL DERECHO: Formulario de Entrada
+   ========================================================================== */
+.auth-form-content {
+    max-width: 360px;
+    margin: 0 auto;
+    width: 100%;
+}
+
+.login-title {
+    color: var(--text-main, #0f172a);
+    font-size: 1.75rem;
+    font-weight: 700;
+    letter-spacing: -0.5px;
+    margin-bottom: 6px;
+}
+
+.login-subtitle {
+    color: var(--text-muted, #475569);
+    font-size: 0.88rem;
+    margin-bottom: 28px;
+    line-height: 1.4;
+}
+
+/* Inputs de los Formularios */
+.field {
+    position: relative;
+    margin-bottom: 16px;
+}
+
+.field i {
+    position: absolute;
+    left: 16px;
+    top: 50%;
+    transform: translateY(-50%);
+    color: var(--text-disabled, #94a3b8);
+    font-size: 1rem;
+    transition: all 0.2s ease;
+    z-index: 10;
+}
+
+.field .input-custom {
+    background-color: rgba(15, 23, 42, 0.015) !important;
+    border: 1px solid rgba(15, 23, 42, 0.08) !important;
+    color: var(--text-main, #0f172a) !important;
+    padding-left: 46px;
+    height: 48px;
+    border-radius: var(--radius-interactive, 10px) !important;
+    transition: all 0.2s ease !important;
+    width: 100%;
+    font-size: 0.9rem;
+}
+
+.field .input-custom:focus {
+    background-color: var(--bg-surface, #ffffff) !important;
+    border-color: var(--calm-green-primary, #059669) !important;
+    box-shadow: 0 0 0 4px var(--calm-green-subtle, rgba(5, 150, 105, 0.08)) !important;
+}
+
+.field .input-custom:focus + i {
+    color: var(--calm-green-primary, #059669);
+}
+
+/* Botón de Envío Principal */
+.login-btn {
+    width: 100%;
+    height: 48px;
+    background: var(--calm-green-primary, #059669) !important;
+    color: #ffffff !important;
+    border: none !important;
+    border-radius: var(--radius-interactive, 10px) !important;
+    font-size: 0.95rem;
+    font-weight: 600;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    box-shadow: 0 4px 14px rgba(5, 150, 105, 0.15);
+    margin-top: 8px;
+}
+
+.login-btn:hover {
+    background-color: var(--calm-green-light, #10b981) !important;
+    transform: translateY(-1px);
+    box-shadow: 0 6px 20px rgba(5, 150, 105, 0.25);
+}
+
+/* Mensajes de Error */
+.custom-error {
+    background-color: rgba(239, 68, 68, 0.05);
+    border: 1px solid rgba(239, 68, 68, 0.15);
+    color: #ef4444;
+    padding: 10px 14px;
+    border-radius: var(--radius-interactive, 10px);
+    font-size: 0.82rem;
+    font-weight: 500;
+    margin-bottom: 16px;
+    display: flex;
+    align-items: center;
+}
+
+/* Enlaces inferiores */
+.bottom-links {
+    margin-top: 24px;
+    display: flex;
+    justify-content: space-between;
+}
+
+.bottom-links a {
+    color: var(--text-disabled, #94a3b8);
+    text-decoration: none;
+    font-size: 0.8rem;
+    font-weight: 500;
+    transition: all 0.2s ease;
+}
+
+.bottom-links a:hover {
+    color: var(--text-main, #0f172a);
+    text-decoration: underline;
+}
+
+/* ==========================================================================
+   5. RESPONSIVE DESIGN (Habilitación de scroll controlada SOLO para Móviles)
+   ========================================================================== */
+@media (max-width: 991.98px) {
+    body {
+        overflow: auto; /* Permite scroll solo en pantallas de teléfonos */
+    }
+
+    .mesh-bg-container {
+        background: var(--bg-app, #f8fafc);
+    }
+    
+    .mesh-blob {
+        display: none !important; /* Desactiva animaciones complejas en móviles */
+    }
+
+    .main-wrapper {
+        height: auto;
+        min-height: 100vh;
+        padding: 32px 16px;
+        display: flex;
+        align-items: center;
+    }
+
+    .auth-container {
+        max-width: 460px;
+        height: auto;
+        max-height: none;
+        background-color: var(--bg-surface, #ffffff) !important;
+        backdrop-filter: none;
+        -webkit-backdrop-filter: none;
+        border: 1px solid rgba(15, 23, 42, 0.08) !important;
+    }
+
+    .auth-left-panel {
+        display: none !important; /* Esconde el panel decorativo en móvil */
+    }
+
+    .auth-right-panel {
+        padding: 40px 24px;
+    }
+}

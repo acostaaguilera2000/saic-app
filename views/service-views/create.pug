@@ -3,7 +3,7 @@ extends ../layout
 block content
   .container-fluid.px-4.py-4
 
-    //- Encabezado modular institucional
+    //- Encabezado modular institucional mediante mixin global
     +formHeader(
       'Programación Masiva de Cultos', 
       '/service', 
@@ -14,41 +14,41 @@ block content
       ]
     )
 
-    //- ESTRUCTURA DE DISEÑO DASHBOARD PARA TABLAS MASIVAS
+    //- Estructura de diseño para procesamiento de datos en bloque
     .row.justify-content-center
       .col-12
 
-        form(action="/service/create" method="POST")
+        form(action="/service/bulk" method="POST")
 
           //- Gestión de Mensajes y Alertas de Validación Globales
           include ../partials/_messages
 
           //- Caja Bento contenedora de la matriz de datos
-          .card.bento-card.p-4.mb-4.border-0(style="background: #ffffff; border-radius: 16px; box-shadow: 0 4px 24px rgba(0,0,0,0.03);")
+          .card.bento-card.p-4.mb-4.border-0(style="background: var(--bg-surface); border-radius: 16px; box-shadow: var(--shadow-bento);")
 
-            // Subcabecera descriptiva estilizada
-            .d-flex.align-items-center.mb-4.p-2.rounded-3(style="background-color: var(--ijersac-bg); color: var(--ijersac-navy);")
+            //- Subcabecera descriptiva estilizada
+            .d-flex.align-items-center.mb-4.p-2.rounded-3(style="background-color: var(--calm-green-subtle); color: var(--calm-green-primary);")
               i.bi.bi-calendar-week-fill.fs-5.me-2
               span.fw-bold.text-uppercase.small(style="letter-spacing: 0.5px;") Matriz de Planificación Litúrgica
 
             .table-responsive
-              table.table.align-middle.table-bordered.m-0#tabla-cultos(style="border-color: #e9ecef;")
-                thead(style="background-color: var(--ijersac-bg); color: var(--ijersac-navy);")
-                  tr.fw-bold.small
-                    th(style="width: 15%; border: none;") Fecha
-                    th(style="width: 12%; border: none;") Hora
-                    th(style="width: 20%; border: none;") Tipo de Culto
-                    th(style="width: 24%; border: none;") Dirección (Altar)
-                    th(style="width: 24%; border: none;") Predicación
-                    th.text-center(style="width: 5%; border: none;") Acciones
+              table.table.align-middle.m-0#tabla-cultos(style="border-color: var(--border-subtle) !important;")
+                thead
+                  tr.fw-semibold.small.text-uppercase(style="background-color: var(--bg-app); color: var(--text-primary); border-bottom: 2px solid var(--border-subtle) !important;")
+                    th.py-3.ps-3(style="width: 15%; border: none; letter-spacing: 0.3px;") Fecha
+                    th.py-3(style="width: 12%; border: none; letter-spacing: 0.3px;") Hora
+                    th.py-3(style="width: 20%; border: none; letter-spacing: 0.3px;") Tipo de Culto
+                    th.py-3(style="width: 24%; border: none; letter-spacing: 0.3px;") Dirección (Altar)
+                    th.py-3(style="width: 24%; border: none; letter-spacing: 0.3px;") Predicación
+                    th.text-center.py-3.pe-3(style="width: 5%; border: none; letter-spacing: 0.3px;") Acciones
                 tbody
-                  tr.fila-culto
-                    td
-                      input.form-control.rounded-2(type="date" name="cultos[0][fecha]" required)
-                    td
-                      input.form-control.rounded-2(type="time" name="cultos[0][hora]" required)
-                    td
-                      select.form-select.rounded-2(name="cultos[0][tipo_culto]" required)
+                  tr.fila-culto(style="border-bottom: 1px solid var(--border-subtle);")
+                    td.ps-3.py-3
+                      input.form-control.rounded-3(type="date" name="cultos[0][fecha]" required style="border-color: var(--border-subtle);")
+                    td.py-3
+                      input.form-control.rounded-3(type="time" name="cultos[0][hora]" required style="border-color: var(--border-subtle);")
+                    td.py-3
+                      select.form-select.rounded-3(name="cultos[0][tipo_culto]" required style="border-color: var(--border-subtle);")
                         option(value="" disabled selected) Seleccione...
                         option(value="Culto General") Culto General
                         option(value="Culto de Jóvenes") Culto de Jóvenes
@@ -56,62 +56,38 @@ block content
                         option(value="Culto de Caballeros") Culto de Caballeros
                         option(value="Escuela Bíblica Dominical") Escuela Bíblica Dominical
                         option(value="Culto de Oración") Culto de Oración
-                    td
-                      select.form-select.rounded-2.mb-1(name="cultos[0][id_dirigente]")
+                    td.py-3
+                      select.form-select.rounded-3.mb-2(name="cultos[0][id_dirigente]" style="border-color: var(--border-subtle);")
                         option(value="") -- Miembro Local --
                         if miembros && miembros.length
                           each m in miembros
                             option(value=m.id_miembro)= `${m.nombre} ${m.apellido}`
-                      input.form-control.form-control-sm.rounded-2(type="text" name="cultos[0][dirigente_externo]" placeholder="O Invitado Externo")
-                    td
-                      select.form-select.rounded-2.mb-1(name="cultos[0][id_predicador]")
+                      input.form-control.form-control-sm.rounded-3(type="text" name="cultos[0][dirigente_externo]" placeholder="O Invitado Externo" style="border-color: var(--border-subtle);")
+                    td.py-3
+                      select.form-select.rounded-3.mb-2(name="cultos[0][id_predicador]" style="border-color: var(--border-subtle);")
                         option(value="") -- Miembro Local --
                         if miembros && miembros.length
                           each m in miembros
                             option(value=m.id_miembro)= `${m.nombre} ${m.apellido}`
-                      input.form-control.form-control-sm.rounded-2(type="text" name="cultos[0][predicador_externo]" placeholder="O Invitado Externo")
-                    td.text-center
-                      button.btn.btn-sm.btn-accion-eliminar-fila.rounded-2(type="button" disabled)
+                      input.form-control.form-control-sm.rounded-3(type="text" name="cultos[0][predicador_externo]" placeholder="O Invitado Externo" style="border-color: var(--border-subtle);")
+                    td.text-center.pe-3.py-3
+                      button.btn.btn-sm.btn-light.border.rounded-3.text-danger.btn-eliminar-fila(type="button" disabled style="background-color: var(--bg-app); border-color: var(--border-subtle) !important;")
                         i.bi.bi-x-lg
 
-            // Botón dinámico para añadir filas con colores institucionales
+            //- Botón interactivo discreto para añadir nuevas tuplas a la matriz
             .d-flex.justify-content-start.mt-4
-              button.btn.btn-sm.fw-semibold.px-3.py-2.rounded-pill#btn-agregar-fila(type="button" style="background-color: var(--ijersac-bg); color: var(--ijersac-navy); border: none; transition: all 0.2s ease;")
-                i.bi.bi-plus-circle-fill.me-2
+              button.btn.btn-sm.fw-semibold.px-3.py-2.rounded-pill#btn-agregar-fila(type="button" style="background-color: var(--bg-app); color: var(--text-primary); border: 1px solid var(--border-subtle); transition: all 0.2s ease;")
+                i.bi.bi-plus-circle-fill.me-2(style="color: var(--calm-green-primary);")
                 | Añadir otra fila al cronograma
 
-          //- BOTONERA DE ACCIÓN CORPORATIVA ASIMÉTRICA
-          .d-flex.gap-3.pt-2.mt-4
-            a.btn.btn-light.w-25.py-2.fw-bold.rounded-3.text-secondary(href="/service" style="background-color: var(--ijersac-bg); border: none;") Cancelar
-            button.btn.btn-action.flex-grow-1.py-2.fw-bold.rounded-3.shadow-sm(type="submit")
+          //- Botonera corporativa asimétrica estandarizada
+          .d-flex.gap-3.pt-2.mt-4.border-top(style="border-color: var(--border-subtle) !important;")
+            a.btn-light-custom.w-25(href="/service") Cancelar
+            button.btn-premium.flex-grow-1(type="submit")
               i.bi.bi-cloud-arrow-up-fill.me-2
               | Guardar todo el Cronograma
 
 block scripts
-  style.
-    /* Estilización para botones de control de filas masivas */
-    .btn-accion-eliminar-fila {
-      background-color: #fff1f2;
-      color: #f43f5e;
-      border: 1px solid #ffe4e6;
-      transition: all 0.2s ease;
-    }
-    .btn-accion-eliminar-fila:hover:not([disabled]) {
-      background-color: #f43f5e;
-      color: #ffffff;
-    }
-    .btn-accion-eliminar-fila[disabled] {
-      opacity: 0.5;
-      cursor: not-allowed;
-      background-color: #f8fafc;
-      color: #cbd5e1;
-      border-color: #e2e8f0;
-    }
-    #btn-agregar-fila:hover {
-      filter: brightness(0.95);
-      box-shadow: 0 2px 8px rgba(0,0,0,0.05);
-    }
-
   script.
     document.addEventListener("DOMContentLoaded", () => {
       const tabla = document.getElementById("tabla-cultos").getElementsByTagName("tbody")[0];
@@ -119,14 +95,13 @@ block scripts
       let contadorFilas = 1;
 
       btnAgregar.addEventListener("click", () => {
-        // Clonar la primera fila de manera profunda
+        // Clonación profunda de la tupla de origen
         const nuevaFila = tabla.rows[0].cloneNode(true);
 
-        // Corregir y limpiar los elementos internos individualmente
+        // Sanitización e indexación secuencial de los controles de entrada
         Array.from(nuevaFila.querySelectorAll("input, select")).forEach((element) => {
-          element.value = ""; // Limpia el valor escrito o seleccionado
+          element.value = ""; 
 
-          // Si es un selector, removemos manualmente cualquier persistencia del select anterior
           if (element.tagName === "SELECT") {
             element.selectedIndex = 0;
           }
@@ -138,8 +113,8 @@ block scripts
           }
         });
 
-        // Habilitar y configurar el botón eliminar en la nueva fila
-        const btnEliminar = nuevaFila.querySelector(".btn-accion-eliminar-fila");
+        // Habilitación técnica y escucha del disparador de remoción en caliente
+        const btnEliminar = nuevaFila.querySelector(".btn-eliminar-fila");
         btnEliminar.removeAttribute("disabled");
         btnEliminar.addEventListener("click", () => {
           nuevaFila.remove();

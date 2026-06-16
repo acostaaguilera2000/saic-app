@@ -1,0 +1,323 @@
+/* ==========================================================================
+   SAIC CORE LAYOUT - ARQUITECTURA HYBRID SIDENAV (Estilo CalmMind)
+   ========================================================================== */
+
+:root {
+    --sidebar-width: 260px;
+    --top-header-height: 70px;
+    
+    /* --- INTEGRACIÓN DE PALETA FRESH MINT (SIN ALTERAR ESTRUCTURA) --- */
+    --calm-green-primary: #059669;    /* Verde Esmeralda Premium */
+    --calm-green-light: #10b981;      /* Hovers interactivos */
+    --calm-green-subtle: #ecfdf5;     /* Fondo Menta sutil para enlaces activos */
+}
+
+/* 1. TOP HEADER (Barra de herramientas fija superior) */
+.top-header {
+    height: var(--top-header-height);
+    background-color: var(--bg-surface) !important; /* Blanco Puro */
+    border-bottom: 1px solid rgba(15, 23, 42, 0.05) !important; /* Separación milimétrica */
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 2rem;
+    position: sticky;
+    top: 0;
+    z-index: 999; /* Reducido un punto para quedar estrictamente debajo del menú móvil */
+}
+
+/* Títulos y Marcas de Texto en el Header */
+.top-header h5.text-muted {
+    color: var(--text-muted) !important;
+    font-size: 0.95rem;
+    letter-spacing: -0.2px;
+}
+
+/* Adaptación semántica para títulos Navy que pasan a la nueva gama */
+.txt-navy {
+    color: var(--text-main) !important;
+}
+
+/* Botón de Hamburguesa para Desplegar Menú en Móviles */
+.btn-trigger-sidebar {
+    background-color: var(--calm-green-subtle) !important; /* Fondo Menta Claro */
+    color: var(--calm-green-primary) !important;          /* Icono Esmeralda */
+    border: 1px solid rgba(5, 150, 105, 0.1) !important;
+    padding: 6px 12px;
+    border-radius: 8px;
+    transition: var(--transition-premium);
+}
+
+.btn-trigger-sidebar:hover {
+    background-color: var(--calm-green-primary) !important;
+    color: #ffffff !important;
+}
+
+/* 2. ENVOLTORIO ESTRUCTURAL DE ESCRITORIO (PROTEGIDO) */
+.main-wrapper {
+    min-height: 100vh;
+    background-color: var(--bg-app);
+    transition: var(--transition-premium);
+    /* En pantallas grandes empuja el contenido el ancho exacto del sidebar */
+    margin-left: var(--sidebar-width);
+    width: calc(100% - var(--sidebar-width));
+}
+
+.content-body {
+    padding: 0 2rem 2rem;
+}
+
+/* 3. SIDEBAR / NAV CENTRAL DE ESCRITORIO (Estilo Fresh White & Mint) */
+.sidebar {
+    width: var(--sidebar-width);
+    height: 100vh;
+    background-color: var(--bg-surface) !important; /* Blanco puro */
+    border-right: var(--border-subtle) !important;
+    position: fixed;
+    top: 0;
+    left: 0;
+    z-index: 1040; /* Z-index base estricto para escritorio */
+    display: flex;
+    flex-direction: column;
+    padding: 1.5rem 1.2rem;
+    transition: var(--transition-premium);
+}
+
+/* 4. COMPONENTES INTERNOS DEL NAV (ESTILIZADOS) */
+.brand-wrapper {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding-left: 10px;
+    margin-bottom: 2rem;
+}
+
+.sidebar-brand-text {
+    font-size: 1.15rem;
+    font-weight: 800;
+    color: var(--text-main); /* Contraste Slate 900 */
+    letter-spacing: -0.5px;
+}
+
+.sidebar-menu {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+}
+
+.sidebar-item {
+    width: 100%;
+}
+
+/* Enlaces del Sidebar con transiciones suaves verdes */
+.sidebar-link {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 12px 14px;
+    color: var(--text-muted) !important; /* Gris óptico suave por defecto */
+    font-size: 0.9rem;
+    font-weight: 500;
+    text-decoration: none;
+    border-radius: var(--radius-interactive);
+    transition: var(--transition-premium);
+}
+
+.sidebar-link i {
+    font-size: 1.1rem;
+    transition: var(--transition-premium);
+}
+
+/* Hover orgánico estilo Fresh App */
+.sidebar-link:hover {
+    background-color: var(--bg-app);
+    color: var(--calm-green-primary) !important;
+}
+
+/* Enlace Activo Esmeralda Premium (Idéntico a CalmMind) */
+.sidebar-link.active {
+    background-color: var(--calm-green-subtle) !important;
+    color: var(--calm-green-primary) !important;
+    font-weight: 600;
+}
+
+.sidebar-link.active i {
+    color: var(--calm-green-primary) !important;
+}
+
+/* Perfil inferior dentro de la barra lateral */
+.sidebar-profile {
+    margin-top: auto;
+    padding: 12px;
+    background-color: var(--bg-app);
+    border-radius: var(--radius-interactive);
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    border: var(--border-subtle);
+}
+
+/* 5. TOPBAR UTILITIES (Dropdowns y Avatares) */
+.top-header .dropdown .d-flex.align-items-center {
+    padding: 4px 8px 4px 14px;
+    border-radius: var(--radius-pill);
+    transition: var(--transition-premium);
+    border: 1px solid transparent;
+}
+
+.top-header .dropdown .d-flex.align-items-center:hover {
+    background-color: var(--bg-app) !important;
+    border-color: rgba(15, 23, 42, 0.03);
+}
+
+.top-header .dropdown-menu {
+    background-color: var(--bg-surface) !important;
+    border: var(--bento-border) !important;
+    box-shadow: var(--bento-shadow-md) !important;
+    padding: 0.5rem !important;
+}
+
+.top-header .dropdown-item {
+    font-size: 0.88rem;
+    font-weight: 500;
+    color: var(--text-muted) !important;
+    padding: 0.6rem 1rem !important;
+    transition: var(--transition-premium);
+}
+
+.top-header .dropdown-item:hover {
+    background-color: var(--calm-green-subtle) !important;
+    color: var(--calm-green-primary) !important;
+}
+
+.top-header .dropdown-item.text-danger:hover {
+    background-color: #fef2f2 !important;
+    color: #ef4444 !important;
+}
+
+.top-header .dropdown-divider {
+    border-top: 1px solid rgba(15, 23, 42, 0.06) !important;
+    margin: 0.4rem 0 !important;
+}
+
+/* ==========================================================================
+   CORRECCIONES DE VISIBILIDAD MÓVIL Y BRAND BOX (ESTILO CALMMIND)
+   ========================================================================== */
+
+/* Caja contenedora del icono de la marca */
+.brand-icon-box {
+    width: 38px;
+    height: 38px;
+    background-color: var(--calm-green-subtle); /* Fondo Menta Translúcido */
+    color: var(--calm-green-primary);          /* Icono Verde */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 10px;
+    font-size: 1.2rem;
+    border: 1px solid rgba(5, 150, 105, 0.08);
+}
+
+/* ==========================================================================
+   SAIC BENTO GRID - DETONADORES VISUALES (Fresh Mint Edition)
+   ========================================================================== */
+
+/* Fuerza el renderizado de la tarjeta Bento con la paleta limpia */
+.bento-card {
+    background-color: var(--bg-surface) !important; /* Blanco Puro */
+    border: var(--bento-border) !important;         /* Borde sutil 1px */
+    border-radius: var(--radius-bento) !important;  /* Curvatura de 16px */
+    padding: 1.5rem !important;                     /* Espaciado interno respirable */
+    box-shadow: var(--bento-shadow-sm) !important;  /* Sombra menta milimétrica */
+    transition: var(--transition-premium) !important;
+    display: flex;
+    flex-direction: column;
+}
+
+.bento-card:hover {
+    transform: translateY(-2px);
+    box-shadow: var(--bento-shadow-md) !important;
+}
+
+.chart-container-bento {
+    background-color: transparent !important;
+    margin-top: 1rem;
+}
+
+.event-row {
+    background-color: var(--bg-app) !important;
+    border: var(--border-subtle) !important;
+    transition: var(--transition-premium);
+}
+
+.event-row:hover {
+    background-color: var(--calm-green-subtle) !important;
+    border-color: rgba(5, 150, 105, 0.15) !important;
+}
+
+.bento-card .table-responsive-custom {
+    background-color: transparent !important;
+    border: none !important;
+    box-shadow: none !important;
+    margin-bottom: 0 !important;
+}
+
+.bento-card .tabla-institucional {
+    background-color: transparent !important;
+}
+
+.bento-card .tabla-institucional tbody tr {
+    background-color: transparent !important;
+    transition: var(--transition-premium);
+}
+
+.bento-card .tabla-institucional tbody tr:hover {
+    background-color: var(--calm-green-subtle) !important;
+}
+
+/* ==========================================================================
+   REGLAS CRÍTICAS RESPONSIVAS DE BOOTSTRAP (ESTRICTAMENTE OPTIMIZADAS)
+   ========================================================================== */
+@media (max-width: 991.98px) {
+    /* Forzamos que el sidebar móvil funcione como un bloque Offcanvas real y hermético */
+    .sidebar.offcanvas-lg {
+        visibility: hidden;
+        position: fixed;
+        top: 0;
+        left: 0;
+        right: auto;
+        transform: translateX(-100%);
+        transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        width: var(--sidebar-width);
+        background-color: var(--bg-surface) !important;
+        /* Elevado estratégicamente para ponerse por encima de CUALQUIER elemento del bento o canvas */
+        z-index: 1060 !important; 
+        border-right: var(--border-subtle) !important;
+        box-shadow: 0 0 30px rgba(15, 23, 42, 0.15) !important; /* Sombra de aislamiento */
+    }
+
+    .sidebar.offcanvas-lg.show {
+        visibility: visible;
+        transform: translateX(0);
+    }
+
+    /* Evitamos que las tarjetas bento fuercen desbordamientos en móviles */
+    .match-height-grid, .row {
+        overflow: hidden;
+    }
+
+    /* El contenido principal se expande al 100% de manera segura en móviles */
+    .main-wrapper {
+        margin-left: 0 !important;
+        width: 100% !important;
+        position: relative;
+        z-index: 1; /* Mantiene la base del dashboard controlada */
+    }
+
+    .top-header {
+        padding: 0 1rem;
+    }
+}

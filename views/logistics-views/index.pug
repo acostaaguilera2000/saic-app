@@ -11,8 +11,8 @@ block styles
         }
 
         .calendar-day-btn {
-            background: #ffffff;
-            border: 1px solid #e2e8f0;
+            background: var(--bg-surface);
+            border: 1px solid var(--border-subtle);
             border-radius: 16px;
             min-height: 125px;
             transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
@@ -25,56 +25,54 @@ block styles
         }
 
         .calendar-day-btn:hover {
-            border-color: #0a192f !important; /* Navy institucional para diferenciar de Altar */
+            border-color: var(--calm-green-primary) !important;
             transform: translateY(-3px);
-            box-shadow: 0 10px 20px rgba(10, 25, 47, 0.06) !important;
+            box-shadow: var(--shadow-bento) !important;
         }
 
         /* Indicador visual de logística asignada */
         .logistica-indicator {
             width: 6px;
             height: 6px;
-            background-color: #0a192f;
+            background-color: var(--calm-green-primary);
             border-radius: 50%;
             position: absolute;
             bottom: 10px;
         }
-
-        .txt-navy { color: #0a192f; }
 
         .x-small-label {
             font-size: 0.72rem;
             text-transform: uppercase;
             font-weight: 700;
             letter-spacing: 0.5px;
-            color: #64748b;
+            color: var(--text-muted, #64748b);
         }
 
         .month-label {
             font-size: 0.75rem;
             font-weight: 700;
-            color: #64748b;
+            color: var(--calm-green-primary);
             letter-spacing: 0.5px;
         }
 
 block content
     .container-fluid.px-3.px-md-4.py-4
 
-        //- Encabezado Estilo Banner Superior 
-        .d-flex.flex-column.flex-md-row.justify-content-between.align-items-start.align-items-md-center.gap-3.mb-4.p-4.rounded-4(style="background: #ffffff; box-shadow: 0 4px 24px rgba(0,0,0,0.02);")
+        //- Encabezado Estilo Banner Superior Bento Box
+        .d-flex.flex-column.flex-md-row.justify-content-between.align-items-start.align-items-md-center.gap-3.mb-4.p-4.rounded-4(style="background: var(--bg-surface); box-shadow: var(--shadow-bento);")
             div
                 h2.fw-bold.text-dark.mb-1 Control de Soporte y Logística
                 p.text-muted.small.mb-0 Consulta las asignaciones de Sonido, Multimedia y Aseo para cada servicio programado.
 
         if cultos && cultos.length > 0
             //- BARRA DE FILTRADO POR MES
-            .card.border-0.shadow-sm.mb-4.p-3(style="border-radius: 14px; background: #ffffff;")
+            .card.border-0.mb-4.p-3(style="border-radius: 14px; background: var(--bg-surface); box-shadow: var(--shadow-bento);")
                 .row.g-3.align-items-center
                     .col-12.col-md-6
-                        label.form-label.small.fw-bold.text-muted
-                            i.bi.bi-calendar-range.me-1
+                        label.form-label.small.fw-bold.text-muted(for="filter-month-select")
+                            i.bi.bi-calendar-range.me-1(style="color: var(--calm-green-primary);")
                             | Filtrar por Mes:
-                        select#filter-month-select.form-select.form-select-sm.rounded-3
+                        select#filter-month-select.form-select.form-select-sm.rounded-3(style="border-color: var(--border-subtle);")
                             option(value="todos" selected) --- Ver Todos los Servicios ---
                             option(value="0") Enero
                             option(value="1") Febrero
@@ -90,10 +88,10 @@ block content
                             option(value="11") Diciembre
 
                     .col-12.col-md-6.text-md-end.mt-md-4
-                        span#counter-badge.badge.bg-light.text-dark.border.p-2.rounded-3 
-                            i.bi.bi-info-circle.me-1.text-primary
-                            span#total-services-count #{cultos.length}
-                            |   servicios logísticos
+                        span#counter-badge.badge.bg-light.text-dark.border.p-2.rounded-3(style="border-color: var(--border-subtle) !important;")
+                            i.bi.bi-info-circle.me-1(style="color: var(--calm-green-primary);")
+                            span#total-services-count.fw-bold.me-1 #{cultos.length}
+                            | servicios logísticos
 
             //- CUADRÍCULA DE CALENDARIO ESTILO BENTO
             .calendar-grid
@@ -103,15 +101,15 @@ block content
                     - var diaNombre = culto.fecha ? new Date(culto.fecha).toLocaleDateString('es-ES', {timeZone: 'UTC', weekday: 'short'}) : '' 
                     - var mesNombre = culto.fecha ? new Date(culto.fecha).toLocaleDateString('es-ES', {timeZone: 'UTC', month: 'short'}) : '' 
 
-                    button.calendar-day-btn.btn.shadow-sm.service-row-item(
+                    button.calendar-day-btn.btn.service-row-item(
                         type="button"
                         data-bs-toggle="modal"
                         data-bs-target=`#modal-logistica-${culto.id_culto}`
                         data-month=mesNumero
                     )
                         span.text-uppercase.fw-bold.text-muted.small.mb-0 #{diaNombre}
-                        span.text-uppercase.month-label.txt-navy.mb-1 #{mesNombre.replace('.', '')}
-                        span.display-6.fw-black.text-dark.m-0.lh-1.fw-bold #{diaNumero}
+                        span.text-uppercase.month-label.mb-1 #{mesNombre.replace('.', '')}
+                        span.display-6.text-dark.m-0.lh-1.fw-bold #{diaNumero}
                         span.logistica-indicator
 
             //- RENDERIZACIÓN DINÁMICA DE MODALES DE LOGÍSTICA
@@ -123,12 +121,12 @@ block content
                     aria-hidden="true"
                 )
                     .modal-dialog.modal-dialog-centered
-                        .modal-content.border-0.shadow(style="border-radius: 20px;")
+                        .modal-content.border-0.shadow(style="border-radius: 20px; background: var(--bg-surface);")
 
                             //- Cabecera del Modal
                             .modal-header.border-0.pb-0.pt-4.px-4
                                 div
-                                    span.badge.bg-light.text-dark.border.text-uppercase.fw-bold.mb-2 #{culto.tipo_culto}
+                                    span.badge.text-dark.border.text-uppercase.fw-bold.mb-2(style="background-color: var(--bg-app); border-color: var(--border-subtle) !important;") #{culto.tipo_culto}
                                     h5.modal-title.fw-bold.text-dark(id=`label-${culto.id_culto}`) Personal de Soporte
                                 button.btn-close(type="button" data-bs-dismiss="modal" aria-label="Close")
 
@@ -137,8 +135,8 @@ block content
                                 .d-flex.flex-column.gap-3
 
                                     //- Fila: Fecha y Hora
-                                    .d-flex.align-items-center.gap-3.p-3.bg-light.rounded-3
-                                        i.bi.bi-clock-history.fs-4.text-primary
+                                    .d-flex.align-items-center.gap-3.p-3.rounded-3(style="background-color: var(--bg-app);")
+                                        i.bi.bi-clock-history.fs-4(style="color: var(--calm-green-primary);")
                                         div
                                             span.d-block.x-small-label Horario del Servicio
                                             - var fLong = culto.fecha ? new Date(culto.fecha).toLocaleDateString('es-ES', {timeZone: 'UTC', weekday: 'long', day: 'numeric', month: 'long'}) : 'No asignada' 
@@ -151,8 +149,8 @@ block content
                                                     | #{horaFormateada}
 
                                     //- Fila: Sonido
-                                    .d-flex.align-items-center.gap-3.p-3.bg-light.rounded-3
-                                        i.bi.bi-boombox.fs-4.text-dark
+                                    .d-flex.align-items-center.gap-3.p-3.rounded-3(style="background-color: var(--bg-app);")
+                                        i.bi.bi-boombox.fs-4.text-secondary
                                         div
                                             span.d-block.x-small-label Operador de Sonido
                                             if culto.son_nom
@@ -161,8 +159,8 @@ block content
                                                 span.small.text-muted.fst-italic Sin asignar / Libre
 
                                     //- Fila: Multimedia
-                                    .d-flex.align-items-center.gap-3.p-3.bg-light.rounded-3
-                                        i.bi.bi-pc-display.fs-4.text-dark
+                                    .d-flex.align-items-center.gap-3.p-3.rounded-3(style="background-color: var(--bg-app);")
+                                        i.bi.bi-pc-display.fs-4.text-secondary
                                         div
                                             span.d-block.x-small-label Proyección y Multimedia
                                             if culto.mul_nom
@@ -171,10 +169,10 @@ block content
                                                 span.small.text-muted.fst-italic Sin asignar / Libre
 
                                     //- Fila: Aseo
-                                    .d-flex.align-items-center.gap-3.p-3.bg-light.rounded-3
-                                        i.bi.bi-bucket.fs-4.text-dark
+                                    .d-flex.align-items-center.gap-3.p-3.rounded-3(style="background-color: var(--bg-app);")
+                                        i.bi.bi-bucket.fs-4.text-secondary
                                         div
-                                            span.d-block.x-small-label Lider de Aseo
+                                            span.d-block.x-small-label Líder de Aseo
                                             if culto.ase_nom
                                                 span.small.text-dark.fw-bold #{culto.ase_nom} #{culto.ase_ape || ''}
                                             else
@@ -182,18 +180,18 @@ block content
 
                                     //- Fila: Observaciones Especiales
                                     if culto.observaciones && culto.observaciones.trim() !== ""
-                                        .p-3.rounded-3(style="background-color: rgba(10, 25, 47, 0.03); border: 1px dashed #cbd5e1;")
-                                            span.d-block.x-small-label.mb-1 Observaciones Logísticas
+                                        .p-3.rounded-3(style="background-color: var(--calm-green-subtle); border: 1px dashed var(--border-subtle);")
+                                            span.d-block.x-small-label.mb-1(style="color: var(--calm-green-primary);") Observaciones Logísticas
                                             p.small.text-dark.mb-0.lh-sm #{culto.observaciones}
 
-                            //- Pie del Modal
+                            //- Pie del Modal (Botonera integrada a SAIC)
                             .modal-footer.border-0.pt-0.pb-4.px-4
-                                button.btn.px-3.py-2.fw-bold.rounded-3.w-100(type="button" data-bs-dismiss="modal" style="background-color: #0a192f; color: #ffffff; border: none;") Entendido
+                                button.btn.btn-premium.w-100(type="button" data-bs-dismiss="modal") Entendido
 
         else
-            .card.border-0.shadow-sm.text-center.py-5.px-4(style="background: #ffffff; border-radius: 16px;")
+            .card.border-0.text-center.py-5.px-4(style="background: var(--bg-surface); border-radius: 16px; box-shadow: var(--shadow-bento);")
                 .card-body
-                    i.bi.bi-calendar-x.d-block.fs-1.mb-3.text-black-50
+                    i.bi.bi-calendar-x.d-block.fs-1.mb-3.text-muted
                     h5.fw-bold.text-dark No hay soporte programado
                     p.text-muted.small.mb-0 No se registran asignaciones logísticas activas en este momento.
 

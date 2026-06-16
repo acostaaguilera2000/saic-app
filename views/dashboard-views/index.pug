@@ -1,130 +1,143 @@
 extends ../layout
 
 block content
-  //-  Header del Dashboard Dinámico
-  .d-flex.justify-content-between.align-items-center.mb-4
+  //- HEADER OPTIMIZADO: Bienvenida Personalizada y Consistencia en Pantallas Chicas
+  .d-flex.flex-column.flex-md-row.justify-content-between.align-items-start.align-items-md-center.mb-4.pt-3.gap-3
     div
-      h4.fw-bold.text-dark.mb-1 Panel de Control Administrativo
-      p.text-muted.small Gestión integral y logística operativa de la congregación IJERSAC
-    .d-flex.gap-2
-      a.btn.btn-white.shadow-sm.btn-sm(href="/report")
-        i.bi.bi-download.me-2
-        | Reporte PDF
-      a.btn.btn-dark.shadow-sm.btn-sm(href="/finance/create")
-        i.bi.bi-plus-lg.me-2
-        | Nuevo Registro
+      h4.fw-bold.text-dark.mb-1 Bienvenido de nuevo, #{user ? user.username : 'Manuel Acosta'}
+      p.text-muted.x-small Sistema  SAIC Operando para la congregación IJERSAC.
+    //- Botones limpios, compactos y responsivos
+  
 
   //- Gestión de Mensajes y Alertas Globales 
   include ../partials/_messages
 
   //- MÁSTER BENTO GRID SYSTEM
-  .row.g-4
+  .row.g-4.match-height-grid
 
-    //- Bloque 1: Gráfico de Crecimiento Financiero (Donaciones Anuales)
-    .col-xl-8.col-lg-7
-      .card.border-0.shadow-sm.h-100.bento-card
-        .card-header.bg-transparent.border-0.p-4.pb-0
-          .d-flex.justify-content-between.align-items-center
-            div
-              h6.fw-bold.text-dark.mb-1 Análisis de Crecimiento
-              p.text-muted.x-small Tendencia de nuevos ingresos anuales consolidada
-            select.form-select.form-select-sm.border-light.shadow-none.bg-light#yearSelector(style="width: 100px;")
-              option(selected= (currentYear === 2026)) 2026
-              option(selected= (currentYear === 2025)) 2025
-        .card-body.px-4.pb-4.pt-2
-          div(style="height: 310px; position: relative;")
-            //- Inyectamos el array de 12 meses como un atributo data-* para que JavaScript lo lea limpiamente
-            canvas#growthChart(data-database-values=JSON.stringify(data.chartData))
+    //- FILA SUPERIOR: Las 4 Tarjetas de Métricas de Membresía distribuidas horizontalmente
+    - 
+      const metrics = [
+        { label: 'Total Miembros', value: data.metrics.total, sub: '+8.5% este mes', color: 'sonido', icon: 'bi-people' },
+        { label: 'Activos', value: data.metrics.activos, sub: 'En comunión regular', color: 'sonido', icon: 'bi-person-check' },
+        { label: 'Inactivos', value: data.metrics.inactivos, sub: 'Requieren atención', color: 'multimedia', icon: 'bi-person-x' },
+        { label: 'Crecimiento', value: data.metrics.crecimiento, sub: 'Promedio mensual', color: 'aseo', icon: 'bi-graph-up-arrow' }
+      ]
 
-    //- Bloque 2: Módulo de Métricas de Membresía Reales
-    .col-xl-4.col-lg-5
-      .row.g-3.h-100
-        - 
-          const metrics = [
-            { label: 'Total Miembros', value: data.metrics.total, sub: '+8.5% este mes', color: 'primary', icon: 'bi-people' },
-            { label: 'Activos', value: data.metrics.activos, sub: 'En comunión regular', color: 'success', icon: 'bi-person-check' },
-            { label: 'Inactivos', value: data.metrics.inactivos, sub: 'Requieren atención', color: 'danger', icon: 'bi-person-x' },
-            { label: 'Crecimiento', value: data.metrics.crecimiento, sub: 'Promedio mensual', color: 'warning', icon: 'bi-graph-up-arrow' }
-          ]
+    each item in metrics
+      .col-xl-3.col-sm-6.d-flex.flex-column
+        .bento-card.w-100.h-100.p-3.d-flex.flex-column.justify-content-between
+          .d-flex.justify-content-between.align-items-start.mb-2
+            span.text-muted.xx-small.text-uppercase.ls-1.fw-bold= item.label
+            span.badge-status(class=`badge-status-${item.color}`)
+              i.bi(class=item.icon)
+          .mt-2
+            h3.fw-bold.text-dark.mb-1= item.value
+            span.d-block.text-muted.xx-small.fw-medium= item.sub
 
-        each item in metrics
-          .col-6
-            .card.border-0.shadow-sm.h-100.bento-card.p-2
-              .card-body.p-3.d-flex.flex-column.justify-content-between
-                .d-flex.justify-content-between.align-items-center.mb-2
-                  .icon-box.rounded-3(class=`bg-${item.color}-subtle text-${item.color}`)
-                    i.bi(class=item.icon)
-                div
-                  span.text-muted.x-small.fw-bold.text-uppercase.ls-1= item.label
-                  h3.fw-bold.text-dark.my-1= item.value
-                  span.d-block.text-muted.xx-small.fw-medium= item.sub
+    //- SEGUNDA FILA: Gráfico de Crecimiento (7 col) + Usuarios Recientes (5 col)
+    .col-xl-7.col-lg-7.d-flex.flex-column
+      .bento-card.w-100.h-100.d-flex.flex-column
+        .d-flex.justify-content-between.align-items-center.mb-3
+          div
+            h5.fw-bold.text-dark.mb-1 Análisis de Crecimiento
+            p.text-muted.x-small Tendencia de nuevos ingresos anuales consolidada
+          select.form-select-custom#yearSelector(style="width: 100px; height: 36px; font-size: 0.85rem;")
+            option(selected= (currentYear === 2026)) 2026
+            option(selected= (currentYear === 2025)) 2025
+        
+        .chart-container-bento.flex-grow-1.d-flex.align-items-center(style="position: relative; height: 310px; width: 100%;")
+          canvas#growthChart(data-database-values=JSON.stringify(data.chartData))
 
-    //- Bloque 3: Usuarios Recientes (Altas en la Plataforma Web)
-    .col-xl-5.col-lg-6
-      .card.border-0.shadow-sm.h-100.bento-card
-        .card-header.bg-transparent.border-0.p-4.pb-0
-          .d-flex.justify-content-between.align-items-center
-            div
-              h6.fw-bold.text-dark.mb-0 Usuarios Recientes
-              p.text-muted.x-small Cuentas web creadas recientemente
-            span.badge.bg-dark.text-white.px-2.py-1.xx-small Operativo
-        .card-body.p-4.pt-2
-          .table-responsive
-            table.table.table-hover.align-middle.mb-0
-              tbody
-                if data.recentUsers && data.recentUsers.length > 0
-                  each user in data.recentUsers
-                    //- Generamos colores fijos basados en el ID para mantener la estética Bento sin romper la UI
-                    - const bgColors = ['002855', 'D4AF37', '003a7a']
-                    - const colorHex = bgColors[user.id_usuario % bgColors.length]
-                    tr
-                      td.ps-0(style="width: 50px;")
-                        img.rounded-circle(src=`https://ui-avatars.com/api/?name=${encodeURIComponent(user.nombre_completo)}&background=${colorHex}&color=fff` width="38")
-                      td
-                        div.fw-bold.text-dark.small-text= user.nombre_completo
-                        div.text-muted.xx-small= `@${user.username}`
-                      td.text-end.pe-0
-                        a.btn.btn-light.btn-xs.rounded-circle(href=`/users/update/${user.id_usuario}`)
-                          i.bi.bi-arrow-right-short
-                else
+    .col-xl-5.col-lg-5.d-flex.flex-column
+      .bento-card.w-100.h-100.d-flex.flex-column
+        .d-flex.justify-content-between.align-items-center.mb-3
+          div
+            h5.fw-bold.text-dark.mb-0 Usuarios Recientes
+            p.text-muted.x-small Cuentas web creadas recientemente
+          span.badge-status.badge-status-sonido.text-xxsmall Operativo
+        
+        .table-responsive-custom.flex-grow-1.border-0.shadow-none.p-0.m-0
+          table.tabla-institucional.align-middle.mb-0
+            tbody
+              if data.recentUsers && data.recentUsers.length > 0
+                each user in data.recentUsers
+                  - const bgColors = ['059669', '10b981', '475569']
+                  - const colorHex = bgColors[user.id_usuario % bgColors.length]
                   tr
-                    td.text-center.text-muted.py-4(colspan="3") No hay usuarios registrados.
+                    td.ps-0(style="width: 45px;")
+                      img.rounded-circle(src=`https://ui-avatars.com/api/?name=${encodeURIComponent(user.nombre_completo)}&background=${colorHex}&color=fff` width="34")
+                    td
+                      div.fw-bold.text-dark.small-text= user.nombre_completo
+                      div.text-disabled.xx-small= `@${user.username}`
+                    td.text-end.pe-0
+                      a.btn-table-action.btn-table-action-edit.rounded-circle.p-2.d-inline-flex.align-items-center.justify-content-center(href=`/users/update/${user.id_usuario}` style="width: 32px; height: 32px;")
+                        i.bi.bi-arrow-right-short
+              else
+                tr
+                  td.text-center.text-muted.py-4 No hay usuarios registrados.
 
-    //- Bloque 4: Próximos Eventos de la Agenda Eclesiástica
-    .col-xl-7.col-lg-6
-      .card.border-0.shadow-sm.h-100.bento-card
-        .card-header.bg-transparent.border-0.p-4.pb-0
-          .d-flex.justify-content-between.align-items-center
+    //- TERCERA FILA (ASIMÉTRICA): Calendario (7 col) + Soporte Técnico e Incidentes (5 col)
+    .col-xl-7.col-lg-7.d-flex.flex-column
+      .bento-card.w-100.h-100.d-flex.flex-column
+        .d-flex.justify-content-between.align-items-center.mb-4
+          div
+            h5.fw-bold.text-dark.mb-0 Calendario de Próximos Eventos
+            p.text-muted.x-small Planificación de cultos y reuniones de la congregación
+          a.p-0.text-dark.xx-small.fw-bold.text-decoration-none.border-bottom.border-dark(href="/service" style="height: auto;") Ver Agenda
+        
+        .row.g-3.flex-grow-1
+          if data.upcomingEvents && data.upcomingEvents.length > 0
+            each event, index in data.upcomingEvents
+              - const eventDate = new Date(event.fecha)
+              - const day = eventDate.getDate().toString().padStart(2, '0')
+              - const month = eventDate.toLocaleString('es-ES', { month: 'short' }).toUpperCase().replace('.', '')
+              - const badgeStyle = index === 0 ? 'badge-status-sonido' : 'badge-status-aseo'
+              - const statusText = index === 0 ? 'Confirmado' : 'Pendiente'
+
+              .col-12
+                .p-3.rounded-3.d-flex.align-items-center.event-row(style="background-color: var(--bg-app); border: var(--border-subtle);")
+                  .date-badge.me-3.text-center.bg-white.rounded-3.p-2(style="min-width: 52px; border: var(--border-subtle);")
+                    span.d-block.fw-bold.text-dark.mb-0(style="font-size: 1.1rem; line-height: 1;")= day
+                    span.d-block.text-disabled(style="font-size: 0.62rem; font-weight:700;")= month
+                  .flex-grow-1
+                    h6.mb-1.fw-bold.text-dark.small-text= event.tipo_culto
+                    small.text-disabled.xx-small
+                      i.bi.bi-clock.me-1
+                      | #{event.hora.substring(0, 5)} hrs — Auditorio Central SAIC
+                  span.badge-status(class=badgeStyle) #{statusText}
+          else
+            .col-12.text-center.text-muted.py-4.my-auto
+              p.mb-0 No hay cultos programados para los próximos días.
+
+    //- NUEVA CARD BENTO: Centro de Soporte, Errores y Estado del Servidor
+    .col-xl-5.col-lg-5.d-flex.flex-column
+      .bento-card.w-100.h-100.d-flex.flex-column
+        .d-flex.justify-content-between.align-items-center.mb-3
+          div
+            h5.fw-bold.text-dark.mb-0 Soporte y Reporte de Errores
+            p.text-muted.x-small Estado de la plataforma informática SAIC
+          span.badge-status.badge-status-sonido.text-xxsmall Canales Activos
+        
+        //- Cuerpo interactivo del Centro de Soporte
+        .flex-grow-1.d-flex.flex-column.justify-content-between.gap-3.mt-2
+          .p-3.rounded-3.d-flex.align-items-center.gap-3(style="background-color: var(--bg-app); border: var(--border-subtle);")
+            .brand-icon-box.flex-shrink-0(style="background-color: rgba(16, 185, 129, 0.1); color: var(--calm-green-light);")
+              i.bi.bi-cpu-fill
             div
-              h6.fw-bold.text-dark.mb-0 Calendario de Próximos Eventos
-              p.text-muted.x-small Planificación de cultos y reuniones
-            a.text-dark.text-decoration-none.xx-small.fw-bold.border-bottom.border-dark(href="/service") Ver Agenda
-        .card-body.p-4.pt-2
-          .row.g-3
-            if data.upcomingEvents && data.upcomingEvents.length > 0
-              each event, index in data.upcomingEvents
-                //- Parseo dinámico de fechas para extraer Día y Mes de manera profesional
-                - const eventDate = new Date(event.fecha)
-                - const day = eventDate.getDate().toString().padStart(2, '0')
-                - const month = eventDate.toLocaleString('es-ES', { month: 'short' }).toUpperCase().replace('.', '')
-                //- Alternancia estética de badges de estado en base al índice
-                - const statusText = index === 0 ? 'Confirmado' : 'Pendiente'
-                - const statusColor = index === 0 ? 'success' : 'warning'
+              h6.fw-bold.text-dark.small-text.mb-0 Rendimiento del Servidor
+              p.text-disabled.xx-small.mb-0 Latencia: 14ms | Base de datos: Conectada óptimamente
 
-                .col-12
-                  .p-3.rounded-3.border.d-flex.align-items-center.bg-light.bg-opacity-40.event-row
-                    .date-badge.me-3.text-center.bg-white.shadow-sm.rounded-3.p-2(style="min-width: 55px;")
-                      span.d-block.fw-bold.text-dark.h5.mb-0= day
-                      span.d-block.text-muted.xx-small.fw-bold= month
-                    .flex-grow-1
-                      h6.mb-1.fw-bold.text-dark.small-text= event.tipo_culto
-                      small.text-muted.xx-small
-                        i.bi.bi-clock.me-1
-                        | #{event.hora.substring(0, 5)} hrs — Auditorio Central SAIC
-                    span.badge.border.xx-small(class=`bg-${statusColor}-subtle text-${statusColor} border-${statusColor}-subtle`) #{statusText}
-            else
-              .col-12.text-center.text-muted.py-4
-                p.mb-0 No hay cultos programados para los próximos días.
+          .p-3.rounded-3.d-flex.align-items-center.gap-3(style="background-color: var(--bg-app); border: var(--border-subtle);")
+            .brand-icon-box.flex-shrink-0(style="background-color: rgba(239, 68, 68, 0.1); color: #ef4444;")
+              i.bi.bi-exclamation-octagon-fill
+            div
+              h6.fw-bold.text-dark.small-text.mb-0 ¿Reportar Bug o Incidente?
+              p.text-disabled.xx-small.mb-0 Reporta fallos en los roles de usuario o bloqueos logísticos.
+
+          a.btn.btn-table-action.btn-table-action-edit.w-100.py-2.d-flex.align-items-center.justify-content-center.gap-2(href="#" style="font-size: 0.85rem; border-radius: 8px;")
+            i.bi.bi-headset
+            | Contactar Soporte Técnico
 
 block scripts
   script(src="https://cdn.jsdelivr.net/npm/chart.js")
